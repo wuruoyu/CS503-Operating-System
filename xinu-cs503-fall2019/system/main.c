@@ -8,7 +8,9 @@ process	main(void)
 	/* Run the Xinu shell */
 
 	recvclr();
-	resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
+	pid32 pid = create(shell, 8192, 50, "shell", 1, CONSOLE);
+	kprintf("\n\nMain process recreating shell\n\n");
+	resume(pid);
 
 	/* Wait for shell to exit and recreate it */
 
