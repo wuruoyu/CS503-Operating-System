@@ -9,7 +9,7 @@ process	main(void)
 
 	recvclr();
 	pid32 pid = create(shell, 8192, 50, "shell", 1, CONSOLE);
-	kprintf("pawning new shell with PID = %d\n", pid);
+	kprintf("SPawning new shell with PID = %d\n", pid);
 	resume(pid);
 
 	/* Wait for shell to exit and recreate it */
