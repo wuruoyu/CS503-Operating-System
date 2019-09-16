@@ -7,7 +7,7 @@
  * xsh_hello - say hello 
  *------------------------------------------------------------------------
  */
-shellcmd xsh_hello(void)
+shellcmd xsh_hello(int nargs, char *args[])
 {
     hello();
     return 0;

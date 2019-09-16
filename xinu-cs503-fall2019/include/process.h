@@ -57,6 +57,22 @@ struct procent {		/* Entry in the process table		*/
 /* Marker for the top of a process stack (used to help detect overflow)	*/
 #define	STACKMAGIC	0x0A0AAAA9
 
+#define XTEST 1 
+#define XDEBUG 0 	/* set this to 0 when submitting */
+
+/* For grading */
+#if XTEST
+#define XTEST_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XTEST_KPRINTF(...)
+#endif
+/* For debugging */
+#if XDEBUG
+#define XDEBUG_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XDEBUG_KPRINTF(...)
+#endif
+
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
