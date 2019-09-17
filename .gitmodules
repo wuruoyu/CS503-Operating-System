@@ -1,3 +1,6 @@
 [submodule "previous_lab/cs503"]
 	path = previous_lab/cs503
 	url = https://github.com/rongxinxia/cs503.git
+[submodule "previous_lab/CS503-Labs"]
+	path = previous_lab/CS503-Labs
+	url = https://github.com/tengbian/CS503-Labs.git
