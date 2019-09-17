@@ -84,7 +84,7 @@ void	nulluser()
 
 	/* Create a process to finish startup and start main */
 
-	resume(create((void *)startup, INITSTK, INITPRIO,
+	resume(create((void *)startup, INITSTK, PSSCHED, INITPRIO,
 					"Startup process", 0, NULL));
 
 	/* Become the Null process (i.e., guarantee that the CPU has	*/
@@ -130,7 +130,7 @@ local process	startup(void)
 	}
 	/* Create a process to execute function main() */
 
-	resume(create((void *)main, INITSTK, INITPRIO,
+	resume(create((void *)main, INITSTK, PSSCHED, INITPRIO,
 					"Main process", 0, NULL));
 
 	/* Startup process exits at this point */

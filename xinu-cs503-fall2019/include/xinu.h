@@ -41,3 +41,21 @@
 #include <multiboot.h>
 #include <stdio.h>
 #include <string.h>
+
+#define XTEST 1 
+#define XDEBUG 0 	/* set this to 0 when submitting */
+
+/* For grading */
+#if XTEST
+#define XTEST_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XTEST_KPRINTF(...)
+#endif
+/* For debugging */
+#if XDEBUG
+#define XDEBUG_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XDEBUG_KPRINTF(...)
+#endif
+
+
