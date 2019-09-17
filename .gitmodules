@@ -1,0 +1,3 @@
+[submodule "previous_lab/cs503"]
+	path = previous_lab/cs503
+	url = https://github.com/rongxinxia/cs503.git
