@@ -3,6 +3,7 @@
 #include <kernel.h>
 #include <conf.h>
 #include <process.h>
+#include <gprocess.h>
 #include <queue.h>
 #include <resched.h>
 #include <mark.h>

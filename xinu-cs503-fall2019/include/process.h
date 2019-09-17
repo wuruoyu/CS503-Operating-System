@@ -52,6 +52,8 @@ struct procent {		/* Entry in the process table		*/
 	umsg32	prmsg;		/* Message sent to this process		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
+
+  int group;      /* group id */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
@@ -61,6 +63,3 @@ extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
 
-/* group */
-#define PSSCHED 0
-#define MFQSCHED 1

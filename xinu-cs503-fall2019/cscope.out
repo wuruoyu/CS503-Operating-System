@@ -1,4 +1,4 @@
-cscope 15 $HOME/Desktop/Course/CS-503/xinu-cs503-fall2019               0000418247
+cscope 15 $HOME/Desktop/Course/CS-503/xinu-cs503-fall2019               0000418428
 	@config/conf.c
 
 3 
@@ -12380,6 +12380,8 @@ rd•ro˚ss
 , 
 RD_STACK
 , 
+PSSCHED
+, 
 RD_PRIO
 ,
 
@@ -22685,6 +22687,20 @@ sysˇŒ
 fûe
  *);
 
+	@include/gprocess.h
+
+4 
+	#PSSCHED
+ 0
+
+	)
+
+5 
+	#MFQSCHED
+ 1
+
+	)
+
 	@include/hpet.h
 
 3 
@@ -25355,41 +25371,33 @@ boﬁ8
 NDESC
 ];
 
-58 
+56 
+	mgroup
+;
+
+60 
 	#STACKMAGIC
  0x0A0AAAA9
 
 	)
 
-60 
+62 
 ¥o˚¡
  
 ¥o˘ab
 [];
 
-61 
+63 
 öt32
  
 ¥cou¡
 ;
 
-62 
+64 
 pid32
  
 cuºpid
 ;
-
-65 
-	#PSSCHED
- 0
-
-	)
-
-66 
-	#MFQSCHED
- 1
-
-	)
 
 	@include/prototypes.h
 
@@ -27285,7 +27293,15 @@ sysˇŒ
 	`hñlo
 ();
 
-622 
+622 
+sysˇŒ
+ 
+	`chg¥io
+(, 
+¥i16
+);
+
+625 
 	#ht⁄s
 (
 x
@@ -27293,19 +27309,19 @@ x
 
 	)
 
-623 
+626 
 	#ht⁄l
 (
 x
 ) ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
 
-624 (((
+627 (((
 x
 )<<8Ë& 0x00ff0000Ë| (((x)<<24Ë& 0xff000000))
 
 	)
 
-625 
+628 
 	#¡ohs
 (
 x
@@ -27313,13 +27329,13 @@ x
 
 	)
 
-626 
+629 
 	#¡ohl
 (
 x
 ) ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
 
-627 (((
+630 (((
 x
 )<<8Ë& 0x00ff0000Ë| (((x)<<24Ë& 0xff000000))
 
@@ -34274,174 +34290,178 @@ ud±ab
 >
 
 6 
-	~<queue.h
+	~<g¥o˚ss.h
 >
 
 7 
-	~<ªsched.h
+	~<queue.h
 >
 
 8 
-	~<m¨k.h
+	~<ªsched.h
 >
 
 9 
-	~<£m≠h‹e.h
+	~<m¨k.h
 >
 
 10 
-	~<mem‹y.h
+	~<£m≠h‹e.h
 >
 
 11 
-	~<buÂoﬁ.h
+	~<mem‹y.h
 >
 
 12 
-	~<h≥t.h
+	~<buÂoﬁ.h
 >
 
 13 
-	~<˛ock.h
+	~<h≥t.h
 >
 
 14 
-	~<p‹ts.h
+	~<˛ock.h
 >
 
 15 
-	~<u¨t.h
+	~<p‹ts.h
 >
 
 16 
-	~<ây.h
+	~<u¨t.h
 >
 
 17 
-	~<devi˚.h
+	~<ây.h
 >
 
 18 
-	~<öãºu±.h
+	~<devi˚.h
 >
 
 19 
-	~<≠ic.h
+	~<öãºu±.h
 >
 
 20 
-	~<fûe.h
+	~<≠ic.h
 >
 
 21 
-	~<rfûesys.h
+	~<fûe.h
 >
 
 22 
-	~<rdisksys.h
+	~<rfûesys.h
 >
 
 23 
-	~<lfûesys.h
+	~<rdisksys.h
 >
 
 24 
-	~<ëhî.h
+	~<lfûesys.h
 >
 
 25 
-	~<√t.h
+	~<ëhî.h
 >
 
 26 
-	~<ù.h
+	~<√t.h
 >
 
 27 
-	~<¨p.h
+	~<ù.h
 >
 
 28 
-	~<udp.h
+	~<¨p.h
 >
 
 29 
-	~<dh˝.h
+	~<udp.h
 >
 
 30 
-	~<icmp.h
+	~<dh˝.h
 >
 
 31 
-	~<t·p.h
+	~<icmp.h
 >
 
 32 
-	~<«me.h
+	~<t·p.h
 >
 
 33 
-	~<shñl.h
+	~<«me.h
 >
 
 34 
-	~<d©e.h
+	~<shñl.h
 >
 
 35 
-	~<¥ŸŸy≥s.h
+	~<d©e.h
 >
 
 36 
-	~<dñay.h
+	~<¥ŸŸy≥s.h
 >
 
 37 
-	~<pci.h
+	~<dñay.h
 >
 
 38 
-	~<qu¨k_ëh.h
+	~<pci.h
 >
 
 39 
-	~<qu¨k_pd©.h
+	~<qu¨k_ëh.h
 >
 
 40 
-	~<qu¨k_úq.h
+	~<qu¨k_pd©.h
 >
 
 41 
-	~<mu…iboŸ.h
+	~<qu¨k_úq.h
 >
 
 42 
-	~<°dio.h
+	~<mu…iboŸ.h
 >
 
 43 
+	~<°dio.h
+>
+
+44 
 	~<°rög.h
 >
 
-45 
+46 
 	#XTEST
  1
 
 	)
 
-46 
+47 
 	#XDEBUG
  0
 
 	)
 
-49 #i‡
+50 #i‡
 XTEST
 
 
-50 
+51 
 	#XTEST_KPRINTF
 (...Ë
 	`k¥ötf
@@ -34451,17 +34471,17 @@ __VA_ARGS__
 
 	)
 
-52 
+53 
 	#XTEST_KPRINTF
 (...)
 
 	)
 
-55 #i‡
+56 #i‡
 XDEBUG
 
 
-56 
+57 
 	#XDEBUG_KPRINTF
 (...Ë
 	`k¥ötf
@@ -34471,7 +34491,7 @@ __VA_ARGS__
 
 	)
 
-58 
+59 
 	#XDEBUG_KPRINTF
 (...)
 
@@ -47108,6 +47128,8 @@ SYSERR
 , 
 NETSTK
 , 
+PSSCHED
+, 
 NETPRIO
 , "ùout", 0, 
 NULL
@@ -47121,6 +47143,8 @@ NULL
 √tö
 , 
 NETSTK
+, 
+PSSCHED
 , 
 NETPRIO
 , "√tö", 0, 
@@ -53555,6 +53579,8 @@ cfunc
 
 284 
 SHELL_CMDSTK
+, 
+PSSCHED
 , 
 SHELL_CMDPRIO
 ,
@@ -64256,6 +64282,8 @@ ebss
 , 
 INITSTK
 , 
+PSSCHED
+, 
 INITPRIO
 ,
 
@@ -64351,6 +64379,8 @@ NëD©a
 maö
 , 
 INITSTK
+, 
+PSSCHED
 , 
 INITPRIO
 ,
@@ -65555,7 +65585,9 @@ pid
 	`¸óã
 (
 shñl
-, 8192, 50, "shñl", 1, 
+, 8192, 
+PSSCHED
+, 50, "shñl", 1, 
 CONSOLE
 );
 
@@ -65591,7 +65623,9 @@ pid
 	`¸óã
 (
 shñl
-, 4096, 20, "shñl", 1, 
+, 4096, 
+PSSCHED
+, 20, "shñl", 1, 
 CONSOLE
 );
 
@@ -84876,8 +84910,8 @@ __GCC_IEC_559_COMPLEX
 .
 1
 /usr/include
-297
-5185
+298
+5204
 config/conf.c
 config/conf.h
 config/config.l
@@ -84967,6 +85001,7 @@ include/ether.h
 include/ethloop.h
 include/file.h
 include/flash.h
+include/gprocess.h
 include/hpet.h
 include/icmp.h
 include/icu.h
