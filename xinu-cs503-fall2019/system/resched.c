@@ -20,6 +20,26 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		return;
 	}
 
+  /* If current proc belongs to group A, assign initial priority to group A */
+
+  grouptab[proctab[currpid].group].gprio = INITPRIO;
+
+  /* Incremented by the number of processes in the ready queue */
+
+  int32 readylist_idx = firstid(readylist);
+  while (nextid(readylist_idx) != EMPTY) {
+    if (readylist_idx != currpid && readylist_idx != NULLPROC) {
+      grouptab[proctab[readylist_idx].group].prnum ++;
+    }
+  } 
+
+  /* Choose the group */
+
+  if (grouptab[PSSCHED].prnum >= grouptab[MFQSCHED])
+    pss();
+  else
+    mfq();
+
 	/* Point to process table entry for the current (old) process */
 
 	ptold = &proctab[currpid];

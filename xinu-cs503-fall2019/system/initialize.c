@@ -18,7 +18,7 @@ local	process startup(void);	/* Process to finish startup tasks	*/
 /* Declarations of major kernel variables */
 
 struct	procent	proctab[NPROC];	/* Process table			*/
-struct  groupent grouptab[2]; /* Process group table  */
+struct  groupent grouptab[NUMGROUP]; /* Process group table  */
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
 
@@ -199,6 +199,13 @@ static	void	sysinit()
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
 	currpid = NULLPROC;
+
+  /* Initialize the group process table */
+
+  for (i = 0; i < NUMGROUP; i ++) {
+    grouptab[i].prnum = 0;
+    grouptab[i].gprio = INITPRIO;
+  }
 	
 	/* Initialize semaphores */
 
