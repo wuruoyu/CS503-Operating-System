@@ -42,6 +42,7 @@
 #include <multiboot.h>
 #include <stdio.h>
 #include <string.h>
+#include <fix16_t>
 
 #define XTEST 1 
 #define XDEBUG 0 	/* set this to 0 when submitting */

@@ -56,8 +56,8 @@ struct procent {		/* Entry in the process table		*/
   int group;      /* group id */
 
   /* Used for PSS */
-  double pi;
-  double rate;
+  pri16 pi;
+  fix16_t rate;
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

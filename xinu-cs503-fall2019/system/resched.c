@@ -4,10 +4,28 @@
 
 struct	defer	Defer;
 
+/*------------------------------------------------------------------------
+ *  pss - proportional share scheduler 
+ *------------------------------------------------------------------------
+ */
 void pss(void) {
-  if (proctab[currpid].group == PSSCHED)
-    proctab[currpid].pi += ;
 
+  /* Update current running process */
+
+  if (proctab[currpid].group == PSSCHED) {
+    fix16_t ratio = 100 / proctab[currpid].rate; 
+    XDEBUG_KPRINTF("PSS curr ratio: %f", ratio);
+
+    XDEBUG_KPRINTF("PSS curr consume time:  %f", last_resched_ms);
+
+    proctab[currpid].pi += last_resched_ms * ratio;
+    proctab[currpid].prprio = INT_MAX - proctab[currpid].pi;
+    XDEBUG_KPRINTF("PSS curr updated val: %f", proctab[currpid].pi);
+  }
+
+  /* TODO: critical? update last resched ms */
+
+  last_resched_ms = 0;
 }
 
 /*------------------------------------------------------------------------
@@ -41,29 +59,54 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
   /* Choose the group and do group related update */
 
-  if (grouptab[PSSCHED].prnum >= grouptab[MFQSCHED])
+  int selcted_group;
+  if (grouptab[PSSCHED].prnum >= grouptab[MFQSCHED]) {
+    XDEBUG_KPRINTF("Select PSS:\n");
+    selcted_group = PSSCHED;
     pss();
-  else
+  }
+  else {
+    XDEBUG_KPRINTF("Select MFQ:\n");
+    selcted_group = MFQSCHED;
     mfq();
+  }
 
 	/* Point to process table entry for the current (old) process */
 
 	ptold = &proctab[currpid];
 
-	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
-		if (ptold->prprio > firstkey(readylist)) {
-			return;
-		}
+  /* Find the highest priority ready process in the selected group */
+  
+  int32 ava_readylist_idx = firstid(readylist);
+  while (nextid(ava_readylist_idx) != EMPTY) {
+    if (selcted_group == proctab[ava_readylist_idx].group) 
+      break;
+  }
 
-		/* Old process will no longer remain current */
+  /* Process remains eligible if it is still of highest priority in the selected group */
+  
+	if (ptold->prstate == PR_CURR) {  
+    if (ptold->prprio > queuekey(ava_readylist_idx) || proctab[ava_readylist_idx].group != selcted_group)
+      return;
+  }
 
-		ptold->prstate = PR_READY;
-		insert(currpid, readylist, ptold->prprio);
-	}
+  /* Old process will no longer remain current */
+
+  ptold->prstate = PR_READY;
+  insert(currpid, readylist, ptold->prprio);
 
 	/* Force context switch to highest priority ready process */
 
-	currpid = dequeue(readylist);
+	// currpid = dequeue(readylist);
+  currpid = getitem(ava_readylist_idx);
+  queuetab[ava_readylist_idx].prev = EMPTY; 
+  queuetab[ava_readylist_idx].next = EMPTY; 
+
+  if (clktime * 1000 + count1000 > proctab[ava_readylist_idx].pi) {
+    proctab[ava_readylist_idx].pi = clktime * 1000 + count1000;
+    proctab[ava_readylist_idx].prprio = INT_MAX - proctab[ava_readylist_idx].pi;
+  }
+
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
