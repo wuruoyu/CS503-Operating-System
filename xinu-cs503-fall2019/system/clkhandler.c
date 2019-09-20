@@ -30,6 +30,10 @@ void	clkhandler(
 		count1000 = 0;
 	}
 
+  /* Increment the last_resched_ms counter */
+
+  last_resched_ms ++;
+
 	/* Handle sleeping processes if any exist */
 
 	if(!isempty(sleepq)) {
