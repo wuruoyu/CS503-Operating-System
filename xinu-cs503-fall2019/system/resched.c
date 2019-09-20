@@ -4,6 +4,12 @@
 
 struct	defer	Defer;
 
+void pss(void) {
+  if (proctab[currpid].group == PSSCHED)
+    proctab[currpid].pi += ;
+
+}
+
 /*------------------------------------------------------------------------
  *  resched  -  Reschedule processor to highest priority eligible process
  *------------------------------------------------------------------------
@@ -33,7 +39,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
     }
   } 
 
-  /* Choose the group */
+  /* Choose the group and do group related update */
 
   if (grouptab[PSSCHED].prnum >= grouptab[MFQSCHED])
     pss();

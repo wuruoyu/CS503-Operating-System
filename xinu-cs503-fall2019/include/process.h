@@ -54,6 +54,10 @@ struct procent {		/* Entry in the process table		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
 
   int group;      /* group id */
+
+  /* Used for PSS */
+  double pi;
+  double rate;
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
