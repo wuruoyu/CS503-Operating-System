@@ -51,6 +51,10 @@ pid32	create(
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
   prptr->group = group;
+  prptr->pi = 0;
+  prptr->nice = 0;
+  prptr->priority_i = 100;
+  prptr->recent_cpu_i = 0;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;

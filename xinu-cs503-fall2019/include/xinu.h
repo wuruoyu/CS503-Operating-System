@@ -1,5 +1,7 @@
 /* xinu.h - include all system header files */
 
+#include <fix16.h>
+#include <limits.h>
 #include <kernel.h>
 #include <conf.h>
 #include <process.h>
@@ -42,7 +44,6 @@
 #include <multiboot.h>
 #include <stdio.h>
 #include <string.h>
-#include <fix16_t>
 
 #define XTEST 1 
 #define XDEBUG 0 	/* set this to 0 when submitting */

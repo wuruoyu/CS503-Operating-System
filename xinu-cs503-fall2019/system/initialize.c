@@ -26,6 +26,7 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 
 int	prcount;		/* Total number of live processes	*/
 pid32	currpid;		/* ID of currently executing process	*/
+fix16_t load_avg; /* overall system load */
 
 /* Control sequence to reset the console colors and cusor positiion	*/
 
@@ -175,6 +176,8 @@ static	void	sysinit()
 
 	prcount = 1;
 
+  load_avg = 0;
+
 	/* Scheduling is not currently blocked */
 
 	Defer.ndefers = 0;
@@ -188,6 +191,8 @@ static	void	sysinit()
 		prptr->prstkbase = NULL;
 		prptr->prprio = 0;
     prptr->pi = 0;
+    prptr->nice = 0;
+    prptr->recent_cpu_i = 0;
 	}
 
 	/* Initialize the Null process entry */	
@@ -196,6 +201,8 @@ static	void	sysinit()
 	prptr->prstate = PR_CURR;
 	prptr->prprio = 0;
   prptr->nice = 0;
+  prptr->recent_cpu_i = 0;
+  prptr->priority_i = 100;
 	strncpy(prptr->prname, "prnull", 7);
 	prptr->prstkbase = getstk(NULLSTK);
 	prptr->prstklen = NULLSTK;
@@ -206,7 +213,7 @@ static	void	sysinit()
 
   for (i = 0; i < NUMGROUP; i ++) {
     grouptab[i].prnum = 0;
-    grouptab[i].gprio = INITPRIO;
+    grouptab[i].gprio = INITGPRIO;
   }
 	
 	/* Initialize semaphores */

@@ -32,7 +32,7 @@ extern	struct qentry	queuetab[];
 #define	lastkey(q)	(queuetab[ lastid(q)].qkey)
 #define nextid(id) (queuetab[id].qnext)
 #define previd(id) (queuetab[id].qprev)
-#define queuekey(id) (queuetab[id.qkey)
+#define queuekey(id) (queuetab[id].qkey)
 
 
 /* Inline to check queue id assumes interrupts are disabled */

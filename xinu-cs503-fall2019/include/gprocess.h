@@ -8,7 +8,7 @@
 #define MFQSCHED 1
 
 /* init prio */
-#define INITPRIO 10
+#define INITGPRIO 10
 
 struct groupent {   /* Entry in the group table */
   uint16 prnum;

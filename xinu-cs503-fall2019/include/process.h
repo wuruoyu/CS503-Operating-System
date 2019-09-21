@@ -57,10 +57,11 @@ struct procent {		/* Entry in the process table		*/
 
   /* Used for PSS */
   pri16 pi;
-  fix16_t rate;
 
   /* Used for MFQ */
   nid16 nice;
+  pri16 priority_i;
+  fix16_t recent_cpu_i;
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
@@ -69,4 +70,5 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
+extern  fix16_t load_avg;
 

@@ -13,7 +13,7 @@ nid16 chnice(
 {
 	intmask	mask;			/* Saved interrupt mask		*/
 	struct	procent *prptr;		/* Ptr to process's table entry	*/
-	pri16	oldprio;		/* Priority to return		*/
+	pri16	oldnice;		/* Niceness to return		*/
 
 	mask = disable();
 	if (isbadpid(pid)) {
@@ -23,6 +23,11 @@ nid16 chnice(
 	prptr = &proctab[pid];
 	oldnice = prptr->nice;
 	prptr->nice = newnice;
+  prptr->priority_i = 100 - (prptr->recent_cpu_i / 2) - (prptr->nice * 2);
+  if (prptr->priority_i > 100)
+    prptr->priority_i = 100;
+  if (prptr->priority_i < 0)
+    prptr->priority_i = 0;
 	restore(mask);
 	return oldnice;
 }

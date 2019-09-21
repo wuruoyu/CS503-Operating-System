@@ -622,7 +622,7 @@ extern syscall hello(void);
 extern syscall chgprio(int, pri16);
 
 /* in file chnice.c */
-extern syscall chnice(pid32, int);
+extern nid16 chnice(pid32, nid16);
 
 /* NETWORK BYTE ORDER CONVERSION NOT NEEDED ON A BIG-ENDIAN COMPUTER */
 #define	htons(x)  ((0xff & ((x)>>8)) | ((0xff & (x)) << 8))

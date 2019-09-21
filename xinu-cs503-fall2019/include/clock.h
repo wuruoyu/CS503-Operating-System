@@ -11,6 +11,7 @@
 
 extern	uint32	clktime;	/* current time in secs since boot	*/
 extern  uint32	count1000;        /* ms since last clock tick             */
+extern  uint32  count10;          /* ms since last clock tick */
 extern  uint32  last_resched_ms;  /* ms since last resched happens */
 
 extern	qid16	sleepq;		/* queue for sleeping processes		*/
