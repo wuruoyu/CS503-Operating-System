@@ -38,6 +38,7 @@ void	clkhandler(
         pt->recent_cpu_i += pt->nice;
         n_ready_processes ++;
       }
+      readylist_idx = nextid(readylist_idx);
     }
 
     // Update load_avg
@@ -62,6 +63,7 @@ void	clkhandler(
         if (pt->priority_i < 0)
           pt->priority_i = 0;
       }
+      readylist_idx = nextid(readylist_idx);
     }
     count10 = 0;
   }

@@ -200,6 +200,8 @@ static	void	sysinit()
 	prptr = &proctab[NULLPROC];
 	prptr->prstate = PR_CURR;
 	prptr->prprio = 0;
+  prptr->group = PSSCHED;
+  prptr->pi = 0;
   prptr->nice = 0;
   prptr->recent_cpu_i = 0;
   prptr->priority_i = 100;

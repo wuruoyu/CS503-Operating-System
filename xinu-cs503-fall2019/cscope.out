@@ -1,4 +1,4 @@
-cscope 15 $HOME/Desktop/Course/CS-503/xinu-cs503-fall2019               0000702501
+cscope 15 $HOME/Desktop/Course/CS-503/xinu-cs503-fall2019               0000703118
 	@config/conf.c
 
 3 
@@ -34692,7 +34692,7 @@ fže
 	)
 
 11 
-	#INITPRIO
+	#INITGPRIO
  10
 
 	)
@@ -40493,7 +40493,21 @@ nid16
 pid32
 ,‚id16);
 
-628 
+628 
+fix16_t
+ 
+	`g‘»ûÁýu
+(
+pid32
+);
+
+631 
+fix16_t
+ 
+	`g‘lßdavg
+();
+
+634 
 	#htÚs
 (
 x
@@ -40501,19 +40515,19 @@ x
 
 	)
 
-629 
+635 
 	#htÚl
 (
 x
 ) ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
 
-630 (((
+636 (((
 x
 )<<8è& 0x00ff0000è| (((x)<<24è& 0xff000000))
 
 	)
 
-631 
+637 
 	#Áohs
 (
 x
@@ -40521,13 +40535,13 @@ x
 
 	)
 
-632 
+638 
 	#Áohl
 (
 x
 ) ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
 
-633 (((
+639 (((
 x
 )<<8è& 0x00ff0000è| (((x)<<24è& 0xff000000))
 
@@ -79305,6 +79319,26 @@ pid
 	}
 }
 
+	@system/getloadavg.c
+
+3 
+	~<xšu.h
+>
+
+9 
+fix16_t
+ 
+	$g‘lßdavg
+()
+
+11  
+lßd_avg
+;
+
+12 
+	}
+}
+
 	@system/getmem.c
 
 3 
@@ -79601,6 +79635,82 @@ mask
 
 23  
 ´io
+;
+
+24 
+	}
+}
+
+	@system/getrecentcpu.c
+
+3 
+	~<xšu.h
+>
+
+9 
+fix16_t
+ 
+	$g‘»ûÁýu
+(
+
+10 
+pid32
+ 
+pid
+
+
+13 
+štmask
+ 
+mask
+;
+
+14 
+fix16_t
+ 
+»ûÁ_ýu
+;
+
+16 
+mask
+ = 
+	`di§bË
+();
+
+17 ià(
+	`isbadpid
+(
+pid
+)) {
+
+18 
+	`»¡Üe
+(
+mask
+);
+
+19  
+SYSERR
+;
+
+21 
+»ûÁ_ýu
+ = 
+´oùab
+[
+pid
+].
+»ûÁ_ýu_i
+;
+
+22 
+	`»¡Üe
+(
+mask
+);
+
+23  
+»ûÁ_ýu
 ;
 
 24 
@@ -80838,22 +80948,36 @@ PR_CURR
 203 
 ´±r
 ->
-niû
- = 0;
+group
+ = 
+PSSCHED
+;
 
 204 
 ´±r
 ->
-»ûÁ_ýu_i
+pi
  = 0;
 
 205 
 ´±r
 ->
+niû
+ = 0;
+
+206 
+´±r
+->
+»ûÁ_ýu_i
+ = 0;
+
+207 
+´±r
+->
 ´iÜ™y_i
  = 100;
 
-206 
+208 
 	`¡ºýy
 (
 ´±r
@@ -80861,7 +80985,7 @@ niû
 ´Çme
 , "prnull", 7);
 
-207 
+209 
 ´±r
 ->
 ´¡kba£
@@ -80871,7 +80995,7 @@ niû
 NULLSTK
 );
 
-208 
+210 
 ´±r
 ->
 ´¡kËn
@@ -80879,25 +81003,25 @@ NULLSTK
 NULLSTK
 ;
 
-209 
+211 
 ´±r
 ->
 ´¡k±r
  = 0;
 
-210 
+212 
 cu¼pid
  = 
 NULLPROC
 ;
 
-214 
+216 
 i
  = 0; i < 
 NUMGROUP
 ; i ++) {
 
-215 
+217 
 grou±ab
 [
 i
@@ -80905,23 +81029,23 @@ i
 ´num
  = 0;
 
-216 
+218 
 grou±ab
 [
 i
 ].
 g´io
  = 
-INITPRIO
+INITGPRIO
 ;
 
-221 
+223 
 i
  = 0; i < 
 NSEM
 ; i++) {
 
-222 
+224 
 £m±r
  = &
 £mb
@@ -80929,7 +81053,7 @@ NSEM
 i
 ];
 
-223 
+225 
 £m±r
 ->
 s¡©e
@@ -80937,13 +81061,13 @@ s¡©e
 S_FREE
 ;
 
-224 
+226 
 £m±r
 ->
 scouÁ
  = 0;
 
-225 
+227 
 £m±r
 ->
 squeue
@@ -80951,37 +81075,37 @@ squeue
 	`Ãwqueue
 ();
 
-230 
+232 
 	`bufš™
 ();
 
-234 
+236 
 »adyli¡
  = 
 	`Ãwqueue
 ();
 
-238 
+240 
 	`þkš™
 ();
 
-240 
+242 
 i
  = 0; i < 
 NDEVS
 ; i++) {
 
-241 
+243 
 	`š™
 (
 i
 );
 
-244 
+246 
 	}
 }
 
-246 
+248 
 št32
  
 	$¡Ý
@@ -80989,21 +81113,21 @@ i
 s
 )
 
-248 
+250 
 	`k´štf
 ("%s\n", 
 s
 );
 
-249 
+251 
 	`k´štf
 ("looping...…ress„eset\n");
 
-252 
+254 
 	}
 }
 
-254 
+256 
 št32
  
 	$d–ay
@@ -81011,17 +81135,17 @@ s
 n
 )
 
-256 
+258 
 	`DELAY
 (
 n
 );
 
-257  
+259  
 OK
 ;
 
-258 
+260 
 	}
 }
 
@@ -87035,109 +87159,33 @@ deãr
 	$pss
 () {
 
-15 ià(
-´oùab
-[
-cu¼pid
-].
-group
- =ð
-PSSCHED
-) {
-
-16 
-fix16_t
- 
-¿tio
- = 100 / 
-´oùab
-[
-cu¼pid
-].
-´´io
-;
-
-17 
-	`XDEBUG_KPRINTF
-("PSS cu¼„©io: %f", 
-¿tio
-);
-
-19 
-	`XDEBUG_KPRINTF
-("PSS cu¼ cÚsumtime: %f", 
-Ï¡_»sched_ms
-);
-
-21 
-´oùab
-[
-cu¼pid
-].
-pi
- +ð
-Ï¡_»sched_ms
- * 
-¿tio
-;
-
-22 
-´oùab
-[
-cu¼pid
-].
-´´io
- = 
-INT_MAX
- -…roùab[cu¼pid].
-pi
-;
-
-23 
-	`XDEBUG_KPRINTF
-("PSS cu¼ upd©ed v®: %f", 
-´oùab
-[
-cu¼pid
-].
-pi
-);
-
-25 
+14 
 	}
 }
 
-31 
-	$mfq
-() {
-
-33 
-	}
-}
-
-39 
+21 
 	$»sched
 ()
 
-41 
+23 
 ´oûÁ
  *
 ±Þd
 ;
 
-42 
+24 
 ´oûÁ
  *
 ±Ãw
 ;
 
-46 ià(
+28 ià(
 Deãr
 .
 ndeãrs
  > 0) {
 
-47 
+29 
 Deãr
 .
 ©‹m±
@@ -87145,7 +87193,7 @@ Deãr
 TRUE
 ;
 
-53 
+35 
 grou±ab
 [
 ´oùab
@@ -87156,10 +87204,10 @@ group
 ].
 g´io
  = 
-INITPRIO
+INITGPRIO
 ;
 
-57 
+39 
 št32
  
 »adyli¡_idx
@@ -87169,7 +87217,7 @@ INITPRIO
 »adyli¡
 );
 
-58 
+40 
 	`Ãxtid
 (
 »adyli¡_idx
@@ -87177,7 +87225,7 @@ INITPRIO
 EMPTY
 ) {
 
-59 ià(
+41 ià(
 »adyli¡_idx
  !ð
 cu¼pid
@@ -87185,7 +87233,7 @@ cu¼pid
 NULLPROC
 ) {
 
-60 
+42 
 grou±ab
 [
 ´oùab
@@ -87197,11 +87245,11 @@ group
 ´num
  ++;
 
-66 
+48 
 Ï¡_»sched_ms
  = 0;
 
-67 
+49 
 	`XDEBUG_KPRINTF
 ("»sched: %f", 
 ´oùab
@@ -87211,11 +87259,11 @@ cu¼pid
 pi
 );
 
-71 
+53 
 £lùed_group
 ;
 
-72 ià(
+55 ià(
 grou±ab
 [
 PSSCHED
@@ -87225,35 +87273,95 @@ PSSCHED
 MFQSCHED
 ].prnum) {
 
-73 
+56 
 	`XDEBUG_KPRINTF
 ("Select PSS:\n");
 
-74 
+57 
 £lùed_group
  = 
 PSSCHED
 ;
 
-75 
-	`pss
-();
+60 ià(
+´oùab
+[
+cu¼pid
+].
+group
+ =ð
+PSSCHED
+) {
 
-78 
+61 
+fix16_t
+ 
+¿tio
+ = 100 / 
+´oùab
+[
+cu¼pid
+].
+´´io
+;
+
+62 
+	`XDEBUG_KPRINTF
+("PSS cu¼„©io: %f", 
+¿tio
+);
+
+64 
+	`XDEBUG_KPRINTF
+("PSS cu¼ cÚsumtime: %f", 
+Ï¡_»sched_ms
+);
+
+66 
+´oùab
+[
+cu¼pid
+].
+pi
+ +ð
+Ï¡_»sched_ms
+ * 
+¿tio
+;
+
+67 
+´oùab
+[
+cu¼pid
+].
+´´io
+ = 
+INT_MAX
+ -…roùab[cu¼pid].
+pi
+;
+
+68 
+	`XDEBUG_KPRINTF
+("PSS cu¼ upd©ed v®: %f", 
+´oùab
+[
+cu¼pid
+].
+pi
+);
+
+73 
 	`XDEBUG_KPRINTF
 ("Select MFQ:\n");
 
-79 
+74 
 £lùed_group
  = 
 MFQSCHED
 ;
 
-80 
-	`mfq
-();
-
-85 
+79 
 ±Þd
  = &
 ´oùab
@@ -87261,35 +87369,77 @@ MFQSCHED
 cu¼pid
 ];
 
-89 
+83 
 št32
  
-ava_»adyli¡_idx
+™”_idx
  = 
 	`fœ¡id
 (
 »adyli¡
 );
 
-90 
+84 
+št32
+ 
+highe¡_idx
+ = 
+NULLPROC
+;
+
+85 
+´i16
+ 
+highe¡_´i
+ = 
+INT_MIN
+;
+
+86 
 	`Ãxtid
 (
-ava_»adyli¡_idx
+™”_idx
 è!ð
 EMPTY
 ) {
 
-91 ià(
+87 ià(
 £lùed_group
  =ð
 ´oùab
 [
-ava_»adyli¡_idx
+™”_idx
 ].
 group
-)
+ &&…roùab[™”_idx].
+´´io
+ > 
+highe¡_´i
+) {
 
-97 ià(
+88 
+highe¡_idx
+ = 
+™”_idx
+;
+
+89 
+highe¡_´i
+ = 
+´oùab
+[
+™”_idx
+].
+´´io
+;
+
+91 
+™”_idx
+ð
+	`Ãxtid
+(iter_idx);
+
+96 ià(
 ±Þd
 ->
 ´¡©e
@@ -87297,23 +87447,23 @@ group
 PR_CURR
 ) {
 
-98 ià(
+97 ià(
 ±Þd
 ->
 ´´io
  > 
-	`queuekey
-(
-ava_»adyli¡_idx
-è|| 
 ´oùab
-[ava_»adyli¡_idx].
+[
+highe¡_idx
+] &&…roùab[
+cu¼pid
+].
 group
- !ð
+ =ð
 £lùed_group
 )
 
-104 
+103 
 ±Þd
 ->
 ´¡©e
@@ -87321,7 +87471,7 @@ group
 PR_READY
 ;
 
-105 
+104 
 	`š£¹
 (
 cu¼pid
@@ -87333,22 +87483,22 @@ cu¼pid
 ´´io
 );
 
-109 ià(
+108 ià(
 þktime
  * 1000 + 
 couÁ1000
  > 
 ´oùab
 [
-ava_»adyli¡_idx
+highe¡_idx
 ].
 pi
 ) {
 
-110 
+109 
 ´oùab
 [
-ava_»adyli¡_idx
+highe¡_idx
 ].
 pi
  = 
@@ -87357,47 +87507,47 @@ pi
 couÁ1000
 ;
 
-111 
+110 
 ´oùab
 [
-ava_»adyli¡_idx
+highe¡_idx
 ].
 ´´io
  = 
 INT_MAX
- -…roùab[ava_»adyli¡_idx].
+ -…roùab[highe¡_idx].
 pi
 ;
 
-117 
+116 
 cu¼pid
  = 
 	`g‘™em
 (
-ava_»adyli¡_idx
+highe¡_idx
 );
 
-118 
+117 
 queu‘ab
 [
-ava_»adyli¡_idx
+highe¡_idx
 ].
 q´ev
  = 
 EMPTY
 ;
 
-119 
+118 
 queu‘ab
 [
-ava_»adyli¡_idx
+highe¡_idx
 ].
 qÃxt
  = 
 EMPTY
 ;
 
-120 
+119 
 ±Ãw
  = &
 ´oùab
@@ -87405,7 +87555,7 @@ EMPTY
 cu¼pid
 ];
 
-121 
+120 
 ±Ãw
 ->
 ´¡©e
@@ -87413,13 +87563,13 @@ cu¼pid
 PR_CURR
 ;
 
-122 
+121 
 ´“m±
  = 
 QUANTUM
 ;
 
-123 
+122 
 	`ùxsw
 (&
 ±Þd
@@ -87429,37 +87579,37 @@ QUANTUM
 ±Ãw
 ->prstkptr);
 
-128 
+127 
 	}
 }
 
-134 
+133 
 ¡©us
  
 	$»sched_úŽ
 (
 
-135 
+134 
 št32
  
 deãr
 
 
-138 
+137 
 deãr
 ) {
 
-140 
+139 
 DEFER_START
 :
 
-142 ià(
+141 ià(
 Deãr
 .
 ndeãrs
 ++ == 0) {
 
-143 
+142 
 Deãr
 .
 ©‹m±
@@ -87467,25 +87617,25 @@ Deãr
 FALSE
 ;
 
-145  
+144  
 OK
 ;
 
-147 
+146 
 DEFER_STOP
 :
 
-148 ià(
+147 ià(
 Deãr
 .
 ndeãrs
  <= 0) {
 
-149  
+148  
 SYSERR
 ;
 
-151 iàÐ(--
+150 iàÐ(--
 Deãr
 .
 ndeãrs
@@ -87493,19 +87643,19 @@ ndeãrs
 ©‹m±
  ) {
 
-152 
+151 
 	`»sched
 ();
 
-154  
+153  
 OK
 ;
 
-157  
+156  
 SYSERR
 ;
 
-159 
+158 
 	}
 }
 
@@ -134026,8 +134176,8 @@ _ASM_GENERIC_ERRNO_BASE_H
 .
 1
 /usr/include
-394
-7960
+396
+8002
 config/conf.c
 config/conf.h
 config/config.l
@@ -134263,9 +134413,11 @@ system/getbuf.c
 system/getc.c
 system/getdev.c
 system/getitem.c
+system/getloadavg.c
 system/getmem.c
 system/getpid.c
 system/getprio.c
+system/getrecentcpu.c
 system/getstk.c
 system/getticks.c
 system/gettime.c
