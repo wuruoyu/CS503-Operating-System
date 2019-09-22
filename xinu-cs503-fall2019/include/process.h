@@ -21,6 +21,7 @@
 
 #define	PNMLEN		16	/* Length of process "name"		*/
 #define	NULLPROC	0	/* ID of the null process		*/
+#define ROOTUID   0 /* UID of the root user */
 
 /* Process initialization constants */
 
@@ -62,6 +63,9 @@ struct procent {		/* Entry in the process table		*/
   nid16 nice;
   pri16 priority_i;
   fix16_t recent_cpu_i;
+
+  /* Used for process ownership */
+  uid16 uid
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

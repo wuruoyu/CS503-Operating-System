@@ -18,6 +18,7 @@ typedef	int32	pid32;		/* process ID				*/
 typedef	int32	did32;		/* device ID				*/
 typedef	int16	pri16;		/* process priority			*/
 typedef int16 nid16;    /* nice priority */
+typedef int16 uid16;    /* user id */
 typedef	uint32	umsg32;		/* message passed among processes	*/
 typedef	int32	bpid32;		/* buffer pool ID			*/
 typedef	byte	bool8;		/* Boolean type				*/

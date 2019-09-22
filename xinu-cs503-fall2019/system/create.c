@@ -55,6 +55,7 @@ pid32	create(
   prptr->nice = 0;
   prptr->priority_i = 100;
   prptr->recent_cpu_i = 0;
+  prptr->uid = currpid.uid;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;

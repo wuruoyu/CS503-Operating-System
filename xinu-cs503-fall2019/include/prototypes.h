@@ -625,10 +625,13 @@ extern syscall chgprio(int, pri16);
 extern nid16 chnice(pid32, nid16);
 
 /* in file getrecentcpu.c */
-fix16_t getrecentcpu(pid32);
+extern fix16_t getrecentcpu(pid32);
 
 /* in file getloadavg */
-fix16_t getloadavg();
+extern fix16_t getloadavg();
+
+/* in file setuid */
+extern syscall setuid(uid16);
 
 /* NETWORK BYTE ORDER CONVERSION NOT NEEDED ON A BIG-ENDIAN COMPUTER */
 #define	htons(x)  ((0xff & ((x)>>8)) | ((0xff & (x)) << 8))
