@@ -20,7 +20,10 @@ syscall	kill(
 		restore(mask);
 		return SYSERR;
 	}
-
+  if (proctab[pid].uid != proctab[currpid].uid && currpid != ROOTUID) {
+    restore(mask);
+    return SYSERR;
+  }
 	if (--prcount <= 1) {		/* Last user process completes	*/
 		xdone();
 	}

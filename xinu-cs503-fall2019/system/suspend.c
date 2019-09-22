@@ -19,7 +19,10 @@ syscall	suspend(
 		restore(mask);
 		return SYSERR;
 	}
-
+  if (proctab[pid].uid != proctab[currpid].uid && currpid != ROOTUID) {
+    restore(mask);
+    return SYSERR;
+  }
 	/* Only suspend a process that is current or ready */
 
 	prptr = &proctab[pid];

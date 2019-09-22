@@ -19,6 +19,10 @@ pri16	resume(
 		restore(mask);
 		return (pri16)SYSERR;
 	}
+  if (proctab[pid].uid != proctab[currpid].uid && currpid != ROOTUID) {
+    restore(mask);
+    return (pri16)SYSERR;
+  }
 	prptr = &proctab[pid];
 	if (prptr->prstate != PR_SUSP) {
 		restore(mask);
