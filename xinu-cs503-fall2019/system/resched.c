@@ -2,46 +2,50 @@
 
 #include <xinu.h>
 
-struct	defer	Defer;
+struct defer Defer;
 
 /*------------------------------------------------------------------------
- *  pss - Proportional Share Scheduler, return the next pid 
+ *  pss - Proportional Share Scheduler, return the next pid
  *------------------------------------------------------------------------
  */
 pid32 pss() {
-  // TODO: critical? update last resched ms 
+  // TODO: critical? update last resched ms
   last_resched_ms = 0;
 
-  // Find the highest priority ready process in the selected group: traverse the whole list 
+  // Find the highest priority ready process in the selected group: traverse the
+  // whole list
   int32 iter_idx = firstid(readylist);
   int32 highest_idx = NULLPROC;
   pri16 highest_pri = SHRT_MIN;
   while (nextid(iter_idx) != EMPTY) {
-    if (PSSCHED == proctab[iter_idx].group && proctab[iter_idx].prprio > highest_pri) {
+    if (PSSCHED == proctab[iter_idx].group &&
+        proctab[iter_idx].prprio > highest_pri) {
       highest_idx = iter_idx;
       highest_pri = proctab[iter_idx].prprio;
-    } 
-    iter_idx= nextid(iter_idx);
+    }
+    iter_idx = nextid(iter_idx);
   }
 
   return highest_idx;
 }
 
 /*------------------------------------------------------------------------
- *  mfq - Multilevel feedback queue sccheduler, return the next pid 
+ *  mfq - Multilevel feedback queue sccheduler, return the next pid
  *------------------------------------------------------------------------
  */
 pid32 mfq() {
-  // Find the highest priority_i ready process in the selected group: traverse the whole list 
+  // Find the highest priority_i ready process in the selected group: traverse
+  // the whole list
   int32 iter_idx = firstid(readylist);
   int32 highest_idx = NULLPROC;
   pri16 highest_priority_i = SHRT_MIN;
   while (nextid(iter_idx) != EMPTY) {
-    if (MFQSCHED == proctab[iter_idx].group && proctab[iter_idx].priority_i > highest_priority_i) {
+    if (MFQSCHED == proctab[iter_idx].group &&
+        proctab[iter_idx].priority_i > highest_priority_i) {
       highest_idx = iter_idx;
       highest_priority_i = proctab[iter_idx].priority_i;
-    } 
-    iter_idx= nextid(iter_idx);
+    }
+    iter_idx = nextid(iter_idx);
   }
 
   return highest_idx;
@@ -61,17 +65,16 @@ pid32 choose_group() {
   int32 readylist_idx = firstid(readylist);
   while (nextid(readylist_idx) != EMPTY) {
     if (readylist_idx != currpid && readylist_idx != NULLPROC) {
-      grouptab[proctab[readylist_idx].group].prnum ++;
+      grouptab[proctab[readylist_idx].group].prnum++;
     }
     readylist_idx = nextid(readylist_idx);
   }
-  
+
   /* determine group */
   if (grouptab[PSSCHED].prnum >= grouptab[MFQSCHED].prnum) {
     XDEBUG_KPRINTF("Select PSS:\n");
     return pss();
-  }
-  else {
+  } else {
     XDEBUG_KPRINTF("Select MFQ:\n");
     return mfq();
   }
@@ -81,22 +84,22 @@ pid32 choose_group() {
  *  resched  -  Reschedule processor to highest priority eligible process
  *------------------------------------------------------------------------
  */
-void	resched(void)		/* Assumes interrupts are disabled	*/
+void resched(void) /* Assumes interrupts are disabled	*/
 {
-	struct procent *ptold;	/* Ptr to table entry for old process	*/
-	struct procent *ptnew;	/* Ptr to table entry for new process	*/
+  struct procent *ptold; /* Ptr to table entry for old process	*/
+  struct procent *ptnew; /* Ptr to table entry for new process	*/
 
-	/* If rescheduling is deferred, record attempt and return */
+  /* If rescheduling is deferred, record attempt and return */
 
-	if (Defer.ndefers > 0) {
-		Defer.attempt = TRUE;
-		return;
-	}
+  if (Defer.ndefers > 0) {
+    Defer.attempt = TRUE;
+    return;
+  }
 
   /* Update current running process if it belongs to pss */
-  
+
   if (proctab[currpid].group == PSSCHED) {
-    fix16_t ratio = 100 / proctab[currpid].prprio; 
+    fix16_t ratio = 100 / proctab[currpid].prprio;
     XDEBUG_KPRINTF("PSS curr ratio: %f", ratio);
 
     XDEBUG_KPRINTF("PSS curr consume time:  %f", last_resched_ms);
@@ -110,24 +113,25 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
   pid32 next_pid = choose_group();
 
-	/* Point to process table entry for the current (old) process */
+  /* Point to process table entry for the current (old) process */
 
-	ptold = &proctab[currpid];
+  ptold = &proctab[currpid];
 
-  /* Process remains eligible if it is still of highest priority in the selected group */
+  /* Process remains eligible if it is still of highest priority in the selected
+   * group */
   if (proctab[next_pid].group == PSSCHED) {
-    if (ptold->prstate == PR_CURR) {  
-      if (ptold->prprio > proctab[next_pid].prprio && proctab[currpid].group == PSSCHED)
+    if (ptold->prstate == PR_CURR) {
+      if (ptold->prprio > proctab[next_pid].prprio &&
+          proctab[currpid].group == PSSCHED)
         return;
     }
-  }
-  else if (proctab[next_pid].group == MFQSCHED) {
-    if (ptold->prstate == PR_CURR) {  
-      if (ptold->priority_i > proctab[next_pid].priority_i && proctab[currpid].group == MFQSCHED)
+  } else if (proctab[next_pid].group == MFQSCHED) {
+    if (ptold->prstate == PR_CURR) {
+      if (ptold->priority_i > proctab[next_pid].priority_i &&
+          proctab[currpid].group == MFQSCHED)
         return;
     }
-  }
-  else {
+  } else {
     XDEBUG_KPRINTF("ERROR"\n);
   }
 
@@ -145,49 +149,47 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
     }
   }
 
-	/* Force context switch to highest priority ready process */
+  /* Force context switch to highest priority ready process */
 
-	// currpid = dequeue(readylist);
+  // currpid = dequeue(readylist);
   currpid = getitem(next_pid);
-  queuetab[next_pid].qprev = EMPTY; 
-  queuetab[next_pid].qnext = EMPTY; 
-	ptnew = &proctab[currpid];
-	ptnew->prstate = PR_CURR;
-	preempt = QUANTUM;		/* Reset time slice for process	*/
-	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
+  queuetab[next_pid].qprev = EMPTY;
+  queuetab[next_pid].qnext = EMPTY;
+  ptnew = &proctab[currpid];
+  ptnew->prstate = PR_CURR;
+  preempt = QUANTUM; /* Reset time slice for process	*/
+  ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
-	/* Old process returns here when resumed */
+  /* Old process returns here when resumed */
 
-	return;
+  return;
 }
 
 /*------------------------------------------------------------------------
  *  resched_cntl  -  Control whether rescheduling is deferred or allowed
  *------------------------------------------------------------------------
  */
-status	resched_cntl(		/* Assumes interrupts are disabled	*/
-	  int32	defer		/* Either DEFER_START or DEFER_STOP	*/
-	)
-{
-	switch (defer) {
+status resched_cntl(            /* Assumes interrupts are disabled	*/
+                    int32 defer /* Either DEFER_START or DEFER_STOP	*/
+) {
+  switch (defer) {
+    case DEFER_START: /* Handle a deferral request */
 
-	    case DEFER_START:	/* Handle a deferral request */
+      if (Defer.ndefers++ == 0) {
+        Defer.attempt = FALSE;
+      }
+      return OK;
 
-		if (Defer.ndefers++ == 0) {
-			Defer.attempt = FALSE;
-		}
-		return OK;
+    case DEFER_STOP: /* Handle end of deferral */
+      if (Defer.ndefers <= 0) {
+        return SYSERR;
+      }
+      if ((--Defer.ndefers == 0) && Defer.attempt) {
+        resched();
+      }
+      return OK;
 
-	    case DEFER_STOP:	/* Handle end of deferral */
-		if (Defer.ndefers <= 0) {
-			return SYSERR;
-		}
-		if ( (--Defer.ndefers == 0) && Defer.attempt ) {
-			resched();
-		}
-		return OK;
-
-	    default:
-		return SYSERR;
-	}
+    default:
+      return SYSERR;
+  }
 }

@@ -11,34 +11,31 @@
  *		   are blocked waiting to receive a message)
  *------------------------------------------------------------------------
  */
-int32	ptcount(
-	  int32		portid		/* ID of a port to use		*/
-	)
-{
-	intmask	mask;			/* Saved interrupt mask		*/
-	int32	count;			/* Count of messages available	*/
-	int32	sndcnt;			/* Count of sender semaphore	*/
-	struct	ptentry	*ptptr;		/* Pointer to port table entry	*/
+int32 ptcount(int32 portid /* ID of a port to use		*/
+) {
+  intmask mask;          /* Saved interrupt mask		*/
+  int32 count;           /* Count of messages available	*/
+  int32 sndcnt;          /* Count of sender semaphore	*/
+  struct ptentry *ptptr; /* Pointer to port table entry	*/
 
-	mask = disable();
-	if ( isbadport(portid) ||
-		(ptptr= &porttab[portid])->ptstate != PT_ALLOC ) {
-			restore(mask);
-			return SYSERR;
-	}
+  mask = disable();
+  if (isbadport(portid) || (ptptr = &porttab[portid])->ptstate != PT_ALLOC) {
+    restore(mask);
+    return SYSERR;
+  }
 
-	/* Get count of messages available */
+  /* Get count of messages available */
 
-	count = semcount(ptptr->ptrsem);
+  count = semcount(ptptr->ptrsem);
 
-	/* If messages are waiting, check for blocked senders */
+  /* If messages are waiting, check for blocked senders */
 
-	if (count >= 0) {
-		sndcnt = semcount(ptptr->ptssem);
-		if (sndcnt < 0) {	/* -sndcnt senders blocked */
-			count += -sndcnt;
-		}
-	}
-	restore(mask);
-	return count;
+  if (count >= 0) {
+    sndcnt = semcount(ptptr->ptssem);
+    if (sndcnt < 0) { /* -sndcnt senders blocked */
+      count += -sndcnt;
+    }
+  }
+  restore(mask);
+  return count;
 }

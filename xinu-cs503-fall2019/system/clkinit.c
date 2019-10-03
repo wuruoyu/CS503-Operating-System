@@ -2,56 +2,54 @@
 
 #include <xinu.h>
 
-uint32	clktime;		/* Seconds since boot			*/
-uint32	count1000;		/* Milliseconds since last clock tick   */
-uint32	count10;    	/* Milliseconds since last clock tick   */
-uint32  last_resched_ms; /* Milliseconds since last resched */
-qid16	sleepq;			/* Queue of sleeping processes		*/
-uint32	preempt;		/* Preemption counter			*/
+uint32 clktime;         /* Seconds since boot			*/
+uint32 count1000;       /* Milliseconds since last clock tick   */
+uint32 count10;         /* Milliseconds since last clock tick   */
+uint32 last_resched_ms; /* Milliseconds since last resched */
+qid16 sleepq;           /* Queue of sleeping processes		*/
+uint32 preempt;         /* Preemption counter			*/
 
-volatile struct hpet_csreg *hpet = (struct hpet_csreg *)
-						HPET_BASE_ADDR;
+volatile struct hpet_csreg *hpet = (struct hpet_csreg *)HPET_BASE_ADDR;
 
 /*------------------------------------------------------------------------
  * clkinit  -  Initialize the clock and sleep queue at startup (x86)
  *------------------------------------------------------------------------
  */
-void	clkinit(void)
-{
-	/* Allocate a queue to hold the delta list of sleeping processes*/
+void clkinit(void) {
+  /* Allocate a queue to hold the delta list of sleeping processes*/
 
-	sleepq = newqueue();
+  sleepq = newqueue();
 
-	/* Initialize the preemption count */
+  /* Initialize the preemption count */
 
-	preempt = QUANTUM;
+  preempt = QUANTUM;
 
-	/* Initialize the time since boot to zero */
+  /* Initialize the time since boot to zero */
 
-	clktime = 0;
+  clktime = 0;
   count1000 = 0;
   count10 = 0;
   last_resched_ms = 0;
 
-	/* Set interrupt vector for the clock to invoke clkdisp */
+  /* Set interrupt vector for the clock to invoke clkdisp */
 
-	ioapic_irq2vec(2, IRQBASE);
+  ioapic_irq2vec(2, IRQBASE);
 
-	set_ivec(IRQBASE, clkhandler, 0);
+  set_ivec(IRQBASE, clkhandler, 0);
 
-	hpet->gc = 0;
+  hpet->gc = 0;
 
-	hpet->mcv_l = 0;
-	hpet->mcv_u = 0;
+  hpet->mcv_l = 0;
+  hpet->mcv_u = 0;
 
-	hpet->t0cc_l |= HPET_TXCC_TVS;
-	hpet->t0cv_l = 14318;
-	hpet->t0cc_l |= HPET_TXCC_TVS;
-	hpet->t0cv_u = 0;
+  hpet->t0cc_l |= HPET_TXCC_TVS;
+  hpet->t0cv_l = 14318;
+  hpet->t0cc_l |= HPET_TXCC_TVS;
+  hpet->t0cv_u = 0;
 
-	hpet->t0cc_l = HPET_TXCC_IT | HPET_TXCC_TYP | HPET_TXCC_IE;
+  hpet->t0cc_l = HPET_TXCC_IT | HPET_TXCC_TYP | HPET_TXCC_IE;
 
-	hpet->gc = HPET_GC_OE;
+  hpet->gc = HPET_GC_OE;
 
-	return;
+  return;
 }

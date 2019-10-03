@@ -6,7 +6,4 @@
  *  getloadavg -  Return the loadavg (system-wide)
  *------------------------------------------------------------------------
  */
-fix16_t getloadavg()
-{
-  return load_avg;
-}
+fix16_t getloadavg() { return load_avg; }

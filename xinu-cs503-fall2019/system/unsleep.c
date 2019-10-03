@@ -8,40 +8,38 @@
  *		    of successive processes.
  *------------------------------------------------------------------------
  */
-status	unsleep(
-	  pid32		pid		/* ID of process to remove	*/
-        )
-{
-	intmask	mask;			/* Saved interrupt mask		*/
-        struct	procent	*prptr;		/* Ptr to process's table entry	*/
+status unsleep(pid32 pid /* ID of process to remove	*/
+) {
+  intmask mask;          /* Saved interrupt mask		*/
+  struct procent *prptr; /* Ptr to process's table entry	*/
 
-        pid32	pidnext;		/* ID of process on sleep queue	*/
-					/*   that follows the process	*/
-					/*   which is being removed	*/
+  pid32 pidnext; /* ID of process on sleep queue	*/
+                 /*   that follows the process	*/
+                 /*   which is being removed	*/
 
-	mask = disable();
+  mask = disable();
 
-	if (isbadpid(pid)) {
-		restore(mask);
-		return SYSERR;
-	}
+  if (isbadpid(pid)) {
+    restore(mask);
+    return SYSERR;
+  }
 
-	/* Verify that candidate process is on the sleep queue */
+  /* Verify that candidate process is on the sleep queue */
 
-	prptr = &proctab[pid];
-	if ((prptr->prstate!=PR_SLEEP) && (prptr->prstate!=PR_RECTIM)) {
-		restore(mask);
-		return SYSERR;
-	}
+  prptr = &proctab[pid];
+  if ((prptr->prstate != PR_SLEEP) && (prptr->prstate != PR_RECTIM)) {
+    restore(mask);
+    return SYSERR;
+  }
 
-	/* Increment delay of next process if such a process exists */
+  /* Increment delay of next process if such a process exists */
 
-	pidnext = queuetab[pid].qnext;
-	if (pidnext < NPROC) {
-		queuetab[pidnext].qkey += queuetab[pid].qkey;
-	}
+  pidnext = queuetab[pid].qnext;
+  if (pidnext < NPROC) {
+    queuetab[pidnext].qkey += queuetab[pid].qkey;
+  }
 
-	getitem(pid);			/* Unlink process from queue */
-	restore(mask);
-	return OK;
+  getitem(pid); /* Unlink process from queue */
+  restore(mask);
+  return OK;
 }
