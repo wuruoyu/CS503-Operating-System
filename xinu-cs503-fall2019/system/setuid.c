@@ -13,8 +13,8 @@ syscall setuid(uid16 newuid /* New uid*/
 
   mask = disable();
 
-  if (currpid.uid == ROOTUID) {
-    currpid.uid = newuid;
+  if (proctab[currpid].uid == ROOTUID) {
+    proctab[currpid].uid = newuid;
     restore(mask);
     return OK;
   } else {

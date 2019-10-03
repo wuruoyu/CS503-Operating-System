@@ -2,7 +2,7 @@
  *
  * Includes isalpha, isupper, islower, isdigit, isspace, ispunct, isalnum,
  * isprint, iscntrl, toupper, tolower, toascii, iseof
-*/
+ */
 
 #define _U 0x01
 #define _L 0x02
@@ -14,20 +14,20 @@
 
 extern const char _ctype_[];
 
-#define isalpha(c)   ((_ctype_+1)[(int)c]&(_U|_L))
-#define isupper(c)   ((_ctype_+1)[(int)c]&_U)
-#define islower(c)   ((_ctype_+1)[(int)c]&_L)
-#define isdigit(c)   ((_ctype_+1)[(int)c]&_N)
-#define isxdigit(c)  ((_ctype_+1)[(int)c]&(_N|_X))
-#define isspace(c)   ((_ctype_+1)[(int)c]&_S)
-#define ispunct(c)   ((_ctype_+1)[(int)c]&_P)
-#define isalnum(c)   ((_ctype_+1)[(int)c]&(_U|_L|_N))
-#define isprint(c)   ((_ctype_+1)[(int)c]&(_P|_U|_L|_N|_S))
-#define iscntrl(c)   ((_ctype_+1)[(int)c]&_C)
-#define isascii(c)   ((unsigned)((int)(c))<=0x7F)
+#define isalpha(c) ((_ctype_ + 1)[(int)c] & (_U | _L))
+#define isupper(c) ((_ctype_ + 1)[(int)c] & _U)
+#define islower(c) ((_ctype_ + 1)[(int)c] & _L)
+#define isdigit(c) ((_ctype_ + 1)[(int)c] & _N)
+#define isxdigit(c) ((_ctype_ + 1)[(int)c] & (_N | _X))
+#define isspace(c) ((_ctype_ + 1)[(int)c] & _S)
+#define ispunct(c) ((_ctype_ + 1)[(int)c] & _P)
+#define isalnum(c) ((_ctype_ + 1)[(int)c] & (_U | _L | _N))
+#define isprint(c) ((_ctype_ + 1)[(int)c] & (_P | _U | _L | _N | _S))
+#define iscntrl(c) ((_ctype_ + 1)[(int)c] & _C)
+#define isascii(c) ((unsigned)((int)(c)) <= 0x7F)
 
-#define toupper(c)   (((int)(c))-'a'+'A')
-#define tolower(c)   (((int)(c))-'A'+'a')
-#define toascii(c)   (((int)(c))&0x7F)
+#define toupper(c) (((int)(c)) - 'a' + 'A')
+#define tolower(c) (((int)(c)) - 'A' + 'a')
+#define toascii(c) (((int)(c)) & 0x7F)
 
-#define iseof(c)     (0x04 == (int)c)
+#define iseof(c) (0x04 == (int)c)

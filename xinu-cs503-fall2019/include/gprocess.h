@@ -10,7 +10,7 @@
 /* init prio */
 #define INITGPRIO 10
 
-struct groupent {   /* Entry in the group table */
+struct groupent { /* Entry in the group table */
   uint16 prnum;
   pri16 gprio;
 };
