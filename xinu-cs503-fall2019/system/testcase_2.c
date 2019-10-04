@@ -1,12 +1,12 @@
 #include <xinu.h>
 
-// setting: two proc in PSSCHED, with same prio
-// expectation: round-robin
+// setting: two proc in PSSCHED, with different prio
+// expectation: proc of bigger rate has bigger share 
 
 #define L1 10000
 #define L2 1000
 
-void t1_proc() {
+void t2_proc() {
   int i, j;
   int accu = 0;
 
@@ -20,13 +20,13 @@ void t1_proc() {
 }  
   
 
-process testcase_1(void) {
+process testcase_2(void) {
   resched_cntl(DEFER_START);
 
-  resume(create(t1_proc, 1024, PSSCHED, 50, "t1_proc_1", 0, NULL));
-  resume(create(t1_proc, 1024, PSSCHED, 50, "t1_proc_2", 0, NULL));
+  resume(create(t2_proc, 1024, PSSCHED, 10, "t2_proc_1", 0, NULL));
+  resume(create(t2_proc, 1024, PSSCHED, 50, "t2_proc_2", 0, NULL));
 
   resched_cntl(DEFER_STOP);
 
-  return OK;
+  /*return OK;*/
 }

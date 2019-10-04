@@ -58,20 +58,21 @@ pid32 mfq() {
 pid32 choose_group() {
   /* If current proc belongs to group A, assign initial priority to group A */
 
-  grouptab[proctab[currpid].group].gprio = INITGPRIO;
+  int curr_group = proctab[currpid].group;
+  grouptab[curr_group].gprio = grouptab[curr_group].initgprio;
 
   /* Incremented by the number of processes in the ready queue */
 
   int32 readylist_idx = firstid(readylist);
   while (nextid(readylist_idx) != EMPTY) {
     if (readylist_idx != currpid && readylist_idx != NULLPROC) {
-      grouptab[proctab[readylist_idx].group].prnum++;
+      grouptab[proctab[readylist_idx].group].gprio++;
     }
     readylist_idx = nextid(readylist_idx);
   }
 
   /* determine group */
-  if (grouptab[PSSCHED].prnum >= grouptab[MFQSCHED].prnum) {
+  if (grouptab[PSSCHED].gprio >= grouptab[MFQSCHED].gprio) {
     /*XDEBUG_KPRINTF("Select PSS:\n");*/
     return pss();
   } else {
@@ -134,6 +135,7 @@ void resched(void) /* Assumes interrupts are disabled	*/
       if (ptold->pi < proctab[next_pid].pi &&
           proctab[currpid].group == PSSCHED) {
 	XDEBUG_KPRINTF("PSS remain\n");
+	XTESTCASE_KPRINTF("PSS remain\n");
         return;
       }
     }
@@ -167,6 +169,8 @@ void resched(void) /* Assumes interrupts are disabled	*/
   /* Force context switch to highest priority/lowest pi ready process */
 
   XDEBUG_KPRINTF("resched from process [%s] to the process [%s] \n", proctab[currpid].prname, proctab[next_pid].prname);
+  XTESTCASE_KPRINTF("resched from process [%s] to the process [%s] \n", proctab[currpid].prname, proctab[next_pid].prname);
+
 
   // currpid = dequeue(readylist);
   currpid = getitem(next_pid);

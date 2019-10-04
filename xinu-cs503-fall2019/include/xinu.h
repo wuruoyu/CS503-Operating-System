@@ -47,6 +47,7 @@
 
 #define XTEST 1
 #define XDEBUG 0 /* set this to 0 when submitting */
+#define XTESTCASE 1 /* set this to 0 when submitting */
 
 /* For grading */
 #if XTEST
@@ -59,4 +60,10 @@
 #define XDEBUG_KPRINTF(...) kprintf(__VA_ARGS__)
 #else
 #define XDEBUG_KPRINTF(...)
+#endif
+/* For testcases */
+#if XTESTCASE
+#define XTESTCASE_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XTESTCASE_KPRINTF(...)
 #endif

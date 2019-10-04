@@ -3,12 +3,12 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  chgprio - changing scheduling group priorities
+ *  chgprio - changing scheduling group init priorities
  *------------------------------------------------------------------------
  */
 syscall chgprio(int group, pri16 newprio) {
   if (group != 0 && group != 1) {
     return SYSERR;
   }
-  grouptab[group].gprio = newprio;
+  grouptab[group].initgprio = newprio;
 }

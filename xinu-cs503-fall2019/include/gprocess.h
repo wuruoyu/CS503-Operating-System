@@ -7,12 +7,11 @@
 #define PSSCHED 0
 #define MFQSCHED 1
 
-/* init prio */
 #define INITGPRIO 10
 
 struct groupent { /* Entry in the group table */
-  uint16 prnum;
   pri16 gprio;
+  pri16 initgprio;
 };
 
 extern struct groupent grouptab[];

@@ -15,6 +15,10 @@ static void sysinit();       /* Internal system initialization	*/
 extern void meminit(void);   /* Initializes the free memory list	*/
 local process startup(void); /* Process to finish startup tasks	*/
 
+/* Testcases */
+extern void testcase_1(void);
+extern void testcase_2(void);
+
 /* Declarations of major kernel variables */
 
 struct procent proctab[NPROC];      /* Process table			*/
@@ -122,8 +126,13 @@ local process startup(void) {
 
   /* Create a process to execute function main() */
 
-  resume(create((void *)main, INITSTK, PSSCHED, INITRATIO, "Main process", 0,
-                NULL));
+  /*resume(create((void *)main, INITSTK, PSSCHED, INITRATIO, "Main process", 0,*/
+		/*NULL));*/
+
+  /* Here hook the testcase */
+
+  resume(create((void *)testcase_1, INITSTK, PSSCHED, INITRATIO, "testcase 1", 0,
+		NULL));
 
   /* Startup process exits at this point */
 
@@ -209,8 +218,8 @@ static void sysinit() {
   /* Initialize the group process table */
 
   for (i = 0; i < NUMGROUP; i++) {
-    grouptab[i].prnum = 0;
-    grouptab[i].gprio = INITGPRIO;
+    grouptab[i].initgprio = INITGPRIO; 
+    grouptab[i].gprio = grouptab[i].initgprio;
   }
 
   /* Initialize semaphores */
