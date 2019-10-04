@@ -27,6 +27,7 @@
 
 #define INITSTK 65536   /* Initial process stack size		*/
 #define INITPRIO 20     /* Initial process priority		*/
+#define INITRATIO 20	/* Initial process Ri 			*/
 #define INITRET userret /* Address to which process returns	*/
 
 /* Inline code to check process ID (assumes interrupts are disabled)	*/
@@ -43,7 +44,7 @@
 
 struct procent {       /* Entry in the process table		*/
   uint16 prstate;      /* Process state: PR_CURR, etc.		*/
-  pri16 prprio;        /* Process priority			*/
+  pri16 prprio;        /* Process priority, used as rate for PSS*/
   char *prstkptr;      /* Saved stack pointer			*/
   char *prstkbase;     /* Base of run time stack		*/
   uint32 prstklen;     /* Stack length in bytes		*/
@@ -57,7 +58,7 @@ struct procent {       /* Entry in the process table		*/
   int group; /* group id */
 
   /* Used for PSS */
-  pri16 pi;
+  int pi;
 
   /* Used for MFQ */
   nid16 nice;

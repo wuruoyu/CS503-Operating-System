@@ -12,21 +12,21 @@ pid32 pss() {
   // TODO: critical? update last resched ms
   last_resched_ms = 0;
 
-  // Find the highest priority ready process in the selected group: traverse the
+  // Find the smallest pi ready process in the PSS group: traverse the
   // whole list
   int32 iter_idx = firstid(readylist);
-  int32 highest_idx = NULLPROC;
-  pri16 highest_pri = SHRT_MIN;
+  int32 smallest_idx = NULLPROC;
+  pri16 smallest_pi = SHRT_MAX;
   while (nextid(iter_idx) != EMPTY) {
     if (PSSCHED == proctab[iter_idx].group &&
-        proctab[iter_idx].prprio > highest_pri) {
-      highest_idx = iter_idx;
-      highest_pri = proctab[iter_idx].prprio;
+        proctab[iter_idx].pi < smallest_pi) {
+      smallest_idx = iter_idx;
+      smallest_pi = proctab[iter_idx].pi;
     }
     iter_idx = nextid(iter_idx);
   }
 
-  return highest_idx;
+  return smallest_idx;
 }
 
 /*------------------------------------------------------------------------
@@ -72,10 +72,10 @@ pid32 choose_group() {
 
   /* determine group */
   if (grouptab[PSSCHED].prnum >= grouptab[MFQSCHED].prnum) {
-    XDEBUG_KPRINTF("Select PSS:\n");
+    /*XDEBUG_KPRINTF("Select PSS:\n");*/
     return pss();
   } else {
-    XDEBUG_KPRINTF("Select MFQ:\n");
+    /*XDEBUG_KPRINTF("Select MFQ:\n");*/
     return mfq();
   }
 }
@@ -86,6 +86,8 @@ pid32 choose_group() {
  */
 void resched(void) /* Assumes interrupts are disabled	*/
 {
+  XDEBUG_KPRINTF("Resched: \n");
+
   struct procent *ptold; /* Ptr to table entry for old process	*/
   struct procent *ptnew; /* Ptr to table entry for new process	*/
 
@@ -93,25 +95,33 @@ void resched(void) /* Assumes interrupts are disabled	*/
 
   if (Defer.ndefers > 0) {
     Defer.attempt = TRUE;
+    XDEBUG_KPRINTF("Resched defer\n");
     return;
   }
 
   /* Update current running process if it belongs to pss */
 
   if (proctab[currpid].group == PSSCHED) {
-    fix16_t ratio = 100 / proctab[currpid].prprio;
-    XDEBUG_KPRINTF("PSS curr ratio: %f", ratio);
+    fix16_t ratio = fix16_div(fix16_from_int(100), fix16_from_int(proctab[currpid].prprio));
+    fix16_t inc = fix16_mul(ratio, fix16_from_int(last_resched_ms));
+    proctab[currpid].pi += fix16_to_int(inc);
 
-    XDEBUG_KPRINTF("PSS curr consume time:  %f", last_resched_ms);
-
-    proctab[currpid].pi += last_resched_ms * ratio;
-    proctab[currpid].prprio = INT_MAX - proctab[currpid].pi;
-    XDEBUG_KPRINTF("PSS curr updated val: %f", proctab[currpid].pi);
+    /*XDEBUG_KPRINTF("PSS: curr name = %s\n", proctab[currpid].prname);*/
+    /*XDEBUG_KPRINTF("PSS: curr pid = %d\n", currpid);*/
+    /*XDEBUG_KPRINTF("PSS: curr prprio = %d\n", proctab[currpid].prprio);*/
+    /*XDEBUG_KPRINTF("PSS: curr last_resched_ms = %u\n", last_resched_ms);*/
+    /*XDEBUG_KPRINTF("PSS: curr ratio = %f\n", fix16_to_float(ratio));*/
+    /*XDEBUG_KPRINTF("PSS: curr inc = %d\n", fix16_to_int(inc));*/
+    /*XDEBUG_KPRINTF("PSS: curr pi: %d\n", proctab[currpid].pi);*/
   }
 
-  /* Choose group */
+  /* Choose group, return next_pid */
 
   pid32 next_pid = choose_group();
+  /*XDEBUG_KPRINTF("PSS next_pid name: %s\n", proctab[next_pid].prname);*/
+  /*XDEBUG_KPRINTF("PSS next_pid : %d\n", next_pid);*/
+  /*XDEBUG_KPRINTF("PSS next_pid pi: %d\n", proctab[next_pid].pi);*/
+  /*XDEBUG_KPRINTF("PSS next_pid group: %d\n", proctab[next_pid].group);*/
 
   /* Point to process table entry for the current (old) process */
 
@@ -121,40 +131,47 @@ void resched(void) /* Assumes interrupts are disabled	*/
    * group */
   if (proctab[next_pid].group == PSSCHED) {
     if (ptold->prstate == PR_CURR) {
-      if (ptold->prprio > proctab[next_pid].prprio &&
-          proctab[currpid].group == PSSCHED)
+      if (ptold->pi < proctab[next_pid].pi &&
+          proctab[currpid].group == PSSCHED) {
+	XDEBUG_KPRINTF("PSS remain\n");
         return;
+      }
     }
   } else if (proctab[next_pid].group == MFQSCHED) {
     if (ptold->prstate == PR_CURR) {
       if (ptold->priority_i > proctab[next_pid].priority_i &&
-          proctab[currpid].group == MFQSCHED)
+          proctab[currpid].group == MFQSCHED) {
+	XDEBUG_KPRINTF("MFQ remain\n");
         return;
+      }
     }
   } else {
-    XDEBUG_KPRINTF("ERROR"\n);
+    XDEBUG_KPRINTF("ERROR\n");
   }
 
-  /* Old process will no longer remain current */
-
-  ptold->prstate = PR_READY;
-  enqueue(currpid, readylist);
+  /* enqueue the old proc into readylist if it remains eligible */
+  
+  if (ptold->prstate == PR_CURR) {
+    ptold->prstate = PR_READY;
+    enqueue(currpid, readylist);
+  }
 
   /* PSS update */
 
   if (proctab[next_pid].group == PSSCHED) {
     if (clktime * 1000 + count1000 > proctab[next_pid].pi) {
       proctab[next_pid].pi = clktime * 1000 + count1000;
-      proctab[next_pid].prprio = INT_MAX - proctab[next_pid].pi;
     }
   }
 
-  /* Force context switch to highest priority ready process */
+  /* Force context switch to highest priority/lowest pi ready process */
+
+  XDEBUG_KPRINTF("resched from process [%s] to the process [%s] \n", proctab[currpid].prname, proctab[next_pid].prname);
 
   // currpid = dequeue(readylist);
   currpid = getitem(next_pid);
-  queuetab[next_pid].qprev = EMPTY;
-  queuetab[next_pid].qnext = EMPTY;
+  queuetab[currpid].qprev = EMPTY;
+  queuetab[currpid].qnext = EMPTY;
   ptnew = &proctab[currpid];
   ptnew->prstate = PR_CURR;
   preempt = QUANTUM; /* Reset time slice for process	*/

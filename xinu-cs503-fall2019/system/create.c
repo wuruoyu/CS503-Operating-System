@@ -15,6 +15,9 @@ pid32 create(void *funcaddr, /* Address of the function	*/
              char *name,     /* Name (for debugging)		*/
              uint32 nargs,   /* Number of args that follow	*/
              ...) {
+
+  /*XDEBUG_KPRINTF("Create process name: %s\n", name);*/
+
   uint32 savsp, *pushsp;
   intmask mask;          /* Interrupt mask		*/
   pid32 pid;             /* Stores new process id	*/

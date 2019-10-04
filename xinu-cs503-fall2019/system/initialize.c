@@ -81,15 +81,16 @@ void nulluser() {
 
   /* Create a process to finish startup and start main */
 
-  resume(create((void *)startup, INITSTK, PSSCHED, INITPRIO, "Startup process",
-                0, NULL));
+  pid32 startup_pid = create((void *)startup, INITSTK, PSSCHED, INITPRIO, "Startup process", 0, NULL); 
+  resume(startup_pid);
+
 
   /* Become the Null process (i.e., guarantee that the CPU has	*/
   /*  something to run when no other process is ready to execute)	*/
 
   while (TRUE) {
     /* Halt until there is an external interrupt */
-
+    /*XDEBUG_KPRINTF("Null proc's pi: %d\n", proctab[NULLPROC].pi);*/
     asm volatile("hlt");
   }
 }
@@ -118,9 +119,10 @@ local process startup(void) {
 
     kprintf("Obtained IP address  %s   (0x%08x)\n", str, ipaddr);
   }
+
   /* Create a process to execute function main() */
 
-  resume(create((void *)main, INITSTK, PSSCHED, INITPRIO, "Main process", 0,
+  resume(create((void *)main, INITSTK, PSSCHED, INITRATIO, "Main process", 0,
                 NULL));
 
   /* Startup process exits at this point */
@@ -175,8 +177,8 @@ static void sysinit() {
     prptr->prstate = PR_FREE;
     prptr->prname[0] = NULLCH;
     prptr->prstkbase = NULL;
-    prptr->prprio = 0;
-    prptr->pi = 0;
+    prptr->prprio = INITPRIO;
+    prptr->pi = INITPRIO;
     prptr->nice = 0;
     prptr->recent_cpu_i = 0;
   }
@@ -185,12 +187,19 @@ static void sysinit() {
 
   prptr = &proctab[NULLPROC];
   prptr->prstate = PR_CURR;
-  prptr->prprio = 0;
+  prptr->prprio = INITRATIO;
+
+  // group
   prptr->group = PSSCHED;
+
+  // pss
   prptr->pi = 0;
+
+  // mfq
   prptr->nice = 0;
   prptr->recent_cpu_i = 0;
   prptr->priority_i = 100;
+
   strncpy(prptr->prname, "prnull", 7);
   prptr->prstkbase = getstk(NULLSTK);
   prptr->prstklen = NULLSTK;
