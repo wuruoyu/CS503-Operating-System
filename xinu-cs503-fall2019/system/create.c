@@ -53,7 +53,7 @@ pid32 create(void *funcaddr, /* Address of the function	*/
   prptr->pi = 0;
   prptr->nice = 0;
   prptr->priority_i = 100;
-  prptr->recent_cpu_i = 0;
+  prptr->recent_cpu_i = fix16_from_int(0);
   prptr->uid = proctab[currpid].uid;
 
   /* Set up stdin, stdout, and stderr descriptors for the shell	*/

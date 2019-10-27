@@ -31,15 +31,19 @@ void clkhandler(int32 arg /* Interrupt handler argument	*/
       if (proctab[readylist_idx].group == MFQSCHED &&
           readylist_idx != NULLPROC) {
         struct procent *pt = &proctab[readylist_idx];
-        pt->recent_cpu_i *= (2 * load_avg) / (2 * load_avg + 1);
-        pt->recent_cpu_i += pt->nice;
+
+	fix16_t load_avg_mul_2 = fix16_mul(fix16_from_int(2), load_avg);
+	fix16_t updated_recent_cpu_i = fix16_div(load_avg_mul_2, fix16_add(load_avg_mul_2, fix16_from_int(1)));
+	pt->recent_cpu_i = fix16_mul(pt->recent_cpu_i, updated_recent_cpu_i);
+	pt->recent_cpu_i = fix16_add(pt->recent_cpu_i, fix16_from_int(pt->nice));
+
         n_ready_processes++;
       }
       readylist_idx = nextid(readylist_idx);
     }
 
     // Update load_avg
-    load_avg = (59 / 60) * load_avg + (1 / 60) * n_ready_processes;
+    load_avg = fix16_mul(fix16_div(fix16_from_int(59), fix16_from_int(60)), load_avg) + fix16_mul(fix16_div(fix16_from_int(1), fix16_from_int(60)), fix16_from_int(n_ready_processes));
 
     /* Reset the local ms counter for the next second */
 
@@ -54,7 +58,7 @@ void clkhandler(int32 arg /* Interrupt handler argument	*/
     while (nextid(readylist_idx) != EMPTY) {
       if (proctab[readylist_idx].group == MFQSCHED) {
         struct procent *pt = &proctab[readylist_idx];
-        pt->priority_i = 100 - (pt->recent_cpu_i / 2) - (pt->nice * 2);
+        pt->priority_i = 100 - (fix16_to_float(pt->recent_cpu_i) / 2) - (pt->nice * 2);
         if (pt->priority_i > 100) pt->priority_i = 100;
         if (pt->priority_i < 0) pt->priority_i = 0;
       }
@@ -64,7 +68,7 @@ void clkhandler(int32 arg /* Interrupt handler argument	*/
   }
 
   // Every 1ms, update recent_cpu_i for currpid
-  proctab[currpid].recent_cpu_i++;
+  proctab[currpid].recent_cpu_i = fix16_add(proctab[currpid].recent_cpu_i, fix16_from_int(1));
 
   /* Increment the last_resched_ms counter */
 

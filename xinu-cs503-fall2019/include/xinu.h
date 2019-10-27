@@ -45,9 +45,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define XTEST 1
+#define XTEST 0
 #define XDEBUG 0 /* set this to 0 when submitting */
-#define XTESTCASE 1 /* set this to 0 when submitting */
+#define XTESTCASE 0 /* set this to 0 when submitting */
 
 /* For grading */
 #if XTEST

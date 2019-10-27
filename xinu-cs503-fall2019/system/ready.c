@@ -16,6 +16,14 @@ status ready(pid32 pid /* ID of process to make ready	*/
     return SYSERR;
   }
 
+  /* PSS update */
+
+  if (proctab[pid].group == PSSCHED) {
+    if (clktime * 1000 + count1000 > proctab[pid].pi) {
+      proctab[pid].pi = clktime * 1000 + count1000;
+    }
+  }
+
   /* Set process state to indicate ready and add to ready list */
 
   prptr = &proctab[pid];

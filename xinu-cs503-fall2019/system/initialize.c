@@ -16,8 +16,13 @@ extern void meminit(void);   /* Initializes the free memory list	*/
 local process startup(void); /* Process to finish startup tasks	*/
 
 /* Testcases */
+#if XTESTCASE
 extern void testcase_1(void);
 extern void testcase_2(void);
+extern void testcase_3(void);
+extern void testcase_4(void);
+extern void testcase_5(void);
+#endif 
 
 /* Declarations of major kernel variables */
 
@@ -126,13 +131,27 @@ local process startup(void) {
 
   /* Create a process to execute function main() */
 
-  /*resume(create((void *)main, INITSTK, PSSCHED, INITRATIO, "Main process", 0,*/
-		/*NULL));*/
+  resume(create((void *)main, INITSTK, PSSCHED, INITRATIO, "Main process", 0,
+		NULL));
 
   /* Here hook the testcase */
 
-  resume(create((void *)testcase_1, INITSTK, PSSCHED, INITRATIO, "testcase 1", 0,
+#if XTESTCASE
+  /*resume(create((void *)testcase_1, INITSTK, PSSCHED, INITRATIO, "testcase 1", 0,*/
+		/*NULL));*/
+
+  /*resume(create((void *)testcase_2, INITSTK, PSSCHED, INITRATIO, "testcase 2", 0,*/
+		/*NULL));*/
+
+  /*resume(create((void *)testcase_3, INITSTK, PSSCHED, INITRATIO, "testcase 3", 0,*/
+		/*NULL));*/
+
+  /*resume(create((void *)testcase_4, INITSTK, PSSCHED, INITRATIO, "testcase 4", 0,*/
+		/*NULL));*/
+
+  resume(create((void *)testcase_5, INITSTK, PSSCHED, INITRATIO, "testcase 5", 0,
 		NULL));
+#endif
 
   /* Startup process exits at this point */
 
@@ -173,7 +192,7 @@ static void sysinit() {
 
   prcount = 1;
 
-  load_avg = 0;
+  load_avg = fix16_from_int(0);
 
   /* Scheduling is not currently blocked */
 
@@ -189,7 +208,7 @@ static void sysinit() {
     prptr->prprio = INITPRIO;
     prptr->pi = INITPRIO;
     prptr->nice = 0;
-    prptr->recent_cpu_i = 0;
+    prptr->recent_cpu_i = fix16_from_int(0);
   }
 
   /* Initialize the Null process entry */
@@ -206,8 +225,8 @@ static void sysinit() {
 
   // mfq
   prptr->nice = 0;
-  prptr->recent_cpu_i = 0;
-  prptr->priority_i = 100;
+  prptr->recent_cpu_i = fix16_from_int(0);
+  prptr->priority_i = 0;
 
   strncpy(prptr->prname, "prnull", 7);
   prptr->prstkbase = getstk(NULLSTK);

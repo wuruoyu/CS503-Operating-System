@@ -21,7 +21,7 @@ nid16 chnice(pid32 pid,    /* ID of process to change	*/
   prptr = &proctab[pid];
   oldnice = prptr->nice;
   prptr->nice = newnice;
-  prptr->priority_i = 100 - (prptr->recent_cpu_i / 2) - (prptr->nice * 2);
+  prptr->priority_i = 100 - (fix16_to_float(prptr->recent_cpu_i) / 2) - (prptr->nice * 2);
   if (prptr->priority_i > 100) prptr->priority_i = 100;
   if (prptr->priority_i < 0) prptr->priority_i = 0;
   restore(mask);

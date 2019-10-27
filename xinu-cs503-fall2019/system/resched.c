@@ -81,6 +81,18 @@ pid32 choose_group() {
   }
 }
 
+void print_readylist() {
+  int32 readylist_idx = firstid(readylist);
+  XDEBUG_KPRINTF("print out readylist\n");
+  while (nextid(readylist_idx) != EMPTY) {
+    XDEBUG_KPRINTF("proc name: %s  ", proctab[readylist_idx].prname);
+    XDEBUG_KPRINTF("proc priority_i: %d  ", proctab[readylist_idx].priority_i);
+    XDEBUG_KPRINTF("\n");
+    readylist_idx = nextid(readylist_idx);
+  }
+
+}
+
 /*------------------------------------------------------------------------
  *  resched  -  Reschedule processor to highest priority eligible process
  *------------------------------------------------------------------------
@@ -88,6 +100,10 @@ pid32 choose_group() {
 void resched(void) /* Assumes interrupts are disabled	*/
 {
   XDEBUG_KPRINTF("Resched: \n");
+
+#if XTESTCASE
+  print_readylist();
+#endif 
 
   struct procent *ptold; /* Ptr to table entry for old process	*/
   struct procent *ptnew; /* Ptr to table entry for new process	*/
@@ -106,23 +122,11 @@ void resched(void) /* Assumes interrupts are disabled	*/
     fix16_t ratio = fix16_div(fix16_from_int(100), fix16_from_int(proctab[currpid].prprio));
     fix16_t inc = fix16_mul(ratio, fix16_from_int(last_resched_ms));
     proctab[currpid].pi += fix16_to_int(inc);
-
-    /*XDEBUG_KPRINTF("PSS: curr name = %s\n", proctab[currpid].prname);*/
-    /*XDEBUG_KPRINTF("PSS: curr pid = %d\n", currpid);*/
-    /*XDEBUG_KPRINTF("PSS: curr prprio = %d\n", proctab[currpid].prprio);*/
-    /*XDEBUG_KPRINTF("PSS: curr last_resched_ms = %u\n", last_resched_ms);*/
-    /*XDEBUG_KPRINTF("PSS: curr ratio = %f\n", fix16_to_float(ratio));*/
-    /*XDEBUG_KPRINTF("PSS: curr inc = %d\n", fix16_to_int(inc));*/
-    /*XDEBUG_KPRINTF("PSS: curr pi: %d\n", proctab[currpid].pi);*/
   }
 
   /* Choose group, return next_pid */
 
   pid32 next_pid = choose_group();
-  /*XDEBUG_KPRINTF("PSS next_pid name: %s\n", proctab[next_pid].prname);*/
-  /*XDEBUG_KPRINTF("PSS next_pid : %d\n", next_pid);*/
-  /*XDEBUG_KPRINTF("PSS next_pid pi: %d\n", proctab[next_pid].pi);*/
-  /*XDEBUG_KPRINTF("PSS next_pid group: %d\n", proctab[next_pid].group);*/
 
   /* Point to process table entry for the current (old) process */
 
@@ -158,18 +162,13 @@ void resched(void) /* Assumes interrupts are disabled	*/
     enqueue(currpid, readylist);
   }
 
-  /* PSS update */
-
-  if (proctab[next_pid].group == PSSCHED) {
-    if (clktime * 1000 + count1000 > proctab[next_pid].pi) {
-      proctab[next_pid].pi = clktime * 1000 + count1000;
-    }
-  }
 
   /* Force context switch to highest priority/lowest pi ready process */
 
-  XDEBUG_KPRINTF("resched from process [%s] to the process [%s] \n", proctab[currpid].prname, proctab[next_pid].prname);
-  XTESTCASE_KPRINTF("resched from process [%s] to the process [%s] \n", proctab[currpid].prname, proctab[next_pid].prname);
+  XTESTCASE_KPRINTF("resched from process [group: %d][name: %s][priority_i: %d][nice: %d][recent_cpu_i: %f] \n to the process [group: %d][name: %s][priority_i: %d][nice: %d][recent_cpu_i: %f] \n  load_avg = %f  \n\n", 
+		  proctab[currpid].group, proctab[currpid].prname, proctab[currpid].priority_i, proctab[currpid].nice, fix16_to_float(proctab[currpid].recent_cpu_i), 
+		  proctab[next_pid].group, proctab[next_pid].prname, proctab[next_pid].priority_i, proctab[next_pid].nice, fix16_to_float(proctab[next_pid].recent_cpu_i),
+		  fix16_to_float(load_avg));
 
 
   // currpid = dequeue(readylist);

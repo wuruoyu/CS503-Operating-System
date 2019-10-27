@@ -1,4 +1,4 @@
-cscope 15 /u/antor/u13/wu1377/CS-503/xinu-cs503-fall2019               0000710420
+cscope 15 /u/antor/u13/wu1377/CS-503/xinu-cs503-fall2019               0000709115
 	@config/conf.c
 
 3 
@@ -47989,7 +47989,7 @@ ud±ab
 
 48 
 	#XTEST
- 0
+ 1
 
 	)
 
@@ -48001,7 +48001,7 @@ ud±ab
 
 50 
 	#XTESTCASE
- 0
+ 1
 
 	)
 
@@ -75357,9 +75357,9 @@ lﬂd_avg
 	`fix16_div
 (
 	`fix16_‰om_öt
-(59), fix16_‰om_öt(60)),Üﬂd_avgË+ fix16_mul(fix16_div(fix16_‰om_öt(1), fix16_‰om_öt(60)), fix16_‰om_öt(
+(59), fix16_‰om_öt(60)),Üﬂd_avgË+ fix16_mul(fix16_div(fix16_‰om_öt(1), fix16_‰om_öt(60)), 
 n_ªady_¥o˚s£s
-));
+);
 
 50 
 cou¡1000
@@ -80769,31 +80769,23 @@ loˇl
 °¨tup
 ();
 
-19 #i‡
-XTESTCASE
-
-
-20 
+19 
 ã°ˇ£_1
 ();
 
-21 
+20 
 ã°ˇ£_2
 ();
 
-22 
+21 
 ã°ˇ£_3
 ();
 
-23 
+22 
 ã°ˇ£_4
 ();
 
-24 
-ã°ˇ£_5
-();
-
-29 
+26 
 ¥o˚¡
  
 	g¥o˘ab
@@ -80801,7 +80793,7 @@ XTESTCASE
 NPROC
 ];
 
-30 
+27 
 grou≥¡
  
 	ggrou±ab
@@ -80809,7 +80801,7 @@ grou≥¡
 NUMGROUP
 ];
 
-31 
+28 
 £¡ry
  
 	g£mèb
@@ -80817,59 +80809,59 @@ NUMGROUP
 NSEM
 ];
 
-32 
+29 
 memblk
  
 	gmemli°
 ;
 
-36 
+33 
 	g¥cou¡
 ;
 
-37 
+34 
 pid32
  
 	gcuºpid
 ;
 
-38 
+35 
 fix16_t
  
 	glﬂd_avg
 ;
 
-42 
+39 
 	#CONSOLE_RESET
  " \033[0m\033[2J\033[;H"
 
 	)
 
-58 
+55 
 	$nuŒu£r
 () {
 
-59 
+56 
 memblk
  *
 mem±r
 ;
 
-60 
+57 
 uöt32
  
 ‰ì_mem
 ;
 
-64 
+61 
 	`sysöô
 ();
 
-67 
+64 
 ‰ì_mem
  = 0;
 
-68 
+65 
 mem±r
  = 
 memli°
@@ -80879,7 +80871,7 @@ m√xt
 NULL
 ; memptr = memptr->mnext) {
 
-69 
+66 
 ‰ì_mem
  +
 mem±r
@@ -80887,13 +80879,13 @@ mem±r
 mÀngth
 ;
 
-71 
+68 
 	`k¥ötf
 ("%10d byã†o‡‰ì mem‹y. Fªêli°:\n", 
 ‰ì_mem
 );
 
-72 
+69 
 mem±r
  = 
 memli°
@@ -80903,7 +80895,7 @@ m√xt
 NULL
 ; memptr = memptr->mnext) {
 
-73 
+70 
 	`k¥ötf
 (" [0x%08XÅÿ0x%08X]\n", (
 uöt32
@@ -80911,7 +80903,7 @@ uöt32
 mem±r
 ,
 
-74 ((
+71 ((
 uöt32
 )
 mem±r
@@ -80919,7 +80911,7 @@ mem±r
 mÀngth
  - 1);
 
-77 
+74 
 	`k¥ötf
 ("%10d byã†o‡Xöu code.\n", (
 uöt32
@@ -80929,7 +80921,7 @@ uöt32
 ãxt
 );
 
-78 
+75 
 	`k¥ötf
 (" [0x%08XÅÿ0x%08X]\n", (
 uöt32
@@ -80939,7 +80931,7 @@ uöt32
 ëext
  - 1);
 
-79 
+76 
 	`k¥ötf
 ("%10d byã†o‡d©a.\n", (
 uöt32
@@ -80949,7 +80941,7 @@ ebss
 d©a
 );
 
-80 
+77 
 	`k¥ötf
 (" [0x%08XÅÿ0x%08X]\n\n", (
 uöt32
@@ -80957,21 +80949,21 @@ uöt32
 d©a
 ,
 
-81 (
+78 (
 uöt32
 )&
 ebss
  - 1);
 
-85 
+82 
 	`íabÀ
 ();
 
-89 
+86 
 	`√t_öô
 ();
 
-93 
+90 
 pid32
  
 °¨tup_pid
@@ -80989,25 +80981,25 @@ INITPRIO
 NULL
 );
 
-94 
+91 
 	`ªsume
 (
 °¨tup_pid
 );
 
-100 
+97 
 TRUE
 ) {
 
-103 
+100 
 asm
  volatile("hlt");
 
-105 
+102 
 	}
 }
 
-114 
+111 
 loˇl
  
 ¥o˚ss
@@ -81015,23 +81007,23 @@ loˇl
 	$°¨tup
 () {
 
-115 
+112 
 uöt32
  
 ùaddr
 ;
 
-116 
+113 
 °r
 [128];
 
-120 
+117 
 ùaddr
  = 
 	`gëloˇlù
 ();
 
-121 i‡((
+118 i‡((
 öt32
 )
 ùaddr
@@ -81039,11 +81031,11 @@ uöt32
 SYSERR
 ) {
 
-122 
+119 
 	`k¥ötf
 ("Cannot obtainán IPáddress\n");
 
-125 
+122 
 ùaddr
  = 
 NëD©a
@@ -81051,7 +81043,7 @@ NëD©a
 ùuˇ°
 ;
 
-126 
+123 
 	`•rötf
 (
 °r
@@ -81059,11 +81051,11 @@ NëD©a
 ùaddr
  >> 24) & 0xff, (ipaddr >> 16) & 0xff,
 
-127 (
+124 (
 ùaddr
  >> 8) & 0xff, ipaddr & 0xff);
 
-129 
+126 
 	`k¥ötf
 ("Obèöed IPáddªs† %† (0x%08x)\n", 
 °r
@@ -81071,123 +81063,101 @@ NëD©a
 ùaddr
 );
 
-134 
+145 
 	`ªsume
 (
 	`¸óã
 ((*)
-maö
+ã°ˇ£_4
 , 
 INITSTK
 , 
 PSSCHED
 , 
 INITRATIO
-, "MainÖrocess", 0,
+, "testcase 4", 0,
 
-135 
+146 
 NULL
 ));
 
-139 #i‡
-XTESTCASE
-
-
-152 
-	`ªsume
-(
-	`¸óã
-((*)
-ã°ˇ£_5
-, 
-INITSTK
-, 
-PSSCHED
-, 
-INITRATIO
-, "testcase 5", 0,
-
-153 
-NULL
-));
-
-158  
+150  
 OK
 ;
 
-159 
+151 
 	}
 }
 
-167 
+159 
 	$sysöô
 () {
 
-168 
+160 
 öt32
  
 i
 ;
 
-169 
+161 
 ¥o˚¡
  *
 ¥±r
 ;
 
-170 
+162 
 £¡ry
  *
 £m±r
 ;
 
-174 
+166 
 	`∂©öô
 ();
 
-178 
+170 
 	`k¥ötf
 (
 CONSOLE_RESET
 );
 
-179 
+171 
 	`k¥ötf
 ("\n%s\n\n", 
 VERSION
 );
 
-183 
+175 
 	`öôevec
 ();
 
-187 
+179 
 	`memöô
 ();
 
-193 
+185 
 ¥cou¡
  = 1;
 
-195 
+187 
 lﬂd_avg
  = 
 	`fix16_‰om_öt
 (0);
 
-199 
+191 
 De„r
 .
 nde„rs
  = 0;
 
-203 
+195 
 i
  = 0; i < 
 NPROC
 ; i++) {
 
-204 
+196 
 ¥±r
  = &
 ¥o˘ab
@@ -81195,7 +81165,7 @@ NPROC
 i
 ];
 
-205 
+197 
 ¥±r
 ->
 ¥°©e
@@ -81203,7 +81173,7 @@ i
 PR_FREE
 ;
 
-206 
+198 
 ¥±r
 ->
 ¥«me
@@ -81211,7 +81181,7 @@ PR_FREE
 NULLCH
 ;
 
-207 
+199 
 ¥±r
 ->
 ¥°kba£
@@ -81219,7 +81189,7 @@ NULLCH
 NULL
 ;
 
-208 
+200 
 ¥±r
 ->
 ¥¥io
@@ -81227,7 +81197,7 @@ NULL
 INITPRIO
 ;
 
-209 
+201 
 ¥±r
 ->
 pi
@@ -81235,13 +81205,13 @@ pi
 INITPRIO
 ;
 
-210 
+202 
 ¥±r
 ->
 ni˚
  = 0;
 
-211 
+203 
 ¥±r
 ->
 ª˚¡_˝u_i
@@ -81249,7 +81219,7 @@ ni˚
 	`fix16_‰om_öt
 (0);
 
-216 
+208 
 ¥±r
  = &
 ¥o˘ab
@@ -81257,7 +81227,7 @@ ni˚
 NULLPROC
 ];
 
-217 
+209 
 ¥±r
 ->
 ¥°©e
@@ -81265,7 +81235,7 @@ NULLPROC
 PR_CURR
 ;
 
-218 
+210 
 ¥±r
 ->
 ¥¥io
@@ -81273,7 +81243,7 @@ PR_CURR
 INITRATIO
 ;
 
-221 
+213 
 ¥±r
 ->
 group
@@ -81281,19 +81251,19 @@ group
 PSSCHED
 ;
 
-224 
+216 
 ¥±r
 ->
 pi
  = 0;
 
-227 
+219 
 ¥±r
 ->
 ni˚
  = 0;
 
-228 
+220 
 ¥±r
 ->
 ª˚¡_˝u_i
@@ -81301,13 +81271,13 @@ ni˚
 	`fix16_‰om_öt
 (0);
 
-229 
+221 
 ¥±r
 ->
 ¥i‹ôy_i
- = 0;
+ = 100;
 
-231 
+223 
 	`°∫˝y
 (
 ¥±r
@@ -81315,7 +81285,7 @@ ni˚
 ¥«me
 , "prnull", 7);
 
-232 
+224 
 ¥±r
 ->
 ¥°kba£
@@ -81325,7 +81295,7 @@ ni˚
 NULLSTK
 );
 
-233 
+225 
 ¥±r
 ->
 ¥°kÀn
@@ -81333,25 +81303,25 @@ NULLSTK
 NULLSTK
 ;
 
-234 
+226 
 ¥±r
 ->
 ¥°k±r
  = 0;
 
-235 
+227 
 cuºpid
  = 
 NULLPROC
 ;
 
-239 
+231 
 i
  = 0; i < 
 NUMGROUP
 ; i++) {
 
-240 
+232 
 grou±ab
 [
 i
@@ -81361,7 +81331,7 @@ i
 INITGPRIO
 ;
 
-241 
+233 
 grou±ab
 [
 i
@@ -81371,13 +81341,13 @@ g¥io
 öôg¥io
 ;
 
-246 
+238 
 i
  = 0; i < 
 NSEM
 ; i++) {
 
-247 
+239 
 £m±r
  = &
 £mèb
@@ -81385,7 +81355,7 @@ NSEM
 i
 ];
 
-248 
+240 
 £m±r
 ->
 s°©e
@@ -81393,13 +81363,13 @@ s°©e
 S_FREE
 ;
 
-249 
+241 
 £m±r
 ->
 scou¡
  = 0;
 
-250 
+242 
 £m±r
 ->
 squeue
@@ -81407,37 +81377,37 @@ squeue
 	`√wqueue
 ();
 
-255 
+247 
 	`buföô
 ();
 
-259 
+251 
 ªadyli°
  = 
 	`√wqueue
 ();
 
-263 
+255 
 	`˛köô
 ();
 
-265 
+257 
 i
  = 0; i < 
 NDEVS
 ; i++) {
 
-266 
+258 
 	`öô
 (
 i
 );
 
-269 
+261 
 	}
 }
 
-271 
+263 
 öt32
  
 	$°›
@@ -81445,21 +81415,21 @@ i
 s
 ) {
 
-272 
+264 
 	`k¥ötf
 ("%s\n", 
 s
 );
 
-273 
+265 
 	`k¥ötf
 ("looping...ÖressÑeset\n");
 
-275 
+267 
 	}
 }
 
-277 
+269 
 öt32
  
 	$dñay
@@ -81467,17 +81437,17 @@ s
 n
 ) {
 
-278 
+270 
 	`DELAY
 (
 n
 );
 
-279  
+271  
 OK
 ;
 
-280 
+272 
 	}
 }
 
@@ -87075,41 +87045,7 @@ pid
 SYSERR
 ;
 
-21 i‡(
-¥o˘ab
-[
-pid
-].
-group
- =
-PSSCHED
-) {
-
-22 i‡(
-˛ktime
- * 1000 + 
-cou¡1000
- > 
-¥o˘ab
-[
-pid
-].
-pi
-) {
-
-23 
-¥o˘ab
-[
-pid
-].
-pi
- = 
-˛ktime
- * 1000 + 
-cou¡1000
-;
-
-29 
+21 
 ¥±r
  = &
 ¥o˘ab
@@ -87117,7 +87053,7 @@ cou¡1000
 pid
 ];
 
-30 
+22 
 ¥±r
 ->
 ¥°©e
@@ -87125,7 +87061,7 @@ pid
 PR_READY
 ;
 
-31 
+23 
 	`ö£π
 (
 pid
@@ -87137,15 +87073,15 @@ pid
 ¥¥io
 );
 
-32 
+24 
 	`ªsched
 ();
 
-34  
+26  
 OK
 ;
 
-35 
+27 
 	}
 }
 
@@ -87759,101 +87695,33 @@ MFQSCHED
 	}
 }
 
-84 
-	$¥öt_ªadyli°
-() {
-
-85 
-öt32
- 
-ªadyli°_idx
- = 
-	`fú°id
-(
-ªadyli°
-);
-
-86 
-	`XDEBUG_KPRINTF
-("print outÑeadylist\n");
-
-87 
-	`√xtid
-(
-ªadyli°_idx
-Ë!
-EMPTY
-) {
-
-88 
-	`XDEBUG_KPRINTF
-("¥o¯«me: %† ", 
-¥o˘ab
-[
-ªadyli°_idx
-].
-¥«me
-);
-
-89 
-	`XDEBUG_KPRINTF
-("¥o¯¥i‹ôy_i: %d ", 
-¥o˘ab
-[
-ªadyli°_idx
-].
-¥i‹ôy_i
-);
-
-90 
-	`XDEBUG_KPRINTF
-("\n");
-
-91 
-ªadyli°_idx
- = 
-	`√xtid
-(readylist_idx);
-
-94 
-	}
-}
-
-100 
+88 
 	$ªsched
 ()
 
-102 
+90 
 	`XDEBUG_KPRINTF
 ("Resched: \n");
 
-104 #i‡
-XTESTCASE
-
-
-105 
-	`¥öt_ªadyli°
-();
-
-108 
+92 
 ¥o˚¡
  *
 ±ﬁd
 ;
 
-109 
+93 
 ¥o˚¡
  *
 ±√w
 ;
 
-113 i‡(
+97 i‡(
 De„r
 .
 nde„rs
  > 0) {
 
-114 
+98 
 De„r
 .
 ©ãm±
@@ -87861,11 +87729,11 @@ De„r
 TRUE
 ;
 
-115 
+99 
 	`XDEBUG_KPRINTF
 ("Resched defer\n");
 
-121 i‡(
+105 i‡(
 ¥o˘ab
 [
 cuºpid
@@ -87875,7 +87743,7 @@ group
 PSSCHED
 ) {
 
-122 
+106 
 fix16_t
  
 øtio
@@ -87891,7 +87759,7 @@ cuºpid
 ¥¥io
 ));
 
-123 
+107 
 fix16_t
  
 öc
@@ -87905,7 +87773,7 @@ fix16_t
 œ°_ªsched_ms
 ));
 
-124 
+108 
 ¥o˘ab
 [
 cuºpid
@@ -87917,7 +87785,7 @@ pi
 öc
 );
 
-129 
+121 
 pid32
  
 √xt_pid
@@ -87925,7 +87793,7 @@ pid32
 	`choo£_group
 ();
 
-133 
+129 
 ±ﬁd
  = &
 ¥o˘ab
@@ -87933,7 +87801,7 @@ pid32
 cuºpid
 ];
 
-137 i‡(
+133 i‡(
 ¥o˘ab
 [
 √xt_pid
@@ -87943,7 +87811,7 @@ group
 PSSCHED
 ) {
 
-138 i‡(
+134 i‡(
 ±ﬁd
 ->
 ¥°©e
@@ -87951,7 +87819,7 @@ PSSCHED
 PR_CURR
 ) {
 
-139 i‡(
+135 i‡(
 ±ﬁd
 ->
 pi
@@ -87961,7 +87829,7 @@ pi
 √xt_pid
 ].pi &&
 
-140 
+136 
 ¥o˘ab
 [
 cuºpid
@@ -87971,15 +87839,15 @@ group
 PSSCHED
 ) {
 
-141 
+137 
 	`XDEBUG_KPRINTF
 ("PSSÑemain\n");
 
-142 
+138 
 	`XTESTCASE_KPRINTF
 ("PSSÑemain\n");
 
-146 } i‡(
+142 } i‡(
 ¥o˘ab
 [
 √xt_pid
@@ -87989,7 +87857,7 @@ group
 MFQSCHED
 ) {
 
-147 i‡(
+143 i‡(
 ±ﬁd
 ->
 ¥°©e
@@ -87997,7 +87865,7 @@ MFQSCHED
 PR_CURR
 ) {
 
-148 i‡(
+144 i‡(
 ±ﬁd
 ->
 ¥i‹ôy_i
@@ -88007,7 +87875,7 @@ PR_CURR
 √xt_pid
 ].priority_i &&
 
-149 
+145 
 ¥o˘ab
 [
 cuºpid
@@ -88017,15 +87885,15 @@ group
 MFQSCHED
 ) {
 
-150 
+146 
 	`XDEBUG_KPRINTF
 ("MFQÑemain\n");
 
-155 
+151 
 	`XDEBUG_KPRINTF
 ("ERROR\n");
 
-160 i‡(
+156 i‡(
 ±ﬁd
 ->
 ¥°©e
@@ -88033,7 +87901,7 @@ MFQSCHED
 PR_CURR
 ) {
 
-161 
+157 
 ±ﬁd
 ->
 ¥°©e
@@ -88041,7 +87909,7 @@ PR_CURR
 PR_READY
 ;
 
-162 
+158 
 	`íqueue
 (
 cuºpid
@@ -88049,11 +87917,45 @@ cuºpid
 ªadyli°
 );
 
-168 
-	`XTESTCASE_KPRINTF
-("resched fromÖrocess [group: %d][name: %s][priority_i: %d][nice: %d][recent_cpu_i: %f] \nÅoÅheÖrocess [group: %d][name: %s][priority_i: %d][nice: %d][recent_cpu_i: %f] \nÜoad_avg = %f \n\n",
+163 i‡(
+¥o˘ab
+[
+√xt_pid
+].
+group
+ =
+PSSCHED
+) {
 
-169 
+164 i‡(
+˛ktime
+ * 1000 + 
+cou¡1000
+ > 
+¥o˘ab
+[
+√xt_pid
+].
+pi
+) {
+
+165 
+¥o˘ab
+[
+√xt_pid
+].
+pi
+ = 
+˛ktime
+ * 1000 + 
+cou¡1000
+;
+
+171 
+	`XTESTCASE_KPRINTF
+("resched fromÖrocess [group: %d][name: %s][nice: %d][recent_cpu_i: %f] \nÅoÅheÖrocess [group: %d][name: %s][nice: %d][recent_cpu_i: %f] \nÜoad_avg = %f \n\n",
+
+172 
 ¥o˘ab
 [
 cuºpid
@@ -88061,8 +87963,6 @@ cuºpid
 group
 ,Öro˘ab[cuºpid].
 ¥«me
-,Öro˘ab[cuºpid].
-¥i‹ôy_i
 ,Öro˘ab[cuºpid].
 ni˚
 , 
@@ -88071,7 +87971,7 @@ ni˚
 ª˚¡_˝u_i
 ),
 
-170 
+173 
 ¥o˘ab
 [
 √xt_pid
@@ -88080,8 +87980,6 @@ group
 ,Öro˘ab[√xt_pid].
 ¥«me
 ,Öro˘ab[√xt_pid].
-¥i‹ôy_i
-,Öro˘ab[√xt_pid].
 ni˚
 , 
 	`fix16_to_Êﬂt
@@ -88089,13 +87987,13 @@ ni˚
 ª˚¡_˝u_i
 ),
 
-171 
+174 
 	`fix16_to_Êﬂt
 (
 lﬂd_avg
 ));
 
-175 
+182 
 cuºpid
  = 
 	`gëôem
@@ -88103,7 +88001,7 @@ cuºpid
 √xt_pid
 );
 
-176 
+183 
 queuëab
 [
 cuºpid
@@ -88113,7 +88011,7 @@ q¥ev
 EMPTY
 ;
 
-177 
+184 
 queuëab
 [
 cuºpid
@@ -88123,7 +88021,7 @@ q√xt
 EMPTY
 ;
 
-178 
+185 
 ±√w
  = &
 ¥o˘ab
@@ -88131,7 +88029,7 @@ EMPTY
 cuºpid
 ];
 
-179 
+186 
 ±√w
 ->
 ¥°©e
@@ -88139,13 +88037,13 @@ cuºpid
 PR_CURR
 ;
 
-180 
+187 
 ¥ìm±
  = 
 QUANTUM
 ;
 
-181 
+188 
 	`˘xsw
 (&
 ±ﬁd
@@ -88155,37 +88053,37 @@ QUANTUM
 ±√w
 ->prstkptr);
 
-186 
+193 
 	}
 }
 
-192 
+199 
 °©us
  
 	$ªsched_˙é
 (
 
-193 
+200 
 öt32
  
 de„r
 
 
-195 
+202 
 de„r
 ) {
 
-196 
+203 
 DEFER_START
 :
 
-198 i‡(
+205 i‡(
 De„r
 .
 nde„rs
 ++ == 0) {
 
-199 
+206 
 De„r
 .
 ©ãm±
@@ -88193,25 +88091,25 @@ De„r
 FALSE
 ;
 
-201  
+208  
 OK
 ;
 
-203 
+210 
 DEFER_STOP
 :
 
-204 i‡(
+211 i‡(
 De„r
 .
 nde„rs
  <= 0) {
 
-205  
+212  
 SYSERR
 ;
 
-207 i‡((--
+214 i‡((--
 De„r
 .
 nde„rs
@@ -88219,19 +88117,19 @@ nde„rs
 ©ãm±
 ) {
 
-208 
+215 
 	`ªsched
 ();
 
-210  
+217  
 OK
 ;
 
-213  
+220  
 SYSERR
 ;
 
-215 
+222 
 	}
 }
 
@@ -90390,128 +90288,6 @@ DEFER_STOP
 );
 
 34 
-	}
-}
-
-	@system/testcase_5.c
-
-1 
-	~<xöu.h
->
-
-6 
-	#L1
- 10000
-
-	)
-
-7 
-	#L2
- 1000
-
-	)
-
-9 
-	$t5_¥oc
-() {
-
-10 
-i
-, 
-j
-;
-
-11 
-accu
- = 0;
-
-13 
-i
- = 0; i < 
-L1
-; i ++) {
-
-14 
-j
- = 0; j < 
-L2
-; j ++) {
-
-15 
-accu
- +
-i
- * 
-j
-;
-
-21 
-	`XTESTCASE_KPRINTF
-("myÖid: %dÉnd\n", 
-cuºpid
-);
-
-22 
-	}
-}
-
-25 
-¥o˚ss
- 
-	$ã°ˇ£_5
-() {
-
-26 
-	`ªsched_˙é
-(
-DEFER_START
-);
-
-28 
-	`ªsume
-(
-	`¸óã
-(
-t5_¥oc
-, 1024, 
-MFQSCHED
-, 50, "t5_¥oc_1", 0, 
-NULL
-));
-
-29 
-pid32
- 
-t5_¥oc_2
- = 
-	`¸óã
-(
-t5_¥oc
-, 1024, 
-MFQSCHED
-, 50, "t5_¥oc_2", 0, 
-NULL
-);
-
-30 
-	`ªsume
-(
-t5_¥oc_2
-);
-
-32 
-	`chni˚
-(
-t5_¥oc_2
-, -20);
-
-34 
-	`ªsched_˙é
-(
-DEFER_STOP
-);
-
-37 
 	}
 }
 
@@ -135422,8 +135198,8 @@ _ASM_GENERIC_ERRNO_BASE_H
 .
 1
 /usr/include
-402
-8118
+401
+8098
 config/conf.c
 config/conf.h
 config/config.l
@@ -135721,7 +135497,6 @@ system/testcase_1.c
 system/testcase_2.c
 system/testcase_3.c
 system/testcase_4.c
-system/testcase_5.c
 system/unsleep.c
 system/userret.c
 system/wait.c
