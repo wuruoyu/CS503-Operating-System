@@ -18,6 +18,10 @@ int fileunregister(char* path)
 	for (i = 0; i < NFILE; i ++) {
 		if (filetab[i].filestate == FILE_OCCUPIED) {
 			if (strcmp(filetab[i].filepath, path) == 0) {
+				if (filetab[i].fileopen == FILE_OPEN) {
+					restore(mask);
+					return SYSERR;
+				}
 				filetab[i].filestate = FILE_FREE;	
 				restore(mask);
 				return OK;

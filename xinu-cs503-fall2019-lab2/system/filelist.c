@@ -8,7 +8,6 @@
  */
 int filelist(char* buf_list_out, int buf_list_max)
 {
-	struct fileent* filepr;
 	int32 i;
 	intmask mask;
 
@@ -18,7 +17,7 @@ int filelist(char* buf_list_out, int buf_list_max)
 	for (i = 0; i < NFILE; i++) {
 		if (filetab[i].filestate == FILE_OCCUPIED) {
 			if (buf_list_counter + strlen(filetab[i].filepath) + 1 <= buf_list_max) {
-				strcat(buf_list_out, filetab[i].filepath);
+				strncat(buf_list_out, filetab[i].filepath, strlen(filetab[i].filepath));
 				buf_list_counter += strlen(filetab[i].filepath);
 				buf_list_out[buf_list_counter] = '\n';
 				buf_list_counter ++;
@@ -30,11 +29,13 @@ int filelist(char* buf_list_out, int buf_list_max)
 					local_counter ++;
 				}
 				XDEBUG_KPRINTF("filelist buf: %s\n", buf_list_out);
+				restore(mask);
 				return SYSERR;
 			}
 		}
 	}
 
 	XDEBUG_KPRINTF("filelist buf: %s\n", buf_list_out);
+	restore(mask);
 	return OK; 
 }

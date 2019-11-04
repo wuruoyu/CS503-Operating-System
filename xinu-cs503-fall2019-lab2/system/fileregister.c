@@ -42,6 +42,6 @@ int fileregister(char* path, char* file, int file_size)
 	filepr->filecontent = file;
 	filepr->filesize = file_size;
 	filepr->fileopen = FILE_UNOPEN;
-	restore(mask)
+	restore(mask);
 	return OK;
 }

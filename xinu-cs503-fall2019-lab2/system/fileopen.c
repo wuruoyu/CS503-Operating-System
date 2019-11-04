@@ -6,7 +6,7 @@
  *  fileopen - register file 
  *------------------------------------------------------------------------
  */
-int fileopen(char* path, int* file_size_out)
+char* fileopen(char* path, int* file_size_out)
 {
 	int32 i;
 	intmask mask;
@@ -30,5 +30,4 @@ int fileopen(char* path, int* file_size_out)
 
 	restore(mask);
 	return SYSERR;
-
 }
