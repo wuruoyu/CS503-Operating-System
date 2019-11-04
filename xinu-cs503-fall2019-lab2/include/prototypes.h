@@ -615,6 +615,21 @@ extern	void	xdone(void);
 /* in file yield.c */
 extern	syscall	yield(void);
 
+/* in file fileregister.c */
+extern int fileregister(char*, char*, int);
+
+/* in file fileopen.c */
+extern char* fileopen(char*, int*);
+
+/* in file fileclose.c */
+extern int fileclose(char*);
+
+/* in file filelist.c */
+extern int filelist(char*, int);
+
+/* in file fileunregister.c */
+extern int fileunregister(char*);
+
 /* NETWORK BYTE ORDER CONVERSION NOT NEEDED ON A BIG-ENDIAN COMPUTER */
 #define	htons(x)  ((0xff & ((x)>>8)) | ((0xff & (x)) << 8))
 #define	htonl(x)  ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \

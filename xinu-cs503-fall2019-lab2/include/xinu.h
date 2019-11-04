@@ -47,10 +47,19 @@
 #include <syscall_interface_tab.h>
 #include <ld.h>
 
+#include <filesys.h>
 
 
+#define XTEST 0
+#define XDEBUG 1
 
-
-
-
-
+#if XTEST
+#define XTEST_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XTEST_KPRINTF(...)
+#endif
+#if XDEBUG
+#define XDEBUG_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XDEBUG_KPRINTF(...)
+#endif

@@ -20,6 +20,7 @@ local	process startup(void);	/* Process to finish startup tasks	*/
 struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
+struct 	fileent	filetab[NFILE]; /* File table 				*/
 
 /* Active system status */
 
@@ -150,6 +151,7 @@ static	void	sysinit()
 	int32	i;
 	struct	procent	*prptr;		/* Ptr to process table entry	*/
 	struct	sentry	*semptr;	/* Ptr to semaphore table entry	*/
+	struct 	fileent *filepr;
 
 	/* Platform Specific Initialization */
 
@@ -198,7 +200,7 @@ static	void	sysinit()
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
 	currpid = NULLPROC;
-	
+
 	/* Initialize semaphores */
 
 	for (i = 0; i < NSEM; i++) {
@@ -211,6 +213,17 @@ static	void	sysinit()
 	/* Initialize buffer pools */
 
 	bufinit();
+
+	/* Initialize file table */
+
+	for (i = 0; i < NFILE; i++) {
+		filepr = &filetab[i];
+		filepr->filestate = FILE_FREE;
+		filepr->filepath = NULL;
+		filepr->filecontent = NULL;
+		filepr->filesize = 0;
+		filepr->fileopen = FILE_UNOPEN;
+	}
 
 	/* Create a ready list for processes */
 
