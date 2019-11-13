@@ -33,7 +33,7 @@ uint16	girmask;
 
 #define	EOI	0x20		/* non-specific end of interrupt	*/
 
-#define NID		48	/* Number of interrupt descriptors	*/
+#define NID		49	/* Number of interrupt descriptors	*/
 #define	IGDT_TRAPG	15	/* Trap Gate				*/
 #define	IGDT_INTRG	0xe	/* Interrupt Gate			*/
 
@@ -62,7 +62,7 @@ int32	initevec()
 
 	/* Set default exception vectors */
 
-	for(i = 0; i < NID; i++) {
+	for(i = 0; i < NID - 1; i++) {
 		set_evec(i, defevec[i]);
 	}
 
@@ -136,9 +136,12 @@ int	set_ivec (
 	struct	int_info *iinfo;	/* Interrupt item entry		*/
 	intmask	mask;			/* Saved interrupt mask		*/
 
+	XDEBUG_KPRINTF("[set_ivec] inum: %d, limit: %d\n", inum, IRQBASE + MAX_EXT_IRQS);
+
 	/* Sanity check on interrupt number */
 
 	if( (inum < IRQBASE) || (inum >= (IRQBASE + MAX_EXT_IRQS)) ) {
+		XDEBUG_KPRINTF("[set_ivec] fail sanity check\n");
 		return SYSERR;
 	}
 
@@ -150,6 +153,7 @@ int	set_ivec (
 
 	if(ient->nitems >= MAX_IRQ_SHARING) {
 		restore(mask);
+		XDEBUG_KPRINTF("[set_ivec] max handlers registered\n");
 		return SYSERR;
 	}
 
@@ -186,7 +190,7 @@ int32	ioapic_irq2vec (
  * int_dispatch  -  Dispatcher function for high level interrupt handlers
  *------------------------------------------------------------------------
  */
-void	int_dispatch (
+syscall int_dispatch (
 		int32	inum,		/* Interrupt number	*/
 		long	*savedsp	/* Saved stack pointer	*/
 		)
@@ -207,15 +211,25 @@ void	int_dispatch (
 
 	if(ient->nitems == 0) {
 		/* This call never returns */
+		XDEBUG_KPRINTF("[int_dispatch] No handler for this\n");
+		XDEBUG_KPRINTF("[int_dispatch] inum: %d\n", inum);
 		trap(inum, savedsp);
 	}
+
 
 	/* Call all the registered high level interrupt handlers */
 
 	for(i = 0; i < ient->nitems; i++) {
 
 		iinfo = &ient->int_items[i];
-		iinfo->int_handler(iinfo->int_arg);
+		if (inum == 0x80) {
+			int ret = syscallhandler(iinfo->int_arg, savedsp);
+			XDEBUG_KPRINTF("[int_dispatch] ret: %d\n", ret);
+			return ret;
+		}
+		else {
+			iinfo->int_handler(iinfo->int_arg);
+		}
 	}
 
 	/* Acknowledge interrupt in local APIC */

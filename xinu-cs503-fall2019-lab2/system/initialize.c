@@ -15,12 +15,24 @@ static	void sysinit(); 	/* Internal system initialization	*/
 extern	void meminit(void);	/* Initializes the free memory list	*/
 local	process startup(void);	/* Process to finish startup tasks	*/
 
+/* Testcases */
+#if XDEBUG
+extern void testcase_1(void);
+extern void testcase_2(void);
+extern void testcase_3(void);
+/*extern void testcase_4(void);*/
+/*extern void testcase_5(void);*/
+#endif 
+
 /* Declarations of major kernel variables */
 
 struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
 struct 	fileent	filetab[NFILE]; /* File table 				*/
+
+/* Keep track of loaded components */
+struct 	load_t 	loadtab[NLOAD];
 
 /* Active system status */
 
@@ -129,10 +141,28 @@ local process	startup(void)
 		kprintf("Obtained IP address  %s   (0x%08x)\n", str,
 								ipaddr);
 	}
+
 	/* Create a process to execute function main() */
 
+#if XTEST
 	resume(create((void *)main, INITSTK, INITPRIO,
 					"Main process", 0, NULL));
+#endif
+
+
+	/* Here hook the testcase */
+
+#if XDEBUG
+	/*resume(create((void *)testcase_1, INITSTK, 50, "testcase 1", 0,*/
+		/*NULL));*/
+
+       /* resume(create((void *)testcase_2, INITSTK, 50, "testcase 2", 0,*/
+		/*NULL));*/
+
+	resume(create((void *)testcase_3, INITSTK, 50, "testcase 3", 0,
+		NULL));
+#endif
+
 
 	/* Startup process exits at this point */
 
@@ -223,6 +253,18 @@ static	void	sysinit()
 		filepr->filecontent = NULL;
 		filepr->filesize = 0;
 		filepr->fileopen = FILE_UNOPEN;
+		int j;
+		for (j = 0; j < NPROC; j ++) {
+			filepr->load_process[j] = DL_CLOSE;
+		}
+	}
+
+	/* Initialize syscall */
+	syscallinit();
+
+	/* Initialize loadtab */
+	for (i = 0; i < NLOAD; i++) {
+		loadtab[i].status = LOAD_FREE;
 	}
 
 	/* Create a ready list for processes */
@@ -232,6 +274,11 @@ static	void	sysinit()
 	/* Initialize the real time clock */
 
 	clkinit();
+
+	/* Initialize ELF buffer pool */
+
+	/*elfbufbool = mkbufpool(1048576, 8);*/
+
 
 	for (i = 0; i < NDEVS; i++) {
 		init(i);

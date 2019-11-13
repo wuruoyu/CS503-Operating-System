@@ -1,3 +1,4 @@
+
 //lab2 added
 int retval;
 int *args;
@@ -9,7 +10,7 @@ int syscall_interface(int nargs, ... ){
 	args = (int *)(&nargs +1);
 
 	args = args + 5  - 1;
-	
+
 	//push five arguments and number of nargs to stack
 	//Note that the address of argument in your handler function may not be exactly same as the address being "pushed" here
 	//You may want to print the address of esp to understand where these data are stored on the stack
@@ -26,7 +27,7 @@ int syscall_interface(int nargs, ... ){
             "pushl %%eax;"
 	    "movl %6, %%eax;"
 	    "pushl %%eax;"
-	    "int $80;"
+	    "int $0x80;"
 	    "movl %%eax, %0;"
 	    "popl %%eax;"
 	    "popl %%eax;"

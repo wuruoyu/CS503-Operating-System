@@ -2,7 +2,7 @@
 
 /* Definitions for the indirect interrupt dispatch array */
 
-#define	MAX_EXT_IRQS	16	/* Total IRQs devoted to external	*/
+#define	MAX_EXT_IRQS	97	/* Total IRQs devoted to external	*/
 				/* Actually, there are only 14 (32-38	*/
 				/* and 40-46) because we send 39 to	*/
 				/* spurious_irq7 and send 47 to	*/

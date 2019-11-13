@@ -91,7 +91,7 @@ Disassembly of section .text:
  2a6:	50                   	push   %eax
  2a7:	89 c8                	mov    %ecx,%eax
  2a9:	50                   	push   %eax
- 2aa:	cd 50                	int    $0x50
+ 2aa:	cd 80                	int    $0x80
  2ac:	89 c1                	mov    %eax,%ecx
  2ae:	58                   	pop    %eax
  2af:	58                   	pop    %eax

@@ -385,6 +385,42 @@ _extint:
 	popal
 	iret
 
+/*------------------------------------------------------------------------
+ * _sysint  -  Handle syscall interrupts (128)
+ *------------------------------------------------------------------------
+ */
+	.globl _sysint
+_sysint:
+	pushl %esp
+	movl %esp,%ebp
+
+	/* Save all general purpose registers */
+	pushal
+
+	/* Push the current stack pointer as an arg to int_dispatch	*/
+	movl %esp, %eax
+	pushl %eax
+
+	/* Push the interrupt number as an argument to int_dispatch */
+	movl	_saveint,%eax
+	pushl	%eax
+
+	call int_dispatch	
+
+	/* Pop previously saved registers and return */
+	nop
+	leave
+	iret
+	;popl	%edi
+	;popl	%esi
+	;popl	%ebp
+	;popl	%esp
+	;popl	%ebx
+	;popl	%edx
+	;popl	%ecx
+	;addl 	$4,%esp
+
+
 	.globl  _Xint32			/* available for ext. interrupt	*/
 _Xint32:
 	movl	$32,_saveint
@@ -460,6 +496,12 @@ _Xint46:
 	movl	$46,_saveint
 	jmp	_extint
 
+	.globl  _Xint128		/* available for ext. interrupt	*/
+_Xint128:
+	movl	$128,_saveint
+	jmp	_sysint
+
+
 /*------------------------------------------------------------------------
  * _Xint? - array of exception/interrupt entry points that are
  *		initialized to point to default handlers
@@ -516,3 +558,5 @@ defevec:
 	.long	_Xint45			/* available for ext. interrupt	*/
 	.long	_Xint46			/* available for ext. interrupt	*/
 	.long	spurious_irq15
+	.long	_Xint128		/* available for ext. interrupt	*/
+

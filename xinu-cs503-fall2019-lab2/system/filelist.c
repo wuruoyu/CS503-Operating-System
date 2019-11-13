@@ -13,6 +13,7 @@ int filelist(char* buf_list_out, int buf_list_max)
 
 	mask = disable();
 
+	*buf_list_out = '\0';
 	int buf_list_counter = 0;
 	for (i = 0; i < NFILE; i++) {
 		if (filetab[i].filestate == FILE_OCCUPIED) {
@@ -28,14 +29,14 @@ int filelist(char* buf_list_out, int buf_list_max)
 					*(buf_list_out + buf_list_counter) = *(filetab[i].filepath + local_counter);
 					local_counter ++;
 				}
-				XDEBUG_KPRINTF("filelist buf: %s\n", buf_list_out);
+				XDEBUG_KPRINTF("[filelist] prefix: %s\n", buf_list_out);
 				restore(mask);
 				return SYSERR;
 			}
 		}
 	}
+	buf_list_out[buf_list_counter] = '\0';
 
-	XDEBUG_KPRINTF("filelist buf: %s\n", buf_list_out);
 	restore(mask);
 	return OK; 
 }

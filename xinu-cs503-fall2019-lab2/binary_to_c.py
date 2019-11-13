@@ -31,6 +31,13 @@ def binary_to_c(input_filename):
                         i = 0
         print "};"
 
+        if input_filename == "../compile/apphello.elf":
+            print "int apphello_contents_size = sizeof(apphello_contents);"
+        elif input_filename == "../compile/libmy.so":
+            print "int libmy_contents_size = sizeof(libmy_contents);"
+        elif input_filename == "../compile/apphello_dyn_loading.elf":
+            print "int apphello_dyn_loading_contents_size = sizeof(apphello_dyn_loading_contents);"
+
 
 
 binary_to_c(sys.argv[1])

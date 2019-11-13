@@ -30,6 +30,15 @@ extern	void	clkinit(void);
 /* in file clkdisp.S */
 extern	void	clkdisp(void);
 
+/* in file syscallinit.c */
+extern	void	syscallinit(void);
+
+/* in file syscallhandler.c */
+extern	syscall syscallhandler(int32, long*);
+
+/* in file syscalldisp.S */
+extern	void	syscalldisp(void);
+
 /* in file close.c */
 extern	syscall	close(did32);
 
@@ -629,6 +638,12 @@ extern int filelist(char*, int);
 
 /* in file fileunregister.c */
 extern int fileunregister(char*);
+
+/* in file my_load.c */
+syscall load(char*, struct load_t*);
+
+/* in file my_load.c */
+int unload(void* ld_text_addr);
 
 /* NETWORK BYTE ORDER CONVERSION NOT NEEDED ON A BIG-ENDIAN COMPUTER */
 #define	htons(x)  ((0xff & ((x)>>8)) | ((0xff & (x)) << 8))

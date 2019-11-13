@@ -22,7 +22,7 @@ Disassembly of section .text:
  281:	89 e5                	mov    %esp,%ebp
  283:	53                   	push   %ebx
  284:	83 ec 04             	sub    $0x4,%esp
- 287:	e8 77 00 00 00       	call   303 <__x86.get_pc_thunk.ax>
+ 287:	e8 83 00 00 00       	call   30f <__x86.get_pc_thunk.ax>
  28c:	05 64 1d 00 00       	add    $0x1d64,%eax
  291:	89 c3                	mov    %eax,%ebx
  293:	e8 07 00 00 00       	call   29f <main>
@@ -41,36 +41,38 @@ Disassembly of section .text:
  2ac:	53                   	push   %ebx
  2ad:	51                   	push   %ecx
  2ae:	83 ec 10             	sub    $0x10,%esp
- 2b1:	e8 51 00 00 00       	call   307 <__x86.get_pc_thunk.bx>
+ 2b1:	e8 5d 00 00 00       	call   313 <__x86.get_pc_thunk.bx>
  2b6:	81 c3 3a 1d 00 00    	add    $0x1d3a,%ebx
  2bc:	c7 45 f4 64 00 00 00 	movl   $0x64,-0xc(%ebp)
- 2c3:	8d 83 14 00 00 00    	lea    0x14(%ebx),%eax
+ 2c3:	8d 83 18 00 00 00    	lea    0x18(%ebx),%eax
  2c9:	c7 00 01 00 00 00    	movl   $0x1,(%eax)
  2cf:	ff 45 f4             	incl   -0xc(%ebp)
  2d2:	83 ec 04             	sub    $0x4,%esp
- 2d5:	6a 0d                	push   $0xd
- 2d7:	6a 0a                	push   $0xa
+ 2d5:	6a 01                	push   $0x1
+ 2d7:	6a 08                	push   $0x8
  2d9:	6a 02                	push   $0x2
  2db:	e8 90 ff ff ff       	call   270 <syscall_interface@plt>
  2e0:	83 c4 10             	add    $0x10,%esp
- 2e3:	83 ec 04             	sub    $0x4,%esp
- 2e6:	6a 0e                	push   $0xe
- 2e8:	6a 0a                	push   $0xa
- 2ea:	6a 02                	push   $0x2
- 2ec:	e8 7f ff ff ff       	call   270 <syscall_interface@plt>
- 2f1:	83 c4 10             	add    $0x10,%esp
- 2f4:	b8 01 00 00 00       	mov    $0x1,%eax
- 2f9:	8d 65 f8             	lea    -0x8(%ebp),%esp
- 2fc:	59                   	pop    %ecx
- 2fd:	5b                   	pop    %ebx
- 2fe:	5d                   	pop    %ebp
- 2ff:	8d 61 fc             	lea    -0x4(%ecx),%esp
- 302:	c3                   	ret    
+ 2e3:	89 c2                	mov    %eax,%edx
+ 2e5:	8d 83 18 00 00 00    	lea    0x18(%ebx),%eax
+ 2eb:	89 10                	mov    %edx,(%eax)
+ 2ed:	8d 83 10 00 00 00    	lea    0x10(%ebx),%eax
+ 2f3:	8b 00                	mov    (%eax),%eax
+ 2f5:	8d 50 01             	lea    0x1(%eax),%edx
+ 2f8:	8d 83 10 00 00 00    	lea    0x10(%ebx),%eax
+ 2fe:	89 10                	mov    %edx,(%eax)
+ 300:	b8 01 00 00 00       	mov    $0x1,%eax
+ 305:	8d 65 f8             	lea    -0x8(%ebp),%esp
+ 308:	59                   	pop    %ecx
+ 309:	5b                   	pop    %ebx
+ 30a:	5d                   	pop    %ebp
+ 30b:	8d 61 fc             	lea    -0x4(%ecx),%esp
+ 30e:	c3                   	ret    
 
-00000303 <__x86.get_pc_thunk.ax>:
- 303:	8b 04 24             	mov    (%esp),%eax
- 306:	c3                   	ret    
+0000030f <__x86.get_pc_thunk.ax>:
+ 30f:	8b 04 24             	mov    (%esp),%eax
+ 312:	c3                   	ret    
 
-00000307 <__x86.get_pc_thunk.bx>:
- 307:	8b 1c 24             	mov    (%esp),%ebx
- 30a:	c3                   	ret    
+00000313 <__x86.get_pc_thunk.bx>:
+ 313:	8b 1c 24             	mov    (%esp),%ebx
+ 316:	c3                   	ret    

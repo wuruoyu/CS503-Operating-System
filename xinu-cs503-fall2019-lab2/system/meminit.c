@@ -160,7 +160,8 @@ void	setsegs()
 
 	psd = &gdt_copy[1];	/* Kernel code segment: identity map from address
 				   0 to etext */
-	np = ((int)&etext - 0 + PAGE_SIZE-1) / PAGE_SIZE;	/* Number of code pages */
+	/*np = ((int)&etext - 0 + PAGE_SIZE-1) / PAGE_SIZE;	*/
+	np = ds_end;
 	psd->sd_lolimit = np;
 	psd->sd_hilim_fl = FLAGS_SETTINGS | ((np >> 16) & 0xff);
 

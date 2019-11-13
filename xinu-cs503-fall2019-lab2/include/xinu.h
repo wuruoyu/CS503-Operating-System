@@ -32,7 +32,13 @@
 #include <name.h>
 #include <shell.h>
 #include <date.h>
+
+// lab2
+#include <load.h>
+#include <elf.h>
+
 #include <prototypes.h>
+#include <syscall_interface.h>
 #include <delay.h>
 #include <pci.h>
 #include <quark_eth.h>
