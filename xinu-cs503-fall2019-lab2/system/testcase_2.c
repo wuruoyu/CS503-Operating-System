@@ -5,12 +5,12 @@ void t2_proc1() {
 	int i;
 
 	i = getprio(currpid);
-      	XDEBUG_KPRINTF("[testcase_2] currpid: %d\n", currpid);
-      	XDEBUG_KPRINTF("[testcase_2] prio: %d\n", i);
+    XDEBUG_KPRINTF("[testcase_2] currpid: %d\n", currpid);
+    XDEBUG_KPRINTF("[testcase_2] prio: %d\n", i);
 
 	// getprio: 1 argument
-      	i = syscall_interface(2, 8, currpid);
-      	XDEBUG_KPRINTF("[testcase_2] prio: %d\n", i);
+    i = syscall_interface(2, 8, currpid);
+    XDEBUG_KPRINTF("[testcase_2] prio: %d\n", i);
 
 	return 1;
 }  

@@ -1,11 +1,11 @@
 
 //lab2 added
-int retval;
 int *args;
 int orinargs;
 int test;
 int syscall_interface(int nargs, ... ){
 	
+    int retval;
 	orinargs = nargs;
 	args = (int *)(&nargs +1);
 

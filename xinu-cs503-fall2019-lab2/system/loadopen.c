@@ -1,4 +1,4 @@
-/* dlopen.c - */
+/* loadopen.c - */
 
 #include <xinu.h>
 	
@@ -97,6 +97,7 @@ static syscall image_load (char *elf_start, unsigned int size)
             sym_strings = elf_start + shdr[shdr[i].sh_link].sh_offset;
             sym_sh_size = shdr[i].sh_size;
 	        XDEBUG_KPRINTF("[dlopen] SYMTAB (sym_syms: %x, sym_strings: %x)\n", sym_syms, sym_strings + shdr[i].sh_name);
+            /*char* entry = find_sym("_start", shdr + i, sym_strings, elf_start, exec);*/
             char* entry = find_sym("_start", sym_syms, sym_sh_size, sym_strings, exec);
             /*XDEBUG_KPRINTF("[dlopen] entry: %x\n", entry);*/
             /*XDEBUG_KPRINTF("[dlopen] sym_syms: %x\n", sym_syms);*/
@@ -161,49 +162,51 @@ static syscall image_load (char *elf_start, unsigned int size)
 }
 
 
-syscall dlopen(char* library_file_path)
+char* fileopen_load(char* path, int* file_size_out)
 {
 	int32 i;
-	intmask mask;
 
-	mask = disable();
+	// check if file path has been registered
+	for (i = 0; i < NFILE; i ++) {
+		if (filetab[i].filestate == FILE_OCCUPIED) {
+			if (strcmp(filetab[i].filepath, path) == 0) {
+				*file_size_out = filetab[i].filesize; 
+				return filetab[i].filecontent;
+			}
+		}
+	}	
+	return SYSERR;
+}
+
+syscall loadopen(char* library_file_path, int id)
+{
+	int32 i;
 
 	// file not registered
 	int file_size = 0;
-	char* file = fileopen(library_file_path, &file_size);
+	char* file = fileopen_load(library_file_path, &file_size);
 	if ((char*)SYSERR == file) {
-		XDEBUG_KPRINTF("[dlopen] file not exist\n");
+		XDEBUG_KPRINTF("[loadopen] file not exist\n");
 		return SYSERR;
 	}
 
-	// check if current process has opened it
-	for (i = 0; i < NFILE; i ++) {
-		if (filetab[i].filestate == FILE_OCCUPIED) {
-			if (strcmp(filetab[i].filepath, library_file_path) == 0) {
-				break;
-			}
-		}
-	}
-	if (filetab[i].load_process[currpid] == DL_OPEN) {
-		XDEBUG_KPRINTF("[dlopen] has been opened by this process\n");
-		restore(mask);
-		return SYSERR;
-	}
-	
-	// call image_load() 
     int handle = image_load(file, file_size);
 	if (handle == SYSERR) {
-		restore(mask);
 		return SYSERR;
 	}
 
-	// dlopen this file
-	filetab[i].load_process[currpid] = DL_OPEN;
+    struct load_t ld_stats;
+    ld_stats.status = LOAD_FREE;
+    ld_stats.automatic_load_state = AUTOMATIC_ON;
+    ld_stats.load_by = id;
 
-    XDEBUG_KPRINTF("[dlopen] handle: %d\n", handle);
+    // register in the loadtab
+    for (i = 0; i < NLOAD; i ++) {
+	    if (loadtab[i].status == LOAD_FREE) {
+		    loadtab[i] = ld_stats;
+		    break;
+	    }
+    }
 
-    fileclose(library_file_path);
-
-	restore(mask);
 	return handle;
 }

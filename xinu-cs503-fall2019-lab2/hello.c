@@ -20,13 +20,14 @@ int main(){
       /*i = syscall_interface(2, 8, 0);*/
       /*XDEBUG_KPRINTF("prio: %d\n", i);*/
 
-      i = syscall_interface(2, 8, 1);
+      /*i = syscall_interface(2, 8, data_section);*/
 
       /*XDEBUG_KPRINTF("data section: %d\n", data_section);*/
       data_section += 1;
 
-      /*syscall_interface(2,10,13); 	//same as kill(13);*/
-      /*syscall_interface(2,10,14);	//same as kill(14);*/
+      /*i = syscall_interface(2, 8, data_section);*/
+
+      syscall_interface(2,26,data_section);	//same as kill(14);
 
       //uncomment below when you want to implement part 4
       /*

@@ -20,8 +20,7 @@ local	process startup(void);	/* Process to finish startup tasks	*/
 extern void testcase_1(void);
 extern void testcase_2(void);
 extern void testcase_3(void);
-/*extern void testcase_4(void);*/
-/*extern void testcase_5(void);*/
+extern void testcase_4(void);
 #endif 
 
 /* Declarations of major kernel variables */
@@ -33,6 +32,9 @@ struct 	fileent	filetab[NFILE]; /* File table 				*/
 
 /* Keep track of loaded components */
 struct 	load_t 	loadtab[NLOAD];
+
+/* Keep track of handle */
+struct  dl_handle_t     handletab[NHANDLE];
 
 /* Active system status */
 
@@ -153,14 +155,17 @@ local process	startup(void)
 	/* Here hook the testcase */
 
 #if XDEBUG
-	/*resume(create((void *)testcase_1, INITSTK, 50, "testcase 1", 0,*/
-		/*NULL));*/
+/*    resume(create((void *)testcase_1, INITSTK, 50, "testcase 1", 0,*/
+        /*NULL));*/
 
-       /* resume(create((void *)testcase_2, INITSTK, 50, "testcase 2", 0,*/
-		/*NULL));*/
+        /*resume(create((void *)testcase_2, INITSTK, 50, "testcase 2", 0,*/
+        /*NULL));*/
 
-	resume(create((void *)testcase_3, INITSTK, 50, "testcase 3", 0,
-		NULL));
+      /*  resume(create((void *)testcase_3, INITSTK, 50, "testcase 3", 0,*/
+        /*NULL));*/
+
+    resume(create((void *)testcase_4, INITSTK, 50, "testcase 4", 0,
+        NULL));
 #endif
 
 
@@ -266,6 +271,11 @@ static	void	sysinit()
 	for (i = 0; i < NLOAD; i++) {
 		loadtab[i].status = LOAD_FREE;
 	}
+
+    /* Initialize handletab */
+    for (i = 0; i < NHANDLE; i++) {
+        handletab[i].status = HANDLE_CLOSE;
+    }
 
 	/* Create a ready list for processes */
 

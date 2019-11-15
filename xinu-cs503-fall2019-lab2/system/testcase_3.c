@@ -1,9 +1,6 @@
 #include <xinu.h>
 #include <syscall_interface.h>
 
-extern char apphello_contents[];
-extern int apphello_contents_size;
-
 void t3_proc1() {
 	int status;
 
@@ -36,6 +33,7 @@ void t3_proc1() {
 
 	XDEBUG_KPRINTF("[testcase_3] currpid: %d\n", currpid);
 	XDEBUG_KPRINTF("[testcase_3] PROC 1 prio: %d\n", proctab[1].prprio);
+	XDEBUG_KPRINTF("[testcase_3] PROC 2 prio: %d\n", proctab[2].prprio);
 
 	// create the proc
 	resume(create(ld_stats._start_addr, INITSTK, INITPRIO, "testcase_3", 0, NULL));

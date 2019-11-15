@@ -46,6 +46,7 @@ int fileregister(char* path, char* file, int file_size)
 	// debug
 	XDEBUG_KPRINTF("[fileregister] filepath: %s\n", filepr->filepath);
 	XDEBUG_KPRINTF("[fileregister] filecontent: %s\n", filepr->filecontent);
+	XDEBUG_KPRINTF("[fileregister] filesize: %d\n", filepr->filesize);
 
 	restore(mask);
 	return OK;

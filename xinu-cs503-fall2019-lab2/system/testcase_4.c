@@ -1,31 +1,58 @@
 #include <xinu.h>
 #include <syscall_interface.h>
 
-extern char apphello_contents[];
-extern int apphello_contents_size;
-
 void t4_proc1() {
 	int status;
 
 	// hello elf
 	char* hello_elf = apphello_contents;
-	fileregister("/elf/hello_elf", hello_elf, apphello_contents_size);
+	fileregister("/elf/hello.so", hello_elf, apphello_contents_size);
 
-	XDEBUG_KPRINTF("[testcase_3] hello elf content: %s\n", hello_elf);
-	XDEBUG_KPRINTF("[testcase_3] hello elf size: %d\n", apphello_contents_size);
+	// libmy elf
+	char* libmy_elf = libmy_contents;
+	fileregister("/so/libmy.so", libmy_elf, libmy_contents_size);
 
-	// check if registered
-	bpid32 filebufpool;
-	filebufpool = mkbufpool(256, 128);
-	char* file_list = getbuf(filebufpool);
-	filelist(file_list, 256);
-	XDEBUG_KPRINTF("[testcase_3] file list: %s\n", file_list);
+    // dlopen an invalid elf file
 
-	// dlopen
-	dlopen("/elf/hello_elf");
+    // dlopen 
+    void* handle;
+    handle = dlopen("/so/libmy.so");
 
-	// unload
-	/*unload(ld_stats.ld_text_addr);*/
+    // dlsym
+    char* symbol_addr;
+    symbol_addr = dlsym(handle, "mylib");
+    XDEBUG_KPRINTF("[dlsym] mylib addr: %x\n", symbol_addr);
+
+    // do that func
+    /*resume(create(symbol_addr, INITSTK, INITPRIO, "testcase_4", 0, NULL));*/
+
+    sleep(10);
+    XDEBUG_KPRINTF("[testcase_4] second run\n");
+
+    // automatic loading
+	char* hello_dyn = apphello_dyn_loading_contents;
+	fileregister("/so/hello_dyn.so", hello_dyn, apphello_dyn_loading_contents_size);
+    
+    struct load_t ld_stats;
+    status = load("/so/hello_dyn.so", &ld_stats);
+    resume(create(ld_stats._start_addr, INITSTK, INITPRIO, "testcase_4_dyn", 0, NULL));
+    
+    sleep(10);
+
+    XDEBUG_KPRINTF("[testcase_4] ungister one\n");
+    fileunregister("/elf/hello.so");
+    resume(create(ld_stats._start_addr, INITSTK, INITPRIO, "testcase_4_dyn", 0, NULL));
+
+    sleep(10);
+
+    XDEBUG_KPRINTF("[testcase_4] ungister two\n");
+    fileunregister("/so/libmy.so");
+    resume(create(ld_stats._start_addr, INITSTK, INITPRIO, "testcase_4_dyn", 0, NULL));
+
+    sleep(10);
+
+    // dlclose
+    dlclose(handle);
 
 	return 1;
 }  

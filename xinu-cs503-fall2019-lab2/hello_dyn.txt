@@ -1,0 +1,154 @@
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  Entry point address:               0x280
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          5004 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         9
+  Size of section headers:           40 (bytes)
+  Number of section headers:         19
+  Section header string table index: 18
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .interp           PROGBITS        00000154 000154 000013 00   A  0   0  1
+  [ 2] .note.gnu.build-i NOTE            00000168 000168 000024 00   A  0   0  4
+  [ 3] .gnu.hash         GNU_HASH        0000018c 00018c 00002c 04   A  4   0  4
+  [ 4] .dynsym           DYNSYM          000001b8 0001b8 000050 10   A  5   1  4
+  [ 5] .dynstr           STRTAB          00000208 000208 000047 00   A  0   0  1
+  [ 6] .rel.plt          REL             00000250 000250 000008 08  AI  4  12  4
+  [ 7] .plt              PROGBITS        00000260 000260 000020 04  AX  0   0 16
+  [ 8] .text             PROGBITS        00000280 000280 0000c0 00  AX  0   0  1
+  [ 9] .eh_frame_hdr     PROGBITS        00000340 000340 000034 00   A  0   0  4
+  [10] .eh_frame         PROGBITS        00000374 000374 0000bc 00   A  0   0  4
+  [11] .dynamic          DYNAMIC         00001f58 000f58 000098 08  WA  5   0  4
+  [12] .got              PROGBITS        00001ff0 000ff0 000010 04  WA  0   0  4
+  [13] .data             PROGBITS        00002000 001000 000004 00  WA  0   0  4
+  [14] .bss              NOBITS          00002004 001004 00000c 00  WA  0   0  4
+  [15] .comment          PROGBITS        00000000 001004 00002b 01  MS  0   0  1
+  [16] .symtab           SYMTAB          00000000 001030 000210 10     17  21  4
+  [17] .strtab           STRTAB          00000000 001240 0000b0 00      0   0  1
+  [18] .shstrtab         STRTAB          00000000 0012f0 000099 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  p (processor specific)
+
+There are no section groups in this file.
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  PHDR           0x000034 0x00000034 0x00000034 0x00120 0x00120 R   0x4
+  INTERP         0x000154 0x00000154 0x00000154 0x00013 0x00013 R   0x1
+      [Requesting program interpreter: /lib/ld-linux.so.2]
+  LOAD           0x000000 0x00000000 0x00000000 0x00430 0x00430 R E 0x1000
+  LOAD           0x000f58 0x00001f58 0x00001f58 0x000ac 0x000b8 RW  0x1000
+  DYNAMIC        0x000f58 0x00001f58 0x00001f58 0x00098 0x00098 RW  0x4
+  NOTE           0x000168 0x00000168 0x00000168 0x00024 0x00024 R   0x4
+  GNU_EH_FRAME   0x000340 0x00000340 0x00000340 0x00034 0x00034 R   0x4
+  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10
+  GNU_RELRO      0x000f58 0x00001f58 0x00001f58 0x000a8 0x000a8 R   0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     
+   01     .interp 
+   02     .interp .note.gnu.build-id .gnu.hash .dynsym .dynstr .rel.plt .plt .text .eh_frame_hdr .eh_frame 
+   03     .dynamic .got .data .bss 
+   04     .dynamic 
+   05     .note.gnu.build-id 
+   06     .eh_frame_hdr 
+   07     
+   08     .dynamic .got 
+
+Dynamic section at offset 0xf58 contains 14 entries:
+  Tag        Type                         Name/Value
+ 0x00000001 (NEEDED)                     Shared library: [libsyscall_interface_pic.so]
+ 0x6ffffef5 (GNU_HASH)                   0x18c
+ 0x00000005 (STRTAB)                     0x208
+ 0x00000006 (SYMTAB)                     0x1b8
+ 0x0000000a (STRSZ)                      71 (bytes)
+ 0x0000000b (SYMENT)                     16 (bytes)
+ 0x00000015 (DEBUG)                      0x0
+ 0x00000003 (PLTGOT)                     0x1ff0
+ 0x00000002 (PLTRELSZ)                   8 (bytes)
+ 0x00000014 (PLTREL)                     REL
+ 0x00000017 (JMPREL)                     0x250
+ 0x0000001e (FLAGS)                      BIND_NOW
+ 0x6ffffffb (FLAGS_1)                    Flags: NOW PIE
+ 0x00000000 (NULL)                       0x0
+
+Relocation section '.rel.plt' at offset 0x250 contains 1 entry:
+ Offset     Info    Type            Sym.Value  Sym. Name
+00001ffc  00000107 R_386_JUMP_SLOT   00000000   syscall_interface
+
+The decoding of unwind sections for machine type Intel 80386 is not currently supported.
+
+Symbol table '.dynsym' contains 5 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000     0 FUNC    GLOBAL DEFAULT  UND syscall_interface
+     2: 00002004     0 NOTYPE  GLOBAL DEFAULT   13 _edata
+     3: 00002010     0 NOTYPE  GLOBAL DEFAULT   14 _end
+     4: 00002004     0 NOTYPE  GLOBAL DEFAULT   14 __bss_start
+
+Symbol table '.symtab' contains 33 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000154     0 SECTION LOCAL  DEFAULT    1 
+     2: 00000168     0 SECTION LOCAL  DEFAULT    2 
+     3: 0000018c     0 SECTION LOCAL  DEFAULT    3 
+     4: 000001b8     0 SECTION LOCAL  DEFAULT    4 
+     5: 00000208     0 SECTION LOCAL  DEFAULT    5 
+     6: 00000250     0 SECTION LOCAL  DEFAULT    6 
+     7: 00000260     0 SECTION LOCAL  DEFAULT    7 
+     8: 00000280     0 SECTION LOCAL  DEFAULT    8 
+     9: 00000340     0 SECTION LOCAL  DEFAULT    9 
+    10: 00000374     0 SECTION LOCAL  DEFAULT   10 
+    11: 00001f58     0 SECTION LOCAL  DEFAULT   11 
+    12: 00001ff0     0 SECTION LOCAL  DEFAULT   12 
+    13: 00002000     0 SECTION LOCAL  DEFAULT   13 
+    14: 00002004     0 SECTION LOCAL  DEFAULT   14 
+    15: 00000000     0 SECTION LOCAL  DEFAULT   15 
+    16: 00000000     0 FILE    LOCAL  DEFAULT  ABS hello.c
+    17: 00000000     0 FILE    LOCAL  DEFAULT  ABS 
+    18: 00001f58     0 OBJECT  LOCAL  DEFAULT   11 _DYNAMIC
+    19: 00000340     0 NOTYPE  LOCAL  DEFAULT    9 __GNU_EH_FRAME_HDR
+    20: 00001ff0     0 OBJECT  LOCAL  DEFAULT   12 _GLOBAL_OFFSET_TABLE_
+    21: 00000338     0 FUNC    GLOBAL HIDDEN     8 __x86.get_pc_thunk.ax
+    22: 00002004     4 OBJECT  GLOBAL DEFAULT   14 ptr
+    23: 00002008     4 OBJECT  GLOBAL DEFAULT   14 i
+    24: 00000280    31 FUNC    GLOBAL DEFAULT    8 _start
+    25: 0000200c     4 OBJECT  GLOBAL DEFAULT   14 handle
+    26: 0000033c     0 FUNC    GLOBAL HIDDEN     8 __x86.get_pc_thunk.bx
+    27: 00002004     0 NOTYPE  GLOBAL DEFAULT   14 __bss_start
+    28: 0000029f   153 FUNC    GLOBAL DEFAULT    8 main
+    29: 00000000     0 FUNC    GLOBAL DEFAULT  UND syscall_interface
+    30: 00002000     4 OBJECT  GLOBAL DEFAULT   13 data_section
+    31: 00002004     0 NOTYPE  GLOBAL DEFAULT   13 _edata
+    32: 00002010     0 NOTYPE  GLOBAL DEFAULT   14 _end
+
+Histogram for `.gnu.hash' bucket list length (total of 3 buckets):
+ Length  Number     % of total  Coverage
+      0  1          ( 33.3%)
+      1  1          ( 33.3%)     33.3%
+      2  1          ( 33.3%)    100.0%
+
+No version information found in this file.
+
+Displaying notes found in: .note.gnu.build-id
+  Owner                 Data size	Description
+  GNU                  0x00000014	NT_GNU_BUILD_ID (unique build ID bitstring)
+    Build ID: 68167ff61011bd6797db04c0e0f75e6aeb2e3676

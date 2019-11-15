@@ -13,12 +13,12 @@ syscall syscallhandler(
 		long*	savedsp		/* Hopefully ESP	*/
 		)
 {
-	XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+12));	
-	XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+13));	
-	XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+14));	
-	XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+15));	
-	XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+16));	
-	XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+17));	
+    XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+12));	
+	/*XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+13));	*/
+	/*XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+14));	*/
+	/*XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+15));	*/
+	/*XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+16));	*/
+	/*XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+17));	*/
 
 	/*XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+1));	*/
 	/*XDEBUG_KPRINTF("[syscallhandler] *savedsp: %d\n", *(savedsp+2));	*/

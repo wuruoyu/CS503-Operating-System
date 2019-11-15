@@ -56,8 +56,8 @@
 #include <filesys.h>
 
 
-#define XTEST 0
-#define XDEBUG 1
+#define XTEST 1
+#define XDEBUG 0
 
 #if XTEST
 #define XTEST_KPRINTF(...) kprintf(__VA_ARGS__)
@@ -69,3 +69,11 @@
 #else
 #define XDEBUG_KPRINTF(...)
 #endif
+
+// extern char array
+extern char apphello_dyn_loading_contents[];
+extern int apphello_dyn_loading_contents_size;
+extern char apphello_contents[];
+extern int apphello_contents_size;
+extern char libmy_contents[];
+extern int libmy_contents_size;

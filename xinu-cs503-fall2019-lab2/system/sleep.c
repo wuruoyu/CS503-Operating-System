@@ -12,6 +12,8 @@ syscall	sleep(
 	  int32	delay		/* Time to delay in seconds	*/
 	)
 {
+    XDEBUG_KPRINTF("[sleep] delay: %d\n", delay);
+
 	if ( (delay < 0) || (delay > MAXSECONDS) ) {
 		return SYSERR;
 	}

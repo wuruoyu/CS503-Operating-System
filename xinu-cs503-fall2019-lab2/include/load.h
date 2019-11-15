@@ -10,6 +10,8 @@ struct load_t {
 	char* exec;
 	int size;
 	int status;
+    int automatic_load_state;
+    int load_by;
 };
 
 //extern int32 elfbufpool;
@@ -17,5 +19,8 @@ struct load_t {
 #define NLOAD 		10
 #define LOAD_OCCUPIED 	0
 #define LOAD_FREE	1 
+
+#define AUTOMATIC_ON 1
+#define AUTOMATIC_OFF 0
 
 extern struct load_t loadtab[];
