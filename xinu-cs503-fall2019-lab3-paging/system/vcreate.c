@@ -40,7 +40,7 @@ pid32	vcreate(
 		return SYSERR;
 	}
 
-  // Lab3 TODO. set up page directory, allocate bs etc.
+    // Lab3 TODO. set up page directory, allocate bs etc.
 
 	prcount++;
 	prptr = &proctab[pid];

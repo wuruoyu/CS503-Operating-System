@@ -46,3 +46,42 @@
 #include <qrdisk.h>
 #include <qdebug.h>
 
+/* LAB 3 */
+#include <bs_map.h>
+#include <inv_pt.h>
+#include <frame_bookkeeper.h>
+
+/* Debug usage */
+#define XTEST 0
+#define XDEBUG 1 /* set this to 0 when submitting */
+#define XTESTCASE 1 /* set this to 0 when submitting */
+#define XERROR 1 /* set this to 0 when submitting */
+
+/* For grading */
+#if XTEST
+#define XTEST_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XTEST_KPRINTF(...)
+#endif
+
+/* For debugging */
+#if XDEBUG
+#define XDEBUG_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XDEBUG_KPRINTF(...)
+#endif
+
+/* For testcases */
+#if XTESTCASE
+#define XTESTCASE_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XTESTCASE_KPRINTF(...)
+#endif
+
+/* For error */
+#if XERROR 
+#define XERROR_KPRINTF(...) kprintf(__VA_ARGS__)
+#else
+#define XERROR_KPRINTF(...)
+#endif
+

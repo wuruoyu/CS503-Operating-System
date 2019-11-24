@@ -25,6 +25,11 @@ struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
 
+/* LAB 3 */
+struct  bs_map_entry            bs_map[NBSMAP];
+struct  inv_pt_entry            inv_pt[NINVPT];
+struct  frame_bookkeeper_t      frame_bookkeeper[NFRAMES];
+
 /* Lab3. frames metadata handling */
 frame_md_t frame_md;
 
@@ -58,9 +63,11 @@ void	nulluser()
 	/* Initialize the system */
 
 	sysinit();
+    /*XDEBUG_KPRINTF("[nulluser] finish sysinit\n");*/
 
-  // Lab3
+    // Lab3
 	initialize_paging();
+    XDEBUG_KPRINTF("[nulluser] finish initialize_paging\n");
 
 	kprintf("\n\r%s\n\n\r", VERSION);
 
@@ -155,6 +162,7 @@ static	void	sysinit()
 		prptr->prname[0] = NULLCH;
 		prptr->prstkbase = NULL;
 		prptr->prprio = 0;
+        prptr->prpdptr = 0;
 	}
 
 	/* Initialize the Null process entry */
@@ -201,7 +209,28 @@ static	void	sysinit()
 
 static void initialize_paging()
 {
-	/* LAB3 TODO */
+    int i;
+
+    /* Initialize the bs_map */
+
+    for (i = 0; i < NBSMAP; i ++) {
+        bs_map[i].state = BSMAP_FREE;
+    }
+
+    /* Initialize the inv_pt */
+
+    for (i = 0; i < NINVPT; i ++) {
+        inv_pt[i].state = INVPT_FREE;
+    }
+
+    /* Initialize frame_bookkeeper */
+
+    for (i = 0; i < NFRAMES; i ++) {
+        frame_bookkeeper[i].state = FRAME_FREE;
+    }
+
+    /* Initialize pd and pt for NULL */
+    initialize_paging_null();
 
 	return;
 }

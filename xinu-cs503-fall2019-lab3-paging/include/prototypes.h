@@ -445,6 +445,15 @@ extern	status	rdscomm(struct rd_msg_hdr *, int32, struct rd_msg_hdr *,
 /* in file rdsprocess.c */
 extern	void	rdsprocess(struct rdscblk *);
 
+/* in file bs_map.c */
+extern  syscall     bs_map_get(pid32, pageid_t, bsd_t*, int*);
+
+/* in file inv_pt.c */
+extern  syscall     inv_pt_get(frameid_t, pid32 *, pageid_t *);
+extern  syscall     inv_pt_put(frameid_t, pid32, pageid_t);
+
+/* in file paging.c */
+extern  syscall     initialize_paging_null();
 
 // qrds
 extern	devcall	qrds_close(struct dentry *);
@@ -704,6 +713,10 @@ extern	void	xdone(void);
 
 /* in file yield.c */
 extern	syscall	yield(void);
+
+/* in frame_bookkeeper.c */
+extern syscall find_free_frame();
+extern syscall bookkeep_frame_addr(char*, int);
 
 extern 	void 	setpagedirectory(unsigned long);
 extern 	void 	pageintdispat(void);

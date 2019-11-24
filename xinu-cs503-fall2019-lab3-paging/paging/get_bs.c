@@ -21,9 +21,9 @@ syscall get_bs(bsd_t bs_id, uint32 npages)
         memset(buf, 0, RD_BLKSIZ);
 
         /*
-                 int pagedev, ret, try = 0;
-                 struct ps_header req, resp;
-                 */
+         int pagedev, ret, try = 0;
+         struct ps_header req, resp;
+         */
         if (bs_id > MAX_ID || bs_id < MIN_ID || npages == 0 || npages > MAX_PAGES_PER_BS)
                 return SYSERR;
 

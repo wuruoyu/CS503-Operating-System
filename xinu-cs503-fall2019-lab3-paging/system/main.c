@@ -10,6 +10,8 @@ process	main(void)
   /* DO NOT REMOVE OR COMMENT BELOW */
   netstart();
 
+  XDEBUG_KPRINTF("[main] We come to main\n");
+
   /*  TODO. Please ensure that your paging is activated 
       by checking the values from the control register.
   */

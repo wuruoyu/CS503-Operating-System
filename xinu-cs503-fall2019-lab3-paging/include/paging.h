@@ -35,6 +35,7 @@ typedef struct {
 	unsigned int pt_base	: 20;		/* location of page?		*/
 } pt_t;
 
+
 #define PAGEDIRSIZE	1024
 #define PAGETABSIZE	1024
 
@@ -55,5 +56,19 @@ typedef struct {
 #define MIN_ID		0
 
 extern int32	currpolicy;
+
+#define METADATA_PAGE_MIN   1024   
+#define METADATA_PAGE_MAX   4095
+
+#define METADATA_PHY_MIN    0x00400000 
+#define METADATA_PHY_MAX    0x00FFFFFF
+
+#define ADDR2FRAMEID(addr) (((int)addr >> 12) - 1024)
+
+/* in paging/pagedisp.S */
+extern void pagedisp(void);
+
+/* in paging/pagehandler.c */
+extern void pagehandler(void);
 
 #endif // __PAGING_H_

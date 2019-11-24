@@ -25,6 +25,8 @@ typedef	int32	ibid32;		/* index block ID (used in file system)	*/
 typedef	int32	dbid32;		/* data block ID (used in file system)	*/
 typedef	int32	uid32;		/* ID for UDP table descriptor		*/
 typedef	int32	bsd_t;		/* ID for backing store			*/
+typedef int32   pageid_t;
+typedef int32   frameid_t;
 
 /* Function declaration return types */
 
