@@ -11,9 +11,10 @@
 
 /* Structure for bookkeeping metadata frames */
 struct frame_bookkeeper_t{
-    int     state;
-    int     type;
-    pid32   pid;
+    int         state;
+    int         type;
+    pid32       pid;
+    pageid_t    vpage;
 };
 
 // index start from frame 1024 [metadata]

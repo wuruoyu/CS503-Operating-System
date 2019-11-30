@@ -47,8 +47,6 @@
 #include <qdebug.h>
 
 /* LAB 3 */
-#include <bs_map.h>
-#include <inv_pt.h>
 #include <frame_bookkeeper.h>
 
 /* Debug usage */

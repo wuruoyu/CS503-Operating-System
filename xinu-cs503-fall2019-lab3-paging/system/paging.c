@@ -3,6 +3,22 @@
 
 unsigned long tmp;
 
+frameid_t addr_frameid(char* vaddr) {
+    frameid_t fid = (((int)vaddr) >> 12) - 1024;
+    if (fid < 0) {
+        XERROR_KPRINTF("[addr_frameid] error\n");
+    }
+    return fid;
+}
+
+char* frameid_addr(frameid_t fid) {
+    if (fid < 0) {
+        XERROR_KPRINTF("[frameid_addr] error\n");
+    }
+    char* vaddr = (char*)((fid + 1024) << 12);
+    return vaddr;
+}
+
 unsigned long read_cr3(void) {
     intmask mask;
     mask = disable();
@@ -65,9 +81,25 @@ void set_cr0(unsigned long n) {
     return;
 }
 
-frameid_t addr2frameid(char* addr) {
-    // we dont bookkeep the first 1024 frames
-    return (((int)addr) >> 12) - 1024;
+void init_pd(frameid_t fid) {
+    int i;
+    pd_t* pd_ptr = (pd_t*)(frameid_addr(fid));
+
+    bookkeep_frame_addr(pd_ptr, FRAME_PD);
+
+    for (i = 0; i < PAGEDIRSIZE; i ++) {
+        (pd_ptr + i)->pd_pres = 0;
+        (pd_ptr + i)->pd_write = 1;
+        (pd_ptr + i)->pd_user = 0;
+        (pd_ptr + i)->pd_pwt = 0;
+        (pd_ptr + i)->pd_pcd = 0;
+        (pd_ptr + i)->pd_acc = 0;
+        (pd_ptr + i)->pd_mbz = 0;
+        (pd_ptr + i)->pd_fmb = 0;
+        (pd_ptr + i)->pd_global = 0;
+        (pd_ptr + i)->pd_avail = 0;
+        (pd_ptr + i)->pd_base = 0;
+    }
 }
 
 void init_pd_null(pd_t* pd_ptr) {

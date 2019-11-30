@@ -30,6 +30,8 @@ pid32	vcreate(
 	uint32		*saddr;		/* Stack address		*/
 
 	mask = disable();
+
+    // allocate stack
 	if (ssize < MINSTK)
 		ssize = MINSTK;
 	ssize = (uint32) roundew(ssize);
@@ -39,8 +41,39 @@ pid32	vcreate(
 		restore(mask);
 		return SYSERR;
 	}
+    XDEBUG_KPRINTF("[vcreate] creating process %d\n", pid);
 
-    // Lab3 TODO. set up page directory, allocate bs etc.
+    // set up pd
+    frameid_t fid;
+    fid = find_free_frame();
+    if (fid == SYSERR) {
+        XERROR_KPRINTF("[vcreate] no free frame\n");
+		restore(mask);
+        return SYSERR;
+    }
+    init_pd(fid);
+    XDEBUG_KPRINTF("[vcreate] set up pd\n");
+
+    // set up bs
+    uint32 left_size = hsize;
+    bsd_t bs_id;
+    int vpage_counter = 0;
+    if (left_size > bstab_get_remaining_page()) {
+        XERROR_KPRINTF("[vcreate] we dont have enough bp\n");
+        restore(mask);
+        return SYSERR;
+    }
+    while (left_size > MAX_PAGES_PER_BS) {
+        bs_id = allocate_bs(MAX_PAGES_PER_BS);
+        bstab[bs_id].pid = pid;
+        bstab[bs_id].vpage = vpage_counter;
+        vpage_counter += MAX_PAGES_PER_BS;
+        left_size -= MAX_PAGES_PER_BS;
+    }
+    bs_id = allocate_bs(left_size);
+    bstab[bs_id].pid = pid;
+    bstab[bs_id].vpage = vpage_counter;
+    XDEBUG_KPRINTF("[vcreate] set up bs\n");
 
 	prcount++;
 	prptr = &proctab[pid];
@@ -56,8 +89,18 @@ pid32	vcreate(
 	prptr->prsem = -1;
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
+    // LAB3 
+    prptr->prpdptr = frameid_addr(fid);
+    prptr->vsize = hsize;
+
+    /* Initialize the vmemlist, dont touch the real thing */
+    struct memblk* memptr;
+    memptr = &(prptr->vmemlist);
+    memptr->mlength = hsize * NBPG;
+    memptr->mnext = NULL;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
+
 	prptr->prdesc[0] = CONSOLE;
 	prptr->prdesc[1] = CONSOLE;
 	prptr->prdesc[2] = CONSOLE;
@@ -102,6 +145,7 @@ pid32	vcreate(
 	*pushsp = (unsigned long) (prptr->prstkptr = (char *)saddr);
 	
 	restore(mask);
+    XDEBUG_KPRINTF("[vcreate] finish\n");
 	return pid;
 }
 

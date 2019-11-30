@@ -10,7 +10,7 @@
 /* Set to 1 to test page replacement
  * Set to 0 to check page fault handling is correct
  */
-#define PAGE_REPLACEMENT 1
+#define PAGE_REPLACEMENT 0
 
 // Return a deterministic value per addr for testing.
 uint32 get_test_value(uint32 *addr) {

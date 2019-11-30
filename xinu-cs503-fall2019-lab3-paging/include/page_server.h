@@ -23,6 +23,9 @@ struct bs_entry{
 	byte	isallocated;
 	int32	usecount;
 	unsigned int npages;
+
+    pid32       pid;
+    pageid_t    vpage; /* starting page id */
 };
 
 #define PAGE_SERVER_ACTIVE      1
@@ -32,5 +35,8 @@ extern struct bs_entry bstab[MAX_BS_ENTRIES];
 extern sid32  bs_sem;
 extern bool8  PAGE_SERVER_STATUS;
 extern sid32  bs_init_sem;
+
+extern syscall bstab_get_from_pid_vaddr(pid32, char*, bsd_t*, int*);
+extern int bstab_get_remaining_size();
 
 #endif // __PAGE_SERVER_H_

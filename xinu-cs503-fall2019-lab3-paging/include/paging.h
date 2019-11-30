@@ -57,18 +57,22 @@ typedef struct {
 
 extern int32	currpolicy;
 
-#define METADATA_PAGE_MIN   1024   
-#define METADATA_PAGE_MAX   4095
-
 #define METADATA_PHY_MIN    0x00400000 
 #define METADATA_PHY_MAX    0x00FFFFFF
 
-#define ADDR2FRAMEID(addr) (((int)addr >> 12) - 1024)
+#define PRIVATE_HEAP_MIN    0x01000000
+
+extern frameid_t addr_frameid(char* );
+extern char* frameid_addr(frameid_t); 
 
 /* in paging/pagedisp.S */
 extern void pagedisp(void);
 
 /* in paging/pagehandler.c */
 extern void pagehandler(void);
+
+/* in paging/paging.c */
+extern  void        init_pd(frameid_t);
+extern  syscall     initialize_paging_null();
 
 #endif // __PAGING_H_

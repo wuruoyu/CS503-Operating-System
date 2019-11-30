@@ -3,8 +3,7 @@
 /* Handle system initialization and become the null process */
 
 #include <xinu.h>
-#include <string.h>
-#include <lab3.h>
+#include <string.h> #include <lab3.h>
 
 extern	void	start(void);	/* Start of Xinu code			*/
 extern	void	*_end;		/* End of Xinu code			*/
@@ -26,8 +25,6 @@ struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
 
 /* LAB 3 */
-struct  bs_map_entry            bs_map[NBSMAP];
-struct  inv_pt_entry            inv_pt[NINVPT];
 struct  frame_bookkeeper_t      frame_bookkeeper[NFRAMES];
 
 /* Lab3. frames metadata handling */
@@ -162,7 +159,12 @@ static	void	sysinit()
 		prptr->prname[0] = NULLCH;
 		prptr->prstkbase = NULL;
 		prptr->prprio = 0;
+
+        /* Lab3 */
         prptr->prpdptr = 0;
+        prptr->vsize = 0;
+        (prptr->vmemlist).mlength = 0;
+        (prptr->vmemlist).mnext = NULL;
 	}
 
 	/* Initialize the Null process entry */
@@ -210,18 +212,6 @@ static	void	sysinit()
 static void initialize_paging()
 {
     int i;
-
-    /* Initialize the bs_map */
-
-    for (i = 0; i < NBSMAP; i ++) {
-        bs_map[i].state = BSMAP_FREE;
-    }
-
-    /* Initialize the inv_pt */
-
-    for (i = 0; i < NINVPT; i ++) {
-        inv_pt[i].state = INVPT_FREE;
-    }
 
     /* Initialize frame_bookkeeper */
 
