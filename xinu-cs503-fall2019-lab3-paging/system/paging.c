@@ -112,6 +112,7 @@ void init_pd_null(pd_t* pd_ptr) {
             (pd_ptr + i)->pd_global = 0;
             (pd_ptr + i)->pd_avail = 0;
             (pd_ptr + i)->pd_base = ((int)pt_ptr >> 12);  
+
             DEVICE_PT_ADDR = ((int)pt_ptr >> 12);
 
             init_pt_null(i, pt_ptr);

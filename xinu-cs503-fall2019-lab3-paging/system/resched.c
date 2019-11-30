@@ -46,7 +46,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
     // Lab3. TODO: change the page directories as a process is ctx out
     XDEBUG_KPRINTF("[resched] currpid: %d, pdptr: %x\n", 
             currpid, proctab[currpid].prpdptr);
-    /*set_cr3((unsigned long)proctab[currpid].prpdptr);*/
+    set_cr3((unsigned long)proctab[currpid].prpdptr);
 
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
