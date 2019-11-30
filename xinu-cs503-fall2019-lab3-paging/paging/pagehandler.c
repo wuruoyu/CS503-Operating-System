@@ -52,8 +52,13 @@ void pagehandler(void) {
 
     // pt not present
     if ((pdptr + pd_idx)->pd_pres == 0) {
-        // TODO
+
         XDEBUG_KPRINTF("[pagehandler] pt not present\n");
+
+        // pt not exist
+
+        // pt in bs
+
         return;
     }
 

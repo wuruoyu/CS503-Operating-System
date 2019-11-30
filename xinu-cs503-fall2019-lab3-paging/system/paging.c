@@ -39,8 +39,10 @@ void init_pd(frameid_t fid) {
             (pd_ptr + i)->pd_global = 0;
             (pd_ptr + i)->pd_avail = 0;
             (pd_ptr + i)->pd_base = PT_ADDR[i];
+
+            XDEBUG_KPRINTF("[init_pd] %x base: %x\n", (pd_ptr + i), (pd_ptr + i)->pd_base);
         }
-        if (i == 576) {
+        else if (i == 576) {
             (pd_ptr + i)->pd_pres = 1;
             (pd_ptr + i)->pd_write = 1;
             (pd_ptr + i)->pd_user = 0;
@@ -52,6 +54,8 @@ void init_pd(frameid_t fid) {
             (pd_ptr + i)->pd_global = 0;
             (pd_ptr + i)->pd_avail = 0;
             (pd_ptr + i)->pd_base = DEVICE_PT_ADDR;
+
+            XDEBUG_KPRINTF("[init_pd] %x base: %x\n", (pd_ptr + i), (pd_ptr + i)->pd_base);
         }
         else {
             (pd_ptr + i)->pd_pres = 0;
@@ -114,6 +118,7 @@ void init_pd_null(pd_t* pd_ptr) {
             (pd_ptr + i)->pd_base = ((int)pt_ptr >> 12);  
 
             DEVICE_PT_ADDR = ((int)pt_ptr >> 12);
+            XDEBUG_KPRINTF("[init_pd_null] DEVICE_PT_ADDR[%d]: %x\n", i, DEVICE_PT_ADDR);
 
             init_pt_null(i, pt_ptr);
 

@@ -90,7 +90,7 @@ pid32	vcreate(
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
     // LAB3 
-    prptr->prpdptr = frameid_addr(fid);
+    prptr->prpdptr = (pd_t*)frameid_addr(fid);
     prptr->vsize = hsize;
 
     /* Initialize the vmemlist, dont touch the real thing */
