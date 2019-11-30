@@ -6,8 +6,10 @@
  */
 #include <icu.s>
 		.text
-		.globl	pagedisp		# page fault interrupt dispatcher
+error_code: .long 0
+		.globl	pagedisp, error_code		# page fault interrupt dispatcher
 pagedisp:
+        popl    error_code
 		pushal			        # Save registers
         pushfl
 
@@ -15,5 +17,4 @@ pagedisp:
 
         popfl
 		popal			        # Restore registers
-        add $0x4, %esp
 		iret			        # Return from interrupt

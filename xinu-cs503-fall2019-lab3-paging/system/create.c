@@ -55,6 +55,9 @@ pid32	create(
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
 
+    /* Lab 3 */
+    prptr->prpdptr = proctab[NULLPROC].prpdptr;
+
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = WCONSOLE;
 	prptr->prdesc[1] = WCONSOLE;

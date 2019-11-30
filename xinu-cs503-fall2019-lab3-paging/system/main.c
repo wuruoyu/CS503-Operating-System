@@ -8,7 +8,9 @@ void ctest(void) {
 }
 
 static void debug(void) {
-  XDEBUG_KPRINTF("[debug] hw\n");
+  // test identity mapping
+  XDEBUG_KPRINTF("[debug] currpid: %d\n", currpid);
+  XDEBUG_KPRINTF("[debug] prpdptr: %x\n", proctab[currpid].prpdptr);
   char *mem = vgetmem(1);
   XDEBUG_KPRINTF("[debug] finish vgetmem\n");
 }

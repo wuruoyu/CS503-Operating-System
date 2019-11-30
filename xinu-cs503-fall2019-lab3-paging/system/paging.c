@@ -1,7 +1,8 @@
-
 #include <xinu.h>
 
-unsigned long tmp;
+char* PT_ADDR[4];
+char* DEVICE_PT_ADDR;
+
 
 frameid_t addr_frameid(char* vaddr) {
     frameid_t fid = (((int)vaddr) >> 12) - 1024;
@@ -19,68 +20,6 @@ char* frameid_addr(frameid_t fid) {
     return vaddr;
 }
 
-unsigned long read_cr3(void) {
-    intmask mask;
-    mask = disable();
-    unsigned long local_tmp;
-
-    asm("pushl %eax");
-    asm("movl %cr3, %eax");
-    asm("movl %eax, tmp");
-    asm("popl %eax");
-
-    local_tmp = tmp;
-
-    restore(mask);
-
-    return local_tmp;
-}
-
-void set_cr3(unsigned long n) {
-    intmask mask;
-    mask = disable();
-
-    tmp = n;
-    asm("pushl %eax");
-    asm("movl tmp, %eax");		
-    asm("movl %eax, %cr3");
-    asm("popl %eax");
-
-    restore(mask);
-    return;
-}
-
-unsigned long read_cr0(void) {
-    intmask mask;
-    mask = disable();
-    unsigned long local_tmp;
-
-    asm("pushl %eax");
-    asm("movl %cr0, %eax");
-    asm("movl %eax, tmp");
-    asm("popl %eax");
-
-    local_tmp = tmp;
-
-    restore(mask);
-
-    return local_tmp;
-}
-
-void set_cr0(unsigned long n) {
-    intmask mask;
-    mask = disable();
-
-    tmp = n;
-    asm("pushl %eax");
-    asm("movl tmp, %eax");		
-    asm("movl %eax, %cr0");
-    asm("popl %eax");
-
-    restore(mask);
-    return;
-}
-
 void init_pd(frameid_t fid) {
     int i;
     pd_t* pd_ptr = (pd_t*)(frameid_addr(fid));
@@ -88,17 +27,45 @@ void init_pd(frameid_t fid) {
     bookkeep_frame_addr(pd_ptr, FRAME_PD);
 
     for (i = 0; i < PAGEDIRSIZE; i ++) {
-        (pd_ptr + i)->pd_pres = 0;
-        (pd_ptr + i)->pd_write = 1;
-        (pd_ptr + i)->pd_user = 0;
-        (pd_ptr + i)->pd_pwt = 0;
-        (pd_ptr + i)->pd_pcd = 0;
-        (pd_ptr + i)->pd_acc = 0;
-        (pd_ptr + i)->pd_mbz = 0;
-        (pd_ptr + i)->pd_fmb = 0;
-        (pd_ptr + i)->pd_global = 0;
-        (pd_ptr + i)->pd_avail = 0;
-        (pd_ptr + i)->pd_base = 0;
+        if (i < 4) {
+            (pd_ptr + i)->pd_pres = 1;
+            (pd_ptr + i)->pd_write = 1;
+            (pd_ptr + i)->pd_user = 0;
+            (pd_ptr + i)->pd_pwt = 0;
+            (pd_ptr + i)->pd_pcd = 0;
+            (pd_ptr + i)->pd_acc = 0;
+            (pd_ptr + i)->pd_mbz = 0;
+            (pd_ptr + i)->pd_fmb = 0;
+            (pd_ptr + i)->pd_global = 0;
+            (pd_ptr + i)->pd_avail = 0;
+            (pd_ptr + i)->pd_base = PT_ADDR[i];
+        }
+        if (i == 576) {
+            (pd_ptr + i)->pd_pres = 1;
+            (pd_ptr + i)->pd_write = 1;
+            (pd_ptr + i)->pd_user = 0;
+            (pd_ptr + i)->pd_pwt = 0;
+            (pd_ptr + i)->pd_pcd = 0;
+            (pd_ptr + i)->pd_acc = 0;
+            (pd_ptr + i)->pd_mbz = 0;
+            (pd_ptr + i)->pd_fmb = 0;
+            (pd_ptr + i)->pd_global = 0;
+            (pd_ptr + i)->pd_avail = 0;
+            (pd_ptr + i)->pd_base = DEVICE_PT_ADDR;
+        }
+        else {
+            (pd_ptr + i)->pd_pres = 0;
+            (pd_ptr + i)->pd_write = 1;
+            (pd_ptr + i)->pd_user = 0;
+            (pd_ptr + i)->pd_pwt = 0;
+            (pd_ptr + i)->pd_pcd = 0;
+            (pd_ptr + i)->pd_acc = 0;
+            (pd_ptr + i)->pd_mbz = 0;
+            (pd_ptr + i)->pd_fmb = 0;
+            (pd_ptr + i)->pd_global = 0;
+            (pd_ptr + i)->pd_avail = 0;
+            (pd_ptr + i)->pd_base = 0;
+        }
     }
 }
 
@@ -125,6 +92,9 @@ void init_pd_null(pd_t* pd_ptr) {
             (pd_ptr + i)->pd_avail = 0;
             (pd_ptr + i)->pd_base = ((int)pt_ptr >> 12);  
 
+            PT_ADDR[i] = ((int)pt_ptr >> 12);
+            XDEBUG_KPRINTF("[init_pd_null] PT_ADDR[%d]: %x\n", i, PT_ADDR[i]);
+
             init_pt_null(i, pt_ptr);
 
             pt_ptr += PAGETABSIZE;
@@ -142,6 +112,7 @@ void init_pd_null(pd_t* pd_ptr) {
             (pd_ptr + i)->pd_global = 0;
             (pd_ptr + i)->pd_avail = 0;
             (pd_ptr + i)->pd_base = ((int)pt_ptr >> 12);  
+            DEVICE_PT_ADDR = ((int)pt_ptr >> 12);
 
             init_pt_null(i, pt_ptr);
 
@@ -226,6 +197,4 @@ syscall initialize_paging_null() {
     // register page fault ISR
     set_evec(14, (uint32)pagedisp);
     
-    // enable paging
-    enable_paging();
 }

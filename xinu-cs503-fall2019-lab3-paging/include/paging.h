@@ -74,5 +74,13 @@ extern void pagehandler(void);
 /* in paging/paging.c */
 extern  void        init_pd(frameid_t);
 extern  syscall     initialize_paging_null();
+extern  void        enable_paging();
+
+/* in paging/page_reg.c */
+extern unsigned long read_cr0(void);
+extern void set_cr0(unsigned long);
+extern unsigned long read_cr3(void);
+extern void set_cr3(unsigned long);
+
 
 #endif // __PAGING_H_

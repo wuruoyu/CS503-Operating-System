@@ -222,6 +222,16 @@ static void initialize_paging()
     /* Initialize pd and pt for NULL */
     initialize_paging_null();
 
+    /* Init all other proc's pdptr */
+    for (i = 0; i < NPROC; i ++) {
+        if (proctab[i].prstate != PR_FREE) {
+            proctab[i].prpdptr = proctab[NULLPROC].prpdptr;
+        }
+    }
+
+    /* Enable paging */
+    enable_paging();
+
 	return;
 }
 
