@@ -94,10 +94,10 @@ pid32	vcreate(
     prptr->vsize = hsize;
 
     /* Initialize the vmemlist, dont touch the real thing */
-    struct memblk* memptr;
-    memptr = &(prptr->vmemlist);
-    memptr->mlength = hsize * NBPG;
-    memptr->mnext = NULL;
+    struct memblk* vmemptr;
+    vmemptr = &(prptr->vmemlist);
+    vmemptr->mlength = hsize * NBPG;
+    vmemptr->mnext = NULL;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 

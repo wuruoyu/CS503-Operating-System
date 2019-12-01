@@ -3,7 +3,6 @@
 char* PT_ADDR[4];
 char* DEVICE_PT_ADDR;
 
-
 frameid_t addr_frameid(char* vaddr) {
     frameid_t fid = (((int)vaddr) >> 12) - 1024;
     if (fid < 0) {
@@ -24,7 +23,7 @@ void init_pd(frameid_t fid) {
     int i;
     pd_t* pd_ptr = (pd_t*)(frameid_addr(fid));
 
-    bookkeep_frame_addr(pd_ptr, FRAME_PD);
+    bookkeep_frame_addr(pd_ptr, FRAME_PD, 0);
 
     for (i = 0; i < PAGEDIRSIZE; i ++) {
         if (i < 4) {
@@ -73,12 +72,41 @@ void init_pd(frameid_t fid) {
     }
 }
 
+void init_pt(frameid_t fid) {
+    int i;
+    pt_t* pt_ptr;
+
+    bookkeep_frame_id(fid, FRAME_PT, 0);
+    pt_ptr = (pt_t*)frameid_addr(fid);
+
+    XDEBUG_KPRINTF("[init_pt] fid: %d, pt_ptr: %x\n", 
+            fid, pt_ptr);
+
+    for (i = 0; i < PAGETABSIZE; i ++) {
+        (pt_ptr+i)->pt_pres = 0;
+        (pt_ptr+i)->pt_write = 1;
+        (pt_ptr+i)->pt_user = 0;
+        (pt_ptr+i)->pt_pwt = 0;
+        (pt_ptr+i)->pt_pcd = 0;
+        (pt_ptr+i)->pt_acc = 0;
+        (pt_ptr+i)->pt_dirty = 0;
+        (pt_ptr+i)->pt_mbz = 0;
+        (pt_ptr+i)->pt_global = 0;
+        (pt_ptr+i)->pt_avail = 0;
+        (pt_ptr+i)->pt_base = 0;
+    }
+}
+
+void init_pg(frameid_t fid, pageid_t vpage_id) {
+    bookkeep_frame_id(fid, FRAME_PG, vpage_id);
+}
+
 void init_pd_null(pd_t* pd_ptr) {
     int i;
     pt_t* pt_ptr = (pt_t*)(pd_ptr + PAGEDIRSIZE);
 
     // bookkeep for pd
-    bookkeep_frame_addr(pd_ptr, FRAME_PD);
+    bookkeep_frame_addr(pd_ptr, FRAME_PD, 0);
 
     for (i = 0; i < PAGEDIRSIZE; i ++) {
 
@@ -151,7 +179,7 @@ void init_pt_null(int pd_idx, pt_t* pt_ptr) {
             /*pd_idx, pt_ptr);*/
 
     // bookkeep for pt
-    bookkeep_frame_addr(pt_ptr, FRAME_PT);
+    bookkeep_frame_addr(pt_ptr, FRAME_PT, 0);
 
     for (i = 0; i < PAGETABSIZE; i ++) {
         (pt_ptr+i)->pt_pres = 1;

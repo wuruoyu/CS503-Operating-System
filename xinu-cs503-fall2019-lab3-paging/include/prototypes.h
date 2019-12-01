@@ -712,12 +712,6 @@ extern	void	xdone(void);
 /* in file yield.c */
 extern	syscall	yield(void);
 
-/* in frame_bookkeeper.c */
-extern syscall find_free_frame();
-extern syscall bookkeep_frame_addr(char*, int);
-extern syscall bookkeep_frame_id(frameid_t, int);
-extern syscall bookkeep_get_frame(int nframe);
-
 extern 	void 	setpagedirectory(unsigned long);
 extern 	void 	pageintdispat(void);
 extern 	int	allocateframe(void);

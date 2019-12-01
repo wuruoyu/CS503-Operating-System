@@ -62,8 +62,6 @@ extern int32	currpolicy;
 
 #define PRIVATE_HEAP_MIN    0x01000000
 
-extern frameid_t addr_frameid(char* );
-extern char* frameid_addr(frameid_t); 
 
 /* in paging/pagedisp.S */
 extern void pagedisp(void);
@@ -73,8 +71,12 @@ extern void pagehandler(void);
 
 /* in paging/paging.c */
 extern  void        init_pd(frameid_t);
+extern  void        init_pt(frameid_t);
+extern  void        init_pg(frameid_t, pageid_t);
 extern  syscall     initialize_paging_null();
 extern  void        enable_paging();
+extern frameid_t addr_frameid(char* );
+extern char* frameid_addr(frameid_t); 
 
 /* in paging/page_reg.c */
 extern unsigned long read_cr0(void);
