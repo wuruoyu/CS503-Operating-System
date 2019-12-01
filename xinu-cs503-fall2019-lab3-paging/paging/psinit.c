@@ -34,6 +34,9 @@ syscall psinit ()
 		bstab[i].isallocated = FALSE;
 		bstab[i].usecount = 0;
 		bstab[i].npages = 0;
+
+        bstab[i].pid = 0;
+        bstab[i].vpage = 0;
 	}
 
 	PAGE_SERVER_STATUS = PAGE_SERVER_ACTIVE;

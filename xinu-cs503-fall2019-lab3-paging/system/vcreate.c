@@ -67,12 +67,16 @@ pid32	vcreate(
         bs_id = allocate_bs(MAX_PAGES_PER_BS);
         bstab[bs_id].pid = pid;
         bstab[bs_id].vpage = vpage_counter;
+        bstab[bs_id].npages = MAX_PAGES_PER_BS;
         vpage_counter += MAX_PAGES_PER_BS;
         left_size -= MAX_PAGES_PER_BS;
+        XDEBUG_KPRINTF("[vcreate] allocate one bs\n");
     }
+    XDEBUG_KPRINTF("[vcreate] allocate one bs\n");
     bs_id = allocate_bs(left_size);
     bstab[bs_id].pid = pid;
     bstab[bs_id].vpage = vpage_counter;
+    bstab[bs_id].npages = MAX_PAGES_PER_BS;
     XDEBUG_KPRINTF("[vcreate] set up bs\n");
 
 	prcount++;
@@ -94,10 +98,11 @@ pid32	vcreate(
     prptr->vsize = hsize;
 
     /* Initialize the vmemlist, dont touch the real thing */
-    struct memblk* vmemptr;
+    struct vmemblk* vmemptr;
     vmemptr = &(prptr->vmemlist);
     vmemptr->mlength = hsize * NBPG;
     vmemptr->mnext = NULL;
+    vmemptr->mbase = 0;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 

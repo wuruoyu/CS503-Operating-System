@@ -15,6 +15,7 @@ struct frame_bookkeeper_t{
     int         type;
     pid32       pid;
     pageid_t    vpage;
+    int         count;
 };
 
 // index start from frame 1024 [metadata]

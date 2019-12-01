@@ -11,8 +11,14 @@ static void debug(void) {
   // test identity mapping
   XDEBUG_KPRINTF("[debug] currpid: %d\n", currpid);
   XDEBUG_KPRINTF("[debug] prpdptr: %x\n", proctab[currpid].prpdptr);
-  char *mem = vgetmem(1);
+  char* mem = vgetmem(8);
   XDEBUG_KPRINTF("[debug] finish vgetmem\n");
+
+  // touch and access
+  XDEBUG_KPRINTF("[debug] touch\n");
+  int* mem_int = (int*)mem;
+  *mem_int = 4;
+  XDEBUG_KPRINTF("[debug] value: %d\n", *mem_int);
 }
 
 process	main(void)
@@ -33,19 +39,20 @@ process	main(void)
 
   ctest();
 
-  pid32 p = vcreate(debug, INITSTK, 1024,
-                    INITPRIO, "debug", 0, NULL);
-  /*page_policy_test();*/
-  resume(p);
+  /*pid32 p = vcreate(debug, INITSTK, 1024,*/
+                    /*INITPRIO, "debug", 0, NULL);*/
+  /*resume(p);*/
 
-  while (1) {
-    if(proctab[p].prstate == PR_FREE) {
-      break;
-    }
-    else {
-      sleepms(100);
-    }
-  }
+  page_policy_test();
+
+  /*while (1) {*/
+    /*if(proctab[p].prstate == PR_FREE) {*/
+      /*break;*/
+    /*}*/
+    /*else {*/
+      /*sleepms(100);*/
+    /*}*/
+  /*}*/
 
   return OK;
 }

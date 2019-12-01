@@ -9,7 +9,7 @@ char  	*vgetmem(
 {
     intmask	mask;			/* Saved interrupt mask		*/
     struct  procent* prptr;
-	struct	memblk	*vmemlist, *prev, *curr, *leftover;
+	struct	vmemblk	*vmemlist, *prev, *curr, *leftover;
 
 	mask = disable();
 
@@ -19,18 +19,8 @@ char  	*vgetmem(
 
     XDEBUG_KPRINTF("[vgetmem] vmemlist size: %d\n", vmemlist->mlength);
 
-    // init the vmemlist, cause page fault
-    struct memblk *init_vmemlist;
-    if (vmemlist->mnext == NULL) {
-        vmemlist->mnext = (struct memblk*)PRIVATE_HEAP_MIN;
-        // touch
-        init_vmemlist = vmemlist->mnext;
-        init_vmemlist->mlength = vmemlist->mlength;
-        init_vmemlist->mnext = NULL;
-    }
-
-	nbytes = (uint32) roundmb(nbytes);	/* Use memblk multiples	*/
-    XDEBUG_KPRINTF("[vgetmem] getmem size: %d\n", nbytes);
+    // I still wanna it be aligned
+    nbytes = (uint32) roundmb(nbytes);	/* Use memblk multiples	*/
 
     // check if it exceeds the limit
     if (vmemlist->mlength < nbytes) {
@@ -43,6 +33,19 @@ char  	*vgetmem(
         return (char *)SYSERR;
     }
 
+    // init the vmemlist
+    struct vmemblk *temp_vmemlist;
+    if (vmemlist->mnext == NULL) {
+        /*vmemlist->mnext = (struct memblk*)PRIVATE_HEAP_MIN;*/
+        vmemlist->mnext = getmem(sizeof(struct vmemblk));
+        temp_vmemlist = vmemlist->mnext;
+        temp_vmemlist->mlength = vmemlist->mlength;
+        temp_vmemlist->mnext = NULL;
+        temp_vmemlist->mbase = (char*)PRIVATE_HEAP_MIN;
+    }
+
+    XDEBUG_KPRINTF("[vgetmem] getmem size: %d\n", nbytes);
+
     prev = &(prptr->vmemlist);
     curr = (prptr->vmemlist).mnext;
     while (curr != NULL) {			/* Search free list	*/
@@ -50,19 +53,27 @@ char  	*vgetmem(
 		if (curr->mlength == nbytes) {	/* Block is exact match	*/
 			prev->mnext = curr->mnext;
 			vmemlist->mlength -= nbytes;
+            char* ret_addr = curr->mbase;
+            freemem(curr, sizeof(struct vmemblk));
 			restore(mask);
-			return (char *)(curr);
+			return ret_addr;
 
-		} else if (curr->mlength > nbytes) { /* Split big block	*/
-			leftover = (struct memblk *)((uint32) curr +
-					nbytes);
+		} 
+        else if (curr->mlength > nbytes) { /* Split big block	*/
+            leftover = getmem(sizeof(struct vmemblk));
+			/*leftover = (struct memblk *)((uint32) curr +*/
+					/*nbytes);*/
 			prev->mnext = leftover;
 			leftover->mnext = curr->mnext;
 			leftover->mlength = curr->mlength - nbytes;
+            leftover->mbase = curr->mbase + nbytes;
 			vmemlist->mlength -= nbytes;
+            char* ret_addr = curr->mbase;
+            freemem(curr, sizeof(struct vmemblk));
 			restore(mask);
-			return (char *)(curr);
-		} else {			/* Move to next block	*/
+			return ret_addr;
+		} 
+        else {			/* Move to next block	*/
 			prev = curr;
 			curr = curr->mnext;
 		}

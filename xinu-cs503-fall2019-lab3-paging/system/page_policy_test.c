@@ -35,7 +35,7 @@ static void do_policy_test(void) {
   for (uint32 i = 0; i<npages; i++) {
     uint32 *p = (uint32*)(mem + (i * PAGESIZE));
 
-    // kprintf("Write Iteration [%3d] at 0x%08x\n", i, p);
+    XDEBUG_KPRINTF("Write Iteration [%3d] at 0x%08x\n", i, p);
     for (uint32 j=0; j<PAGESIZE; j=j+4) {
       uint32 v = get_test_value(p);
       *p++ = v;
@@ -47,7 +47,7 @@ static void do_policy_test(void) {
   // Check the data was truly written
   for (uint32 i = 0; i<npages; i++) {
     uint32 *p = (uint32*)(mem + (i * PAGESIZE));
-    kprintf("Check Iteration [%3d] at 0x%08x\n", i, p);
+    XDEBUG_KPRINTF("Check Iteration [%3d] at 0x%08x\n", i, p);
     for (uint32 j=0; j<PAGESIZE; j=j+4) {
       uint32 v = get_test_value(p);
       ASSERT(*p++ == v);

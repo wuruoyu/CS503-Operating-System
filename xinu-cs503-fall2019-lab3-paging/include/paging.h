@@ -61,7 +61,7 @@ extern int32	currpolicy;
 #define METADATA_PHY_MAX    0x00FFFFFF
 
 #define PRIVATE_HEAP_MIN    0x01000000
-
+#define PRIVATE_HEAP_MAX    0x8FFFFFFF
 
 /* in paging/pagedisp.S */
 extern void pagedisp(void);

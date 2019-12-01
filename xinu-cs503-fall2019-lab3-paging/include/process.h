@@ -65,7 +65,7 @@ struct procent {		/* Entry in the process table		*/
     /* Lab3 TODO: add more structures as required for vheap etc. */
     pd_t*    prpdptr;
     uint32          vsize;              /* in pages */
-    struct memblk   vmemlist;
+    struct vmemblk   vmemlist;
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

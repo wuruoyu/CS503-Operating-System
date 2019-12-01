@@ -217,6 +217,9 @@ static void initialize_paging()
 
     for (i = 0; i < NFRAMES; i ++) {
         frame_bookkeeper[i].state = FRAME_FREE;
+        frame_bookkeeper[i].pid = 0;
+        frame_bookkeeper[i].vpage = 0;
+        frame_bookkeeper[i].count = 0;
     }
 
     /* Initialize pd and pt for NULL */
