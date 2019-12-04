@@ -99,3 +99,68 @@ frameid_t fifo_find_frame() {
 
     return min_id;
 }
+
+frameid_t gca_find_frame() {
+    int         i;
+    int         pid;
+    pd_t*       pd_ptr; 
+    pd_t*       pd_ent;
+    pt_t*       pt_ent;
+    pageid_t    vpage;
+    int         pd_idx;
+    int         pt_idx;
+
+    // init
+    for (i = 0; i < NFRAMES; i ++) {
+        if (frame_bookkeeper[i].type != FRAME_PG) {
+            continue;
+        }
+
+        // for each frame, find its pid, index into pt
+        pid = frame_bookkeeper[i].pid;
+        vpage = frame_bookkeeper[i].vpage;
+        pd_ptr = proctab[pid].prpdptr;
+        pd_idx = vpage >> 10;
+        pt_idx = vpage & 0x3FF;
+        pd_ent = (pd_ptr + pd_idx);
+        pt_ent = (pt_t*)((pd_ent->pd_base) << 12) + pt_idx;
+
+        // assign the corresponding value
+        gca_keeper[i].reference = pt_ent->pt_acc;
+        gca_keeper[i].modify = pt_ent->pt_dirty;
+    }
+
+    for (i = 0; i < NFRAMES; i ++) {
+        if (frame_bookkeeper[i].type != FRAME_PG) {
+            continue;
+        }
+
+        if (gca_keeper[i].reference == 0 && gca_keeper[i].modify == 0) {
+            return i;
+        }
+        else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 0) {
+            gca_keeper[i].reference = 0;
+        }
+        else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 1) {
+            gca_keeper[i].modify = 0;
+        }
+    }
+
+    for (i = 0; i < NFRAMES; i ++) {
+        if (frame_bookkeeper[i].type != FRAME_PG) {
+            continue;
+        }
+
+        if (gca_keeper[i].reference == 0 && gca_keeper[i].modify == 0) {
+            return i;
+        }
+        else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 0) {
+            gca_keeper[i].reference = 0;
+        }
+        else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 1) {
+            gca_keeper[i].modify = 0;
+        }
+    }
+
+    return SYSERR;
+}

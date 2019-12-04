@@ -27,7 +27,18 @@ extern syscall      find_free_frame();
 extern syscall      bookkeep_frame_addr(char*, int, pageid_t);
 extern syscall      bookkeep_frame_id(frameid_t, int, pageid_t);
 extern syscall      bookkeep_frame_reset(frameid_t);
+
+/* structure used by GCA */
+struct gca_t {
+    int reference;
+    int modify;
+};
+
+extern struct gca_t gca_keeper[];
+
+// page replacement policy
 extern frameid_t    fifo_find_frame();
+extern frameid_t    gca_find_frame();
 
 extern int time_tag;
 

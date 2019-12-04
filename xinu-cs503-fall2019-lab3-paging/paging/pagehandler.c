@@ -37,9 +37,17 @@ frameid_t evict_frame() {
     int         bs_id;
     int         bs_page_offset;
 
-    fid = fifo_find_frame();
+    if (currpolicy == FIFO) {
+        fid = fifo_find_frame();
+    }
+    else if (currpid == GCA) {
+        fid = gca_find_frame();
+    }
+    else {
+        XERROR_KPRINTF("[evict_frame] policy wrong\n");
+    }
     if (fid == SYSERR) {
-        XERROR_KPRINTF("error\n");
+        XERROR_KPRINTF("error in page replacement policy\n");
     }
 
     pid = frame_bookkeeper[fid].pid;

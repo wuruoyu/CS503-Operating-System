@@ -27,6 +27,7 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 /* LAB 3 */
 struct  frame_bookkeeper_t      frame_bookkeeper[NFRAMES];
 int     time_tag;
+struct  gca_t                   gca_keeper[NFRAMES];
 
 /* LAB 3 grading */
 uint32  npagefault;
