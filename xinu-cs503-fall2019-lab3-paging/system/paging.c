@@ -95,6 +95,9 @@ void init_pt(frameid_t fid) {
         (pt_ptr+i)->pt_avail = 0;
         (pt_ptr+i)->pt_base = 0;
     }
+
+    // lab3 hook
+    hook_ptable_create(fid + 1024);
 }
 
 void init_pg(frameid_t fid, pageid_t vpage_id) {
@@ -197,6 +200,9 @@ void init_pt_null(int pd_idx, pt_t* pt_ptr) {
         /*XDEBUG_KPRINTF("[init_pt_null] pd_idx: %d, pt_idx: %d, pt_base: %x\n", */
             /*pd_idx, i, pt_ptr->pt_base);*/
     }
+
+    // lab3 hook
+    hook_ptable_create(addr_frameid(pt_ptr) + 1024);
 }
 
 void enable_paging() {
@@ -232,3 +238,5 @@ syscall initialize_paging_null() {
     set_evec(14, (uint32)pagedisp);
     
 }
+
+

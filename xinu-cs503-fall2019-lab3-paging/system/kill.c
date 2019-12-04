@@ -14,6 +14,10 @@ syscall	kill(
 	struct	procent *prptr;		/* Ptr to process' table entry	*/
 	int32	i;			/* Index into descriptors	*/
 
+    int ret;
+    pd_t*   pd_ptr;
+    pt_t*   pt_ptr;
+
 	mask = disable();
 	if (isbadpid(pid) || (pid == NULLPROC)
 	    || ((prptr = &proctab[pid])->prstate) == PR_FREE) {
@@ -31,7 +35,30 @@ syscall	kill(
 		close(prptr->prdesc[i]);
 	}
 
-  // Lab3 TODO. Free frames as a process gets killed.
+    /* Lab3 TODO. Free frames as a process gets killed. */
+
+    // deallocate bs & bstab release
+    /*for (i = 0; i < MAX_BS_ENTRIES; i ++) {*/
+        /*if (bstab[i].isallocated == TRUE && bstab[i].pid == pid) {*/
+            /*bstab[i].isopen = FALSE;*/
+            /*ret = deallocate_bs(i);*/
+            /*if (ret == (syscall)SYSERR) {*/
+                /*XERROR_KPRINTF("[kill] error\n");*/
+            /*}*/
+        /*}*/
+    /*}*/
+
+    /*// release the pd*/
+    /*pd_ptr = proctab[pid].prpdptr;*/
+    /*frame_bookkeeper[addr_frameid(pd_ptr)].state = FRAME_FREE; */
+
+    /*// release the pt */
+    /*for (i = 0; i < PAGEDIRSIZE; i ++) {*/
+        /*pd_ptr->pd_pres = 0;*/
+        /*pt_ptr = (((pd_ptr + i)->pd_base) << 12);*/
+        /*frame_bookkeeper[addr_frameid(pt_ptr)].state = FRAME_FREE;*/
+        /*hook_ptable_delete(addr_frameid(pt_ptr) + 1024);*/
+    /*}*/
 
 	freestk(prptr->prstkbase, prptr->prstklen);
 

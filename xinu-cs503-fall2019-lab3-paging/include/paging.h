@@ -43,7 +43,8 @@ typedef struct {
 #define FRAME0		1024	/* zero-th frame		*/
 
 #ifndef NFRAMES
-#define NFRAMES		3072	/* number of frames		*/
+//#define NFRAMES		3072	[> number of frames		<]
+#define NFRAMES		    50      /* number of frames		*/
 #endif
 
 #define MAP_SHARED 1
@@ -84,5 +85,7 @@ extern void set_cr0(unsigned long);
 extern unsigned long read_cr3(void);
 extern void set_cr3(unsigned long);
 
+/* lab3 grading */
+extern uint32 npagefault;
 
 #endif // __PAGING_H_

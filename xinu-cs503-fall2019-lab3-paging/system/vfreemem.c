@@ -85,6 +85,7 @@ syscall	vfreemem(
         }
     }
 
+    XDEBUG_KPRINTF("[vfreemem] free!\n");
 	restore(mask);
 	return OK;
 }

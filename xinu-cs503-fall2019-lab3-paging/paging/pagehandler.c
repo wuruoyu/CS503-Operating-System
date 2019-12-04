@@ -1,7 +1,8 @@
 #include <xinu.h>
 
 extern int error_code;
-unsigned long tmp;
+unsigned long temp;
+int           evict_tmp;
 
 unsigned long read_cr2(void) {
     intmask mask;
@@ -10,23 +11,122 @@ unsigned long read_cr2(void) {
 
     asm("pushl %eax");
     asm("movl %cr2, %eax");
-    asm("movl %eax, tmp");
+    asm("movl %eax, temp");
     asm("popl %eax");
 
-    local_tmp = tmp;
+    local_tmp = temp;
 
     restore(mask);
 
     return local_tmp;
 }
 
+
 frameid_t evict_frame() {
-    // TODO
-    XERROR_KPRINTF("[evict_frame] NOT IMPLEMENTED YET!\n");
-    return SYSERR;
+    frameid_t   fid;
+    pid32       pid; 
+    pageid_t    vpage;
+    int         pd_idx;
+    int         pt_idx;
+    pd_t*       pdptr_ent;
+    pt_t*       ptptr_ent;
+    frameid_t   pt_frame_id;
+
+    int         i;
+    char*       pg_addr;
+    int         bs_id;
+    int         bs_page_offset;
+
+    fid = fifo_find_frame();
+    if (fid == SYSERR) {
+        XERROR_KPRINTF("error\n");
+    }
+
+    pid = frame_bookkeeper[fid].pid;
+    vpage = frame_bookkeeper[fid].vpage;
+    pg_addr = frameid_addr(fid);
+
+    pd_idx = vpage >> 10;
+    pt_idx = vpage & 0x3FF;
+
+    XDEBUG_KPRINTF("[evict_frame] fid: %d, pid: %d, pd_idx: %d, pt_idx: %d, vpage: %d\n",
+            fid, pid, pd_idx, pt_idx, vpage);
+
+    pdptr_ent = (proctab[pid].prpdptr + pd_idx);
+    ptptr_ent = (pt_t*)((pdptr_ent->pd_base) << 12) + pt_idx;
+
+    XDEBUG_KPRINTF("[evict_frame] pdptr_ent: %x, pdptr_ent: %x\n", pdptr_ent, ptptr_ent);
+
+    // mark as not present
+    ptptr_ent->pt_pres = 0;
+
+    // current process's page
+    if (currpid == pid) {
+        evict_tmp = (pg_addr);
+        // invalidate TLB entry
+        asm("pushl %eax");
+        asm("invlpg evict_tmp");
+        asm("popl %eax");
+        XDEBUG_KPRINTF("[evict_frame] evict_frame is from current process\n");
+    }
+
+    // decrement pt's counting. if zero, mark not pres
+    /*pt_frame_id = addr_frameid((pdptr_ent->pd_base) << 12);*/
+    /*frame_bookkeeper[pt_frame_id].count --;*/
+    /*if (frame_bookkeeper[pt_frame_id].count == 0) {*/
+        /*XDEBUG_KPRINTF("[evict_frame] pt no need\n");*/
+        /*pdptr_ent->pd_pres = 0;*/
+        /*// un bookkeep it*/
+        /*frame_bookkeeper[pt_frame_id].state = FRAME_FREE;*/
+    /*}*/
+    
+    // dirty bit
+    if (ptptr_ent->pt_dirty) {
+
+        // find corresponding bs
+        for (i = 0; i < MAX_BS_ENTRIES; i ++) {
+            if (bstab[i].isallocated == TRUE && bstab[i].pid == currpid) {
+                if (vpage >= bstab[i].vpage && vpage < bstab[i].vpage + bstab[i].npages) {
+                    bs_id = i;
+                    bs_page_offset = vpage - bstab[i].vpage;
+
+                    XDEBUG_KPRINTF("[evict_frame] bs_id: %d, pid: %d, offset: %d\n",
+                            bs_id, pid, bs_page_offset);
+
+                    break;
+                }
+            }
+            if (i == MAX_BS_ENTRIES - 1) {
+                XERROR_KPRINTF("[evict_frame] no found in bs stote\n");
+                kill(pid);
+                return SYSERR;
+            }
+        }
+        
+
+        XDEBUG_KPRINTF("[evict_frame] evict dirty\n");
+
+        while (SYSERR == (syscall)write_bs(pg_addr, bs_id, bs_page_offset)) {
+            XERROR_KPRINTF("[evict_frame] write_bs fail\n");
+        }
+        XDEBUG_KPRINTF("[evict_frame] finish writing to bs\n");
+    }
+    else {
+        XDEBUG_KPRINTF("[evict_frame] Not dirty\n");
+    }
+    
+    // mark the frame as FREE in bookkeeper
+    /*bookkeep_frame_reset(fid);*/
+    frame_bookkeeper[fid].state = FRAME_FREE;
+
+    return fid;
 }
 
 void pagehandler(void) {
+    // lab3 hook
+    npagefault ++;
+    XDEBUG_KPRINTF("[[pagehandler] npgfault: %d\n", npagefault);
+
     int i;
 
     struct procent* prptr;
@@ -82,11 +182,15 @@ void pagehandler(void) {
         if (pt_fid == (frameid_t)SYSERR) {
             XDEBUG_KPRINTF("[pagehandler] Not available frame for pt\n");
             pt_fid = evict_frame();
+            if ((syscall)pt_fid == SYSERR) {
+                XERROR_KPRINTF("[pagehandler] evict_frame wrong\n");
+                return;
+            }
         }
         XDEBUG_KPRINTF("[pagehandler] find available pt frame\n");
 
         // init the pt, pd_ent points to it
-        init_pt(pt_fid);
+        init_pt(pt_fid); 
         pdptr_ent->pd_avail = 1;
         pdptr_ent->pd_pres = 1;
         pdptr_ent->pd_base = ((int)(frameid_addr(pt_fid)) >> 12);
@@ -117,8 +221,12 @@ void pagehandler(void) {
         if (pg_fid == (frameid_t)SYSERR) {
             XDEBUG_KPRINTF("[pagehandler] Not available frame for page\n");
             pg_fid = evict_frame();
+            if ((syscall)pt_fid == SYSERR) {
+                XERROR_KPRINTF("[pagehandler] evict_frame wrong\n");
+                return;
+            }
         }
-        XDEBUG_KPRINTF("[pagehandler] find available page frame\n");
+        XDEBUG_KPRINTF("[pagehandler] find available page frame %d\n", pg_fid);
 
         // init the page, pt_ent points to it
         init_pg(pg_fid, faulted_addr_page);
@@ -163,12 +271,16 @@ void pagehandler(void) {
         if (pg_fid == (frameid_t)SYSERR) {
             XDEBUG_KPRINTF("[pagehandler] Not available frame for page\n");
             pg_fid = evict_frame();
+            if ((syscall)pt_fid == SYSERR) {
+                XERROR_KPRINTF("[pagehandler] evict_frame wrong\n");
+                return;
+            }
         }
-        XDEBUG_KPRINTF("[pagehandler] find available page frame\n");
+        XDEBUG_KPRINTF("[pagehandler] find available page frame: %d\n", pg_fid);
         pg_addr = frameid_addr(pg_fid);
 
         // read from bs
-        XDEBUG_KPRINTF("[pagehandler] read from bs, addr: %x, is: %d, offset: %d\n", 
+        XDEBUG_KPRINTF("[pagehandler] read from bs, addr: %x, id: %d, offset: %d\n", 
                 pg_addr, bs_id, bs_page_offset);
         while (SYSERR == (syscall)read_bs(pg_addr, bs_id, bs_page_offset)) {
             XERROR_KPRINTF("[pagehandler] read_bs fail\n");
@@ -177,7 +289,7 @@ void pagehandler(void) {
 
         // update field
         bookkeep_frame_id(pg_fid, FRAME_PG, faulted_addr_page);
-        ptptr_ent->pt_pres = 0;
+        ptptr_ent->pt_pres = 1;
         ptptr_ent->pt_base = ((int)pg_addr >> 12);
     }
     else {
@@ -185,6 +297,7 @@ void pagehandler(void) {
         return;
     }
 
-    XDEBUG_KPRINTF("[pagehandler] we should have the page\n");
+    /*hook_pfault(currpid, faulted_addr, faulted_addr_page, pg_fid);*/
+
     return;
 }

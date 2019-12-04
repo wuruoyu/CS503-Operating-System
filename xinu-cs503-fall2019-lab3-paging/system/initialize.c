@@ -26,6 +26,10 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 
 /* LAB 3 */
 struct  frame_bookkeeper_t      frame_bookkeeper[NFRAMES];
+int     time_tag;
+
+/* LAB 3 grading */
+uint32  npagefault;
 
 /* Lab3. frames metadata handling */
 frame_md_t frame_md;
@@ -234,6 +238,12 @@ static void initialize_paging()
 
     /* Enable paging */
     enable_paging();
+
+    /* Init time_tag */
+    time_tag = 0;
+
+    /* grading */
+    npagefault = 0;
 
 	return;
 }

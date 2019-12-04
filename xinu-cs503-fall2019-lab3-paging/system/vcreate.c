@@ -29,6 +29,8 @@ pid32	vcreate(
 	uint32		*a;		/* Points to list of args	*/
 	uint32		*saddr;		/* Stack address		*/
 
+    int         vpage_counter;
+
 	mask = disable();
 
     // allocate stack
@@ -57,7 +59,8 @@ pid32	vcreate(
     // set up bs
     uint32 left_size = hsize;
     bsd_t bs_id;
-    int vpage_counter = 0;
+    // start page of private heap
+    vpage_counter = 4096;
     if (left_size > bstab_get_remaining_page()) {
         XERROR_KPRINTF("[vcreate] we dont have enough bp\n");
         restore(mask);
@@ -65,6 +68,10 @@ pid32	vcreate(
     }
     while (left_size > MAX_PAGES_PER_BS) {
         bs_id = allocate_bs(MAX_PAGES_PER_BS);
+        if (bs_id == SYSERR) {
+            XERROR_KPRINTF("[vcreate] no avai bs\n");
+            return;
+        }
         bstab[bs_id].pid = pid;
         bstab[bs_id].vpage = vpage_counter;
         bstab[bs_id].npages = MAX_PAGES_PER_BS;
@@ -72,12 +79,17 @@ pid32	vcreate(
         left_size -= MAX_PAGES_PER_BS;
         XDEBUG_KPRINTF("[vcreate] allocate one bs\n");
     }
-    XDEBUG_KPRINTF("[vcreate] allocate one bs\n");
     bs_id = allocate_bs(left_size);
+    if (bs_id == SYSERR) {
+        XERROR_KPRINTF("[vcreate] no avai bs\n");
+        return;
+    }
     bstab[bs_id].pid = pid;
     bstab[bs_id].vpage = vpage_counter;
-    bstab[bs_id].npages = MAX_PAGES_PER_BS;
-    XDEBUG_KPRINTF("[vcreate] set up bs\n");
+    bstab[bs_id].npages = left_size;
+    XDEBUG_KPRINTF("[vcreate] bs_id: %d, vpage: %d, npages: %d\n", 
+            bs_id, bstab[bs_id].vpage, bstab[bs_id].npages);
+    XDEBUG_KPRINTF("[vcreate] finish setting up bs\n");
 
 	prcount++;
 	prptr = &proctab[pid];
