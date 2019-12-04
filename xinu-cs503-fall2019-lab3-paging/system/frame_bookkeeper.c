@@ -29,9 +29,9 @@ syscall bookkeep_frame_addr(char* addr, int frame_type, pageid_t vpage_id) {
     frame_bookkeeper[fid].state = FRAME_OCCUPIED;
     frame_bookkeeper[fid].type = frame_type;
     frame_bookkeeper[fid].pid = currpid;
-    frame_bookkeeper[fid].vpage = 0;
-    frame_bookkeeper[fid].count = 0;
-    frame_bookkeeper[fid].fifo_tag = 0;
+    /*frame_bookkeeper[fid].vpage = 0;*/
+    /*frame_bookkeeper[fid].count = 0;*/
+    /*frame_bookkeeper[fid].fifo_tag = 0;*/
 
     if (frame_type == FRAME_PG) {
         frame_bookkeeper[fid].vpage = vpage_id;
@@ -59,9 +59,9 @@ syscall bookkeep_frame_id(frameid_t fid, int frame_type, pageid_t vpage_id) {
     frame_bookkeeper[fid].state = FRAME_OCCUPIED;
     frame_bookkeeper[fid].type = frame_type;
     frame_bookkeeper[fid].pid = currpid;
-    frame_bookkeeper[fid].vpage = 0;
-    frame_bookkeeper[fid].count = 0;
-    frame_bookkeeper[fid].fifo_tag = 0;
+    /*frame_bookkeeper[fid].vpage = 0;*/
+    /*frame_bookkeeper[fid].count = 0;*/
+    /*frame_bookkeeper[fid].fifo_tag = 0;*/
 
     if (frame_type == FRAME_PG) {
         frame_bookkeeper[fid].vpage = vpage_id;
