@@ -51,7 +51,7 @@
 
 /* Debug usage */
 #define XTEST 0
-#define XDEBUG 1 /* set this to 0 when submitting */
+#define XDEBUG 0 /* set this to 0 when submitting */
 #define XTESTCASE 0 /* set this to 0 when submitting */
 #define XERROR 1 /* set this to 0 when submitting */
 

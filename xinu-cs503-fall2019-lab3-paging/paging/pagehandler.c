@@ -70,15 +70,15 @@ frameid_t evict_frame() {
         XDEBUG_KPRINTF("[evict_frame] evict_frame is from current process\n");
     }
 
-    // decrement pt's counting. if zero, mark not pres
-    /*pt_frame_id = addr_frameid((pdptr_ent->pd_base) << 12);*/
-    /*frame_bookkeeper[pt_frame_id].count --;*/
-    /*if (frame_bookkeeper[pt_frame_id].count == 0) {*/
-        /*XDEBUG_KPRINTF("[evict_frame] pt no need\n");*/
-        /*pdptr_ent->pd_pres = 0;*/
-        /*// un bookkeep it*/
-        /*frame_bookkeeper[pt_frame_id].state = FRAME_FREE;*/
-    /*}*/
+    /*decrement pt's counting. if zero, mark not pres*/
+    pt_frame_id = addr_frameid((pdptr_ent->pd_base) << 12);
+    frame_bookkeeper[pt_frame_id].count --;
+    if (frame_bookkeeper[pt_frame_id].count == 0) {
+        XDEBUG_KPRINTF("[evict_frame] pt no need\n");
+        pdptr_ent->pd_pres = 0;
+        // un bookkeep it
+        frame_bookkeeper[pt_frame_id].state = FRAME_FREE;
+    }
     
     // dirty bit
     if (ptptr_ent->pt_dirty) {
@@ -118,6 +118,8 @@ frameid_t evict_frame() {
     // mark the frame as FREE in bookkeeper
     /*bookkeep_frame_reset(fid);*/
     frame_bookkeeper[fid].state = FRAME_FREE;
+
+    hook_pswap_out(pid, vpage, fid);
 
     return fid;
 }
@@ -297,7 +299,7 @@ void pagehandler(void) {
         return;
     }
 
-    /*hook_pfault(currpid, faulted_addr, faulted_addr_page, pg_fid);*/
+    hook_pfault(currpid, faulted_addr, faulted_addr_page, pg_fid);
 
     return;
 }
