@@ -162,5 +162,21 @@ frameid_t gca_find_frame() {
         }
     }
 
+    for (i = 0; i < NFRAMES; i ++) {
+        if (frame_bookkeeper[i].type != FRAME_PG) {
+            continue;
+        }
+
+        if (gca_keeper[i].reference == 0 && gca_keeper[i].modify == 0) {
+            return i;
+        }
+        else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 0) {
+            gca_keeper[i].reference = 0;
+        }
+        else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 1) {
+            gca_keeper[i].modify = 0;
+        }
+    }
+
     return SYSERR;
 }

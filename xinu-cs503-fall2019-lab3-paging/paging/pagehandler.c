@@ -40,12 +40,13 @@ frameid_t evict_frame() {
     if (currpolicy == FIFO) {
         fid = fifo_find_frame();
     }
-    else if (currpid == GCA) {
+    else if (currpolicy == GCA) {
         fid = gca_find_frame();
     }
     else {
         XERROR_KPRINTF("[evict_frame] policy wrong\n");
     }
+
     if (fid == SYSERR) {
         XERROR_KPRINTF("error in page replacement policy\n");
     }

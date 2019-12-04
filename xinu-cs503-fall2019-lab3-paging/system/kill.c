@@ -47,18 +47,24 @@ syscall	kill(
         }
     }
 
-    // release the pd
+    // release the pd, except the null's
     pd_ptr = proctab[pid].prpdptr;
-    frame_bookkeeper[addr_frameid(pd_ptr)].state = FRAME_FREE; 
+    if (addr_frameid(pd_ptr) != 0) {
+        frame_bookkeeper[addr_frameid(pd_ptr)].state = FRAME_FREE; 
+        // release the pt 
+        for (i = 0; i < PAGEDIRSIZE; i ++) {
+            // dont release the null's
+            if (i < 4 || i == 576) {
+                continue;
+            }
 
-    // release the pt 
-    for (i = 0; i < PAGEDIRSIZE; i ++) {
-        if ((pd_ptr + i)->pd_pres == 1) {
-            (pd_ptr + i)->pd_pres = 0;
-            pt_ptr = (((pd_ptr + i)->pd_base) << 12);
-            if (frame_bookkeeper[addr_frameid(pt_ptr)].state != FRAME_FREE) {
-                hook_ptable_delete(addr_frameid(pt_ptr) + 1024);
-                frame_bookkeeper[addr_frameid(pt_ptr)].state = FRAME_FREE;
+            if ((pd_ptr + i)->pd_pres == 1) {
+                (pd_ptr + i)->pd_pres = 0;
+                pt_ptr = (((pd_ptr + i)->pd_base) << 12);
+                if (frame_bookkeeper[addr_frameid(pt_ptr)].state != FRAME_FREE) {
+                    hook_ptable_delete(addr_frameid(pt_ptr) + 1024);
+                    frame_bookkeeper[addr_frameid(pt_ptr)].state = FRAME_FREE;
+                }
             }
         }
     }

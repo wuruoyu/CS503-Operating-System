@@ -50,7 +50,7 @@
 #include <frame_bookkeeper.h>
 
 /* Debug usage */
-#define XTEST 0
+#define XTEST 1
 #define XDEBUG 0 /* set this to 0 when submitting */
 #define XTESTCASE 0 /* set this to 0 when submitting */
 #define XERROR 1 /* set this to 0 when submitting */
