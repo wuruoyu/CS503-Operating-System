@@ -134,6 +134,10 @@ frameid_t evict_frame() {
 }
 
 void pagehandler(void) {
+    intmask mask;
+
+    mask = disable();
+
     // lab3 hook
     npagefault ++;
     XDEBUG_KPRINTF("[[pagehandler] npgfault: %d\n", npagefault);
@@ -172,6 +176,7 @@ void pagehandler(void) {
             || faulted_addr_int > (0x1000000 + (prptr->vsize) * NBPG)) {
         XDEBUG_KPRINTF("[pagehandler] faulted_addr error\n");
         kill(currpid);
+        restore(mask);
         return;
     }
 
@@ -195,6 +200,7 @@ void pagehandler(void) {
             pt_fid = evict_frame();
             if ((syscall)pt_fid == SYSERR) {
                 XERROR_KPRINTF("[pagehandler] evict_frame wrong\n");
+                restore(mask);
                 return;
             }
         }
@@ -214,6 +220,7 @@ void pagehandler(void) {
     // stupid check
     if (pdptr_ent->pd_base == 0) {
         XERROR_KPRINTF("[pagehandler] should not equal to 0\n");
+        restore(mask);
         return;
     }
 
@@ -234,6 +241,7 @@ void pagehandler(void) {
             pg_fid = evict_frame();
             if ((syscall)pt_fid == SYSERR) {
                 XERROR_KPRINTF("[pagehandler] evict_frame wrong\n");
+                restore(mask);
                 return;
             }
         }
@@ -270,6 +278,7 @@ void pagehandler(void) {
             }
             if (i == MAX_BS_ENTRIES - 1) {
                 XERROR_KPRINTF("[pagehandler: page exist not pres] not found in bs store\n");
+                restore(mask);
                 return;
             }
         }
@@ -284,6 +293,7 @@ void pagehandler(void) {
             pg_fid = evict_frame();
             if ((syscall)pt_fid == SYSERR) {
                 XERROR_KPRINTF("[pagehandler] evict_frame wrong\n");
+                restore(mask);
                 return;
             }
         }
@@ -305,10 +315,12 @@ void pagehandler(void) {
     }
     else {
         XERROR_KPRINTF("[pagehandler] should not have error\n");
+        restore(mask);
         return;
     }
 
     hook_pfault(currpid, faulted_addr, faulted_addr_page, pg_fid);
 
+    restore(mask);
     return;
 }

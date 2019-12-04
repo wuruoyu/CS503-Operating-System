@@ -23,8 +23,8 @@ static void debug(void) {
 
 process	main(void)
 {
-  /*srpolicy(FIFO);*/
-  srpolicy(GCA);
+  srpolicy(FIFO);
+  /*srpolicy(GCA);*/
 
   /* Start the network */
   /* DO NOT REMOVE OR COMMENT BELOW */

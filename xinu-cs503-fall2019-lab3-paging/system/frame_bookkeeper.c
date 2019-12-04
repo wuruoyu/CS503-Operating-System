@@ -16,17 +16,22 @@ syscall find_free_frame() {
 }
 
 syscall bookkeep_frame_addr(char* addr, int frame_type, pageid_t vpage_id) {
+    intmask mask;
+
+    mask = disable();
+
     frameid_t fid = addr_frameid(addr);
     if (frame_bookkeeper[fid].state == FRAME_OCCUPIED) {
        XERROR_KPRINTF("[bookkeep_frame_addr] allocate wrong\n");
+       restore(mask);
        return SYSERR;
     } 
     frame_bookkeeper[fid].state = FRAME_OCCUPIED;
     frame_bookkeeper[fid].type = frame_type;
     frame_bookkeeper[fid].pid = currpid;
-    /*frame_bookkeeper[fid].vpage = 0;*/
-    /*frame_bookkeeper[fid].count = 0;*/
-    /*frame_bookkeeper[fid].fifo_tag = 0;*/
+    frame_bookkeeper[fid].vpage = 0;
+    frame_bookkeeper[fid].count = 0;
+    frame_bookkeeper[fid].fifo_tag = 0;
 
     if (frame_type == FRAME_PG) {
         frame_bookkeeper[fid].vpage = vpage_id;
@@ -36,20 +41,27 @@ syscall bookkeep_frame_addr(char* addr, int frame_type, pageid_t vpage_id) {
 
     XDEBUG_KPRINTF("[frame_bookkeeper] frame %d (@%x) is allocated for %d by proc %d\n", 
             fid, addr, frame_type, currpid);
+    restore(mask);
     return OK;
 }
 
 syscall bookkeep_frame_id(frameid_t fid, int frame_type, pageid_t vpage_id) {
+    intmask mask;
+
+    mask = disable();
+
     if (frame_bookkeeper[fid].state == FRAME_OCCUPIED) {
-       XERROR_KPRINTF("[bookkeep_frame_id] allocate wrong\n");
+       XERROR_KPRINTF("[bookkeep_frame_id] occupied: fid: %d, frame_type: %d, vpage: %d\n",
+               fid, frame_type, vpage_id);
+       restore(mask);
        return SYSERR;
     } 
     frame_bookkeeper[fid].state = FRAME_OCCUPIED;
     frame_bookkeeper[fid].type = frame_type;
     frame_bookkeeper[fid].pid = currpid;
-    /*frame_bookkeeper[fid].vpage = 0;*/
-    /*frame_bookkeeper[fid].count = 0;*/
-    /*frame_bookkeeper[fid].fifo_tag = 0;*/
+    frame_bookkeeper[fid].vpage = 0;
+    frame_bookkeeper[fid].count = 0;
+    frame_bookkeeper[fid].fifo_tag = 0;
 
     if (frame_type == FRAME_PG) {
         frame_bookkeeper[fid].vpage = vpage_id;
@@ -59,27 +71,23 @@ syscall bookkeep_frame_id(frameid_t fid, int frame_type, pageid_t vpage_id) {
 
     XDEBUG_KPRINTF("[frame_bookkeeper] frame %d is allocated for %d by proc %d\n", 
             fid, frame_type, currpid);
+    restore(mask);
     return OK;
 }
-
-syscall bookkeep_frame_reset(frameid_t fid) {
-    frame_bookkeeper[fid].state = FRAME_FREE;
-    frame_bookkeeper[fid].pid   = 0;
-    frame_bookkeeper[fid].vpage = 0;
-    XDEBUG_KPRINTF("[bookkeep_frame_reset] reset %d\n, fid");
-    return OK;
-}
-
 
 frameid_t fifo_find_frame() {
     int i;
+    intmask mask;
 
     int min_id = -1;
     int min_tag = INT_MAX;
 
+    mask = disable();
+
     for (i = 0; i < NFRAMES; i++) {
         if (frame_bookkeeper[i].state == FRAME_FREE) {
             XERROR_KPRINTF("[fifo_find_frame] There is free frame\n");
+            restore(mask);
             return SYSERR;
         }
         if (frame_bookkeeper[i].type != FRAME_PG) {
@@ -97,6 +105,8 @@ frameid_t fifo_find_frame() {
         XERROR_KPRINTF("[fifo_find_frame] wrong!\n");
     }
 
+    restore(mask);
+
     return min_id;
 }
 
@@ -109,6 +119,9 @@ frameid_t gca_find_frame() {
     pageid_t    vpage;
     int         pd_idx;
     int         pt_idx;
+    intmask     mask;
+
+    mask = disable();
 
     // init
     for (i = 0; i < NFRAMES; i ++) {
@@ -136,6 +149,7 @@ frameid_t gca_find_frame() {
         }
 
         if (gca_keeper[i].reference == 0 && gca_keeper[i].modify == 0) {
+            restore(mask);
             return i;
         }
         else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 0) {
@@ -152,6 +166,7 @@ frameid_t gca_find_frame() {
         }
 
         if (gca_keeper[i].reference == 0 && gca_keeper[i].modify == 0) {
+            restore(mask);
             return i;
         }
         else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 0) {
@@ -168,6 +183,7 @@ frameid_t gca_find_frame() {
         }
 
         if (gca_keeper[i].reference == 0 && gca_keeper[i].modify == 0) {
+            restore(mask);
             return i;
         }
         else if (gca_keeper[i].reference = 1 && gca_keeper[i].modify == 0) {
@@ -178,5 +194,6 @@ frameid_t gca_find_frame() {
         }
     }
 
+    restore(mask);
     return SYSERR;
 }

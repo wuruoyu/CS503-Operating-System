@@ -35,6 +35,7 @@ struct gca_t {
 };
 
 extern struct gca_t gca_keeper[];
+extern int gca_rr_idx;
 
 // page replacement policy
 extern frameid_t    fifo_find_frame();

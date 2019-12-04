@@ -91,12 +91,20 @@ void page_policy_test(void) {
   }
 #endif
 
-  pid32 p = vcreate(do_policy_test, INITSTK, PAGE_ALLOCATION,
-                    INITPRIO, "page rep", 0, NULL);
-  resume(p);
+  resched_cntl(DEFER_START);
+
+  pid32 p1 = vcreate(do_policy_test, INITSTK, PAGE_ALLOCATION,
+                    INITPRIO, "page rep1", 0, NULL);
+  resume(p1);
+
+  pid32 p2 = vcreate(do_policy_test, INITSTK, PAGE_ALLOCATION,
+                    INITPRIO, "page rep2", 0, NULL);
+  resume(p2);
+
+  resched_cntl(DEFER_STOP);
 
   while (1) {
-    if(proctab[p].prstate == PR_FREE) {
+    if(proctab[p1].prstate == PR_FREE && proctab[p2].prstate == PR_FREE) {
       break;
     }
     else {
@@ -104,7 +112,17 @@ void page_policy_test(void) {
     }
   }
 
+  /*while (1) {*/
+    /*if(proctab[p2].prstate == PR_FREE) {*/
+      /*break;*/
+    /*}*/
+    /*else {*/
+      /*sleepms(100);*/
+    /*}*/
+  /*}*/
+
   kprintf("\n\nTest Passed.\n\n");
+  kprintf("\n\n pagefault: %d \n\n", npagefault);
 
   return;
 }
