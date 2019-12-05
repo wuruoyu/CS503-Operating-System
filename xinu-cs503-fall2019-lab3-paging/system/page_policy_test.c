@@ -123,6 +123,7 @@ void page_policy_test(void) {
 
   kprintf("\n\nTest Passed.\n\n");
   kprintf("\n\n pagefault: %d \n\n", npagefault);
+  kprintf("\n\n swapout: %d \n\n", nswapout);
 
   return;
 }

@@ -32,6 +32,7 @@ int gca_rr_idx;
 
 /* LAB 3 grading */
 uint32  npagefault;
+uint32  nswapout;
 
 /* Lab3. frames metadata handling */
 frame_md_t frame_md;
@@ -246,6 +247,7 @@ static void initialize_paging()
 
     /* grading */
     npagefault = 0;
+    nswapout = 0;
 
     gca_rr_idx = 0;
 

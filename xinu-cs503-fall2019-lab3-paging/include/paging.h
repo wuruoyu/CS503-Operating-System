@@ -87,5 +87,6 @@ extern void set_cr3(unsigned long);
 
 /* lab3 grading */
 extern uint32 npagefault;
+extern uint32 nswapout;
 
 #endif // __PAGING_H_

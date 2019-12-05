@@ -139,6 +139,7 @@ frameid_t evict_frame() {
     /*XERROR_KPRINTF("[evict_frame] we are here\n");*/
 
     hook_pswap_out(pid, vpage, fid);
+    nswapout ++;
 
     restore(mask);
     return fid;
