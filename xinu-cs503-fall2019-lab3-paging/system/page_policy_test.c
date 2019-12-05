@@ -13,10 +13,10 @@
 #define PAGE_REPLACEMENT 1
 
 // Return a deterministic value per addr for testing.
-uint32 get_test_value(uint32 *addr) {
+uint32 get_test_value(uint32 *addr, int pid) {
   static uint32 v1 = 0x12345678;
   static uint32 v2 = 0xdeadbeef;
-  return (uint32)addr + v1 + ((uint32)addr * v2);
+  return (uint32)addr + v1 + ((uint32)addr * v2) + pid;
 }
 
 static void do_policy_test(void) {
@@ -37,7 +37,7 @@ static void do_policy_test(void) {
 
     XDEBUG_KPRINTF("Write Iteration [%3d] at 0x%08x\n", i, p);
     for (uint32 j=0; j<PAGESIZE; j=j+4) {
-      uint32 v = get_test_value(p);
+      uint32 v = get_test_value(p, currpid);
       *p++ = v;
     }
 
@@ -49,7 +49,7 @@ static void do_policy_test(void) {
     uint32 *p = (uint32*)(mem + (i * PAGESIZE));
     XDEBUG_KPRINTF("Check Iteration [%3d] at 0x%08x\n", i, p);
     for (uint32 j=0; j<PAGESIZE; j=j+4) {
-      uint32 v = get_test_value(p);
+      uint32 v = get_test_value(p, currpid);
       ASSERT(*p++ == v);
     }
 
@@ -93,9 +93,9 @@ void page_policy_test(void) {
 
   resched_cntl(DEFER_START);
 
-  pid32 p1 = vcreate(do_policy_test, INITSTK, PAGE_ALLOCATION,
-                    INITPRIO, "page rep1", 0, NULL);
-  resume(p1);
+  /*pid32 p1 = vcreate(do_policy_test, INITSTK, PAGE_ALLOCATION,*/
+                    /*INITPRIO, "page rep1", 0, NULL);*/
+  /*resume(p1);*/
 
   pid32 p2 = vcreate(do_policy_test, INITSTK, PAGE_ALLOCATION,
                     INITPRIO, "page rep2", 0, NULL);
@@ -103,23 +103,23 @@ void page_policy_test(void) {
 
   resched_cntl(DEFER_STOP);
 
-  while (1) {
-    if(proctab[p1].prstate == PR_FREE && proctab[p2].prstate == PR_FREE) {
-      break;
-    }
-    else {
-      sleepms(100);
-    }
-  }
-
   /*while (1) {*/
-    /*if(proctab[p2].prstate == PR_FREE) {*/
+    /*if(proctab[p1].prstate == PR_FREE && proctab[p2].prstate == PR_FREE) {*/
       /*break;*/
     /*}*/
     /*else {*/
       /*sleepms(100);*/
     /*}*/
   /*}*/
+
+  while (1) {
+    if(proctab[p2].prstate == PR_FREE) {
+      break;
+    }
+    else {
+      sleepms(100);
+    }
+  }
 
   kprintf("\n\nTest Passed.\n\n");
   kprintf("\n\n pagefault: %d \n\n", npagefault);

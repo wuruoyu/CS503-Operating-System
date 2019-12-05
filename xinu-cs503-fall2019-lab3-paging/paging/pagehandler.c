@@ -37,6 +37,10 @@ frameid_t evict_frame() {
     int         bs_id;
     int         bs_page_offset;
 
+    intmask     mask;
+
+    mask = disable();
+
     if (currpolicy == FIFO) {
         fid = fifo_find_frame();
     }
@@ -71,8 +75,12 @@ frameid_t evict_frame() {
 
     // current process's page
     if (currpid == pid) {
-        evict_tmp = (pg_addr);
-        // invalidate TLB entry
+        evict_tmp = (proctab[pid].prpdptr);
+        asm("pushl %eax");
+        asm("invlpg evict_tmp");
+        asm("popl %eax");
+
+        evict_tmp = (vpage << 12);
         asm("pushl %eax");
         asm("invlpg evict_tmp");
         asm("popl %eax");
@@ -108,6 +116,7 @@ frameid_t evict_frame() {
             if (i == MAX_BS_ENTRIES - 1) {
                 XERROR_KPRINTF("[evict_frame] no found in bs stote\n");
                 kill(pid);
+                restore(mask);
                 return SYSERR;
             }
         }
@@ -127,9 +136,11 @@ frameid_t evict_frame() {
     // mark the frame as FREE in bookkeeper
     /*bookkeep_frame_reset(fid);*/
     frame_bookkeeper[fid].state = FRAME_FREE;
+    /*XERROR_KPRINTF("[evict_frame] we are here\n");*/
 
     hook_pswap_out(pid, vpage, fid);
 
+    restore(mask);
     return fid;
 }
 
@@ -256,7 +267,7 @@ void pagehandler(void) {
         // increment the ref count
         frame_bookkeeper[pt_frame_id].count ++;
 
-        XDEBUG_KPRINTF("[pagehandler] init the page\n");
+        /*XERROR_KPRINTF("[pagehandler] init the page\n");*/
     } 
     // page exist but not pres
     else if (!ptptr_ent->pt_pres) {
@@ -288,6 +299,7 @@ void pagehandler(void) {
 
         // grab a frame
         pg_fid = find_free_frame();
+        /*XERROR_KPRINTF("[pagehandler] page pg_fid: %d\n", pg_fid);*/
         if (pg_fid == (frameid_t)SYSERR) {
             XDEBUG_KPRINTF("[pagehandler] Not available frame for page\n");
             pg_fid = evict_frame();
@@ -296,8 +308,9 @@ void pagehandler(void) {
                 restore(mask);
                 return;
             }
+            /*XERROR_KPRINTF("[pagehandler] after evict_frame pg_fid: %d\n", pg_fid);*/
         }
-        XDEBUG_KPRINTF("[pagehandler] find available page frame: %d\n", pg_fid);
+        XERROR_KPRINTF("[pagehandler] find available page frame: %d\n", pg_fid);
         pg_addr = frameid_addr(pg_fid);
 
         // read from bs
@@ -320,6 +333,7 @@ void pagehandler(void) {
     }
 
     hook_pfault(currpid, faulted_addr, faulted_addr_page, pg_fid);
+    /*XTEST_KPRINTF("[pagehandler] currpid: %d\n", currpid);*/
 
     restore(mask);
     return;

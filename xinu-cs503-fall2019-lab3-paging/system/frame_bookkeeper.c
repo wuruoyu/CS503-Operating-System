@@ -4,14 +4,19 @@
 
 syscall find_free_frame() {
     int i;
+    intmask mask;
+
+    mask = disable();
 
     for (i = 0; i < NFRAMES; i++) {
         if (frame_bookkeeper[i].state == FRAME_FREE) {
+            restore(mask);
             return i;
         }
     }
 
     XDEBUG_KPRINTF("[find_free_frame] no available frame in mem\n");
+    restore(mask);
     return SYSERR;
 }
 
@@ -51,8 +56,8 @@ syscall bookkeep_frame_id(frameid_t fid, int frame_type, pageid_t vpage_id) {
     mask = disable();
 
     if (frame_bookkeeper[fid].state == FRAME_OCCUPIED) {
-       XERROR_KPRINTF("[bookkeep_frame_id] occupied: fid: %d, frame_type: %d, vpage: %d\n",
-               fid, frame_type, vpage_id);
+       XERROR_KPRINTF("[bookkeep_frame_id] occupied: fid: %d, frame_type: %d, vpage: %d, pid: %d, currpid: %d\n",
+               fid, frame_type, vpage_id, frame_bookkeeper[fid].pid, currpid);
        restore(mask);
        return SYSERR;
     } 
