@@ -16,6 +16,7 @@ struct dl_handle_t {
     pid32   pid;
     char*   elf_start;
     char*   exec;
+    int     size;
     char*   sym_syms;
     char*   sym_strings;
     int     sym_sh_size;

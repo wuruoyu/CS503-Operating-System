@@ -1,4 +1,4 @@
-cscope 15 /u/antor/u13/wu1377/CS-503/xinu-cs503-fall2019-lab2               0000910853
+cscope 15 /u/antor/u13/wu1377/CS-503/xinu-cs503-fall2019-lab2               0000912683
 	@config/conf.c
 
 3 
@@ -30139,27 +30139,17 @@ i
 j
 ++;
 
-23 
-i
- = 
-	`sysˇŒ_öãrÁ˚
-(2, 8, 
-d©a_£˘i⁄
-);
-
 26 
 d©a_£˘i⁄
  += 1;
 
-28 
-i
- = 
+30 
 	`sysˇŒ_öãrÁ˚
-(2, 8, 
+(2,26,
 d©a_£˘i⁄
 );
 
-40 
+39 
 	}
 }
 
@@ -51727,7 +51717,7 @@ dl˛o£
 sysˇŒ
  
 lﬂd›í
-(*);
+(*, );
 
 14 
 	sdl_h™dÀ_t
@@ -52405,25 +52395,45 @@ SHRT_MAX
 	m°©us
 ;
 
-17 
+13 
+	mautom©ic_lﬂd_°©e
+;
+
+14 
+	mlﬂd_by
+;
+
+19 
 	#NLOAD
  10
 
 	)
 
-18 
+20 
 	#LOAD_OCCUPIED
  0
 
 	)
 
-19 
+21 
 	#LOAD_FREE
  1
 
 	)
 
-21 
+23 
+	#AUTOMATIC_ON
+ 1
+
+	)
+
+24 
+	#AUTOMATIC_OFF
+ 0
+
+	)
+
+26 
 lﬂd_t
  
 lﬂdèb
@@ -57431,11 +57441,7 @@ lﬂd_t
 ld_ãxt_addr
 );
 
-649 * 
-	`lﬂd›í
-(*, *);
-
-652 
+649 
 	#ht⁄s
 (
 x
@@ -57443,19 +57449,19 @@ x
 
 	)
 
-653 
+650 
 	#ht⁄l
 (
 x
 ) ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
 
-654 (((
+651 (((
 x
 )<<8Ë& 0x00ff0000Ë| (((x)<<24Ë& 0xff000000))
 
 	)
 
-655 
+652 
 	#¡ohs
 (
 x
@@ -57463,13 +57469,13 @@ x
 
 	)
 
-656 
+653 
 	#¡ohl
 (
 x
 ) ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
 
-657 (((
+654 (((
 x
 )<<8Ë& 0x00ff0000Ë| (((x)<<24Ë& 0xff000000))
 
@@ -64621,13 +64627,13 @@ ud±ab
 
 59 
 	#XTEST
- 0
+ 1
 
 	)
 
 60 
 	#XDEBUG
- 1
+ 0
 
 	)
 
@@ -70315,7 +70321,7 @@ j
 ªt
  = 
 	`sysˇŒ_öãrÁ˚
-(2, 8, 0);
+(2, 26, 2);
 
 17 
 	}
@@ -88937,7 +88943,7 @@ mös
 	g≠phñlo_c⁄ã¡s
 [] = {
 
-577 
+573 
 	g≠phñlo_c⁄ã¡s_size
  = (
 ≠phñlo_c⁄ã¡s
@@ -88949,7 +88955,7 @@ mös
 	g≠phñlo_dyn_lﬂdög_c⁄ã¡s
 [] = {
 
-579 
+575 
 	g≠phñlo_dyn_lﬂdög_c⁄ã¡s_size
  = (
 ≠phñlo_dyn_lﬂdög_c⁄ã¡s
@@ -91590,7 +91596,7 @@ DL_CLOSE
 ;
 
 40 
-	`‰ìbuf
+	`‰ìmem
 (
 h™dÀèb
 [
@@ -92085,7 +92091,7 @@ i
 sh_«me
 );
 
-101 * 
+100 * 
 íåy
  = 
 	`föd_sym
@@ -92099,7 +92105,7 @@ sym_°rögs
 exec
 );
 
-122 
+121 
 i
  = 0; i < 
 hdr
@@ -92107,7 +92113,7 @@ hdr
 e_shnum
 ; ++i) {
 
-123 i‡(
+122 i‡(
 shdr
 [
 i
@@ -92117,7 +92123,7 @@ sh_ty≥
 SHT_DYNSYM
 ) {
 
-124 
+123 
 dyn_syms
  = (
 Elf32_Sym
@@ -92131,7 +92137,7 @@ i
 sh_off£t
 );
 
-125 
+124 
 dyn_°rögs
  = 
 ñf_°¨t
@@ -92145,7 +92151,7 @@ sh_lök
 sh_off£t
 ;
 
-126 
+125 
 dyn_sh_size
  = 
 shdr
@@ -92155,7 +92161,7 @@ i
 sh_size
 ;
 
-127 
+126 
 	`XDEBUG_KPRINTF
 ("[dl›í] DYNSYM (dyn_syms: %x, dyn_°rögs: %x)\n", 
 dyn_syms
@@ -92163,7 +92169,7 @@ dyn_syms
 dyn_°rögs
 );
 
-129 i‡(
+128 i‡(
 shdr
 [
 i
@@ -92173,17 +92179,17 @@ sh_ty≥
 SHT_REL
 ) {
 
-131 
+130 
 	`XDEBUG_KPRINTF
 ("[dlopen] Find REL, but we ignore\n");
 
-136 
+135 
 dl_h™dÀ_t
  
 ªt_h™dÀ
 ;
 
-137 
+136 
 ªt_h™dÀ
 .
 °©us
@@ -92191,7 +92197,7 @@ dl_h™dÀ_t
 HANDLE_OPEN
 ;
 
-138 
+137 
 ªt_h™dÀ
 .
 pid
@@ -92199,61 +92205,61 @@ pid
 cuºpid
 ;
 
-139 
+138 
 ªt_h™dÀ
 .
 ñf_°¨t
  =Élf_start;
 
-140 
+139 
 ªt_h™dÀ
 .
 exec
  =Éxec;
 
-141 
+140 
 ªt_h™dÀ
 .
 sym_syms
  = sym_syms;
 
-142 
+141 
 ªt_h™dÀ
 .
 sym_°rögs
  = sym_strings;
 
-143 
+142 
 ªt_h™dÀ
 .
 sym_sh_size
  = sym_sh_size;
 
-144 
+143 
 ªt_h™dÀ
 .
 dyn_syms
  = dyn_syms;
 
-145 
+144 
 ªt_h™dÀ
 .
 dyn_°rögs
  = dyn_strings;
 
-146 
+145 
 ªt_h™dÀ
 .
 dyn_sh_size
  = dyn_sh_size;
 
-150 
+149 
 i
  = 0; i < 
 NHANDLE
 ; i++) {
 
-151 i‡(
+150 i‡(
 h™dÀèb
 [
 i
@@ -92263,7 +92269,7 @@ i
 HANDLE_CLOSE
 ) {
 
-152 
+151 
 h™dÀèb
 [
 i
@@ -92271,29 +92277,29 @@ i
 ªt_h™dÀ
 ;
 
-156 i‡(
+155 i‡(
 i
  =
 NHANDLE
 ) {
 
-157 
+156 
 	`XDEBUG_KPRINTF
 ("[dlopen]Çoávailable handle slot\n");
 
-158  
+157  
 SYSERR
 ;
 
-161  
+160  
 i
 ;
 
-162 
+161 
 	}
 }
 
-165 
+164 
 sysˇŒ
  
 	$dl›í
@@ -92301,29 +92307,29 @@ sysˇŒ
 libøry_fûe_∑th
 )
 
-167 
+166 
 öt32
  
 i
 ;
 
-168 
+167 
 ötmask
  
 mask
 ;
 
-170 
+169 
 mask
  = 
 	`dißbÀ
 ();
 
-173 
+172 
 fûe_size
  = 0;
 
-174 * 
+173 * 
 fûe
  = 
 	`fûe›í
@@ -92333,27 +92339,27 @@ libøry_fûe_∑th
 fûe_size
 );
 
-175 i‡((*)
+174 i‡((*)
 SYSERR
  =
 fûe
 ) {
 
-176 
+175 
 	`XDEBUG_KPRINTF
 ("[dlopen] fileÇotÉxist\n");
 
-177  
+176  
 SYSERR
 ;
 
-181 
+180 
 i
  = 0; i < 
 NFILE
 ; i ++) {
 
-182 i‡(
+181 i‡(
 fûëab
 [
 i
@@ -92363,7 +92369,7 @@ fûe°©e
 FILE_OCCUPIED
 ) {
 
-183 i‡(
+182 i‡(
 	`°rcmp
 (
 fûëab
@@ -92375,7 +92381,7 @@ fûï©h
 libøry_fûe_∑th
 ) == 0) {
 
-188 i‡(
+187 i‡(
 fûëab
 [
 i
@@ -92387,47 +92393,47 @@ cuºpid
 DL_OPEN
 ) {
 
-189 
+188 
 	`XDEBUG_KPRINTF
 ("[dlopen] has been opened byÅhisÖrocess\n");
 
-190 
+189 
 	`ª°‹e
 (
 mask
 );
 
-191  
+190  
 SYSERR
 ;
 
-195 
+194 
 h™dÀ
  = 
 	`image_lﬂd
 (
-libøry_fûe_∑th
+fûe
 , 
 fûe_size
 );
 
-196 i‡(
+195 i‡(
 h™dÀ
  =
 SYSERR
 ) {
 
-197 
+196 
 	`ª°‹e
 (
 mask
 );
 
-198  
+197  
 SYSERR
 ;
 
-202 
+201 
 fûëab
 [
 i
@@ -92439,29 +92445,29 @@ cuºpid
 DL_OPEN
 ;
 
-204 
+203 
 	`XDEBUG_KPRINTF
 ("[dl›í] h™dÀ: %d\n", 
 h™dÀ
 );
 
-206 
+205 
 	`fûe˛o£
 (
 libøry_fûe_∑th
 );
 
-208 
+207 
 	`ª°‹e
 (
 mask
 );
 
-209  
+208  
 h™dÀ
 ;
 
-210 
+209 
 	}
 }
 
@@ -97057,7 +97063,7 @@ XDEBUG
 ã°ˇ£_4
 ();
 
-29 
+28 
 ¥o˚¡
  
 	g¥o˘ab
@@ -97065,7 +97071,7 @@ XDEBUG
 NPROC
 ];
 
-30 
+29 
 £¡ry
  
 	g£mèb
@@ -97073,13 +97079,13 @@ NPROC
 NSEM
 ];
 
-31 
+30 
 memblk
  
 	gmemli°
 ;
 
-32 
+31 
 fûì¡
  
 	gfûëab
@@ -97087,7 +97093,7 @@ fûì¡
 NFILE
 ];
 
-35 
+34 
 lﬂd_t
  
 	glﬂdèb
@@ -97095,7 +97101,7 @@ lﬂd_t
 NLOAD
 ];
 
-38 
+37 
 dl_h™dÀ_t
  
 	gh™dÀèb
@@ -97103,47 +97109,47 @@ dl_h™dÀ_t
 NHANDLE
 ];
 
-42 
+41 
 	g¥cou¡
 ;
 
-43 
+42 
 pid32
  
 	gcuºpid
 ;
 
-47 
+46 
 	#CONSOLE_RESET
  " \033[0m\033[2J\033[;H"
 
 	)
 
-63 
+62 
 	$nuŒu£r
 ()
 
-65 
+64 
 memblk
  *
 mem±r
 ;
 
-66 
+65 
 uöt32
  
 ‰ì_mem
 ;
 
-70 
+69 
 	`sysöô
 ();
 
-73 
+72 
 ‰ì_mem
  = 0;
 
-74 
+73 
 mem±r
  = 
 memli°
@@ -97153,13 +97159,13 @@ m√xt
 NULL
 ;
 
-75 
+74 
 mem±r
  = mem±r->
 m√xt
 ) {
 
-76 
+75 
 ‰ì_mem
  +
 mem±r
@@ -97167,13 +97173,13 @@ mem±r
 mÀngth
 ;
 
-78 
+77 
 	`k¥ötf
 ("%10d byã†o‡‰ì mem‹y. Fªêli°:\n", 
 ‰ì_mem
 );
 
-79 
+78 
 mem±r
 =
 memli°
@@ -97183,11 +97189,11 @@ m√xt
 NULL
 ;memptr = memptr->mnext) {
 
-80 
+79 
 	`k¥ötf
 (" [0x%08XÅo 0x%08X]\n",
 
-81 (
+80 (
 uöt32
 )
 mem±r
@@ -97195,11 +97201,11 @@ mem±r
 mÀngth
  - 1);
 
-84 
+83 
 	`k¥ötf
 ("%10d bytes of Xinu code.\n",
 
-85 (
+84 (
 uöt32
 )&
 ëext
@@ -97207,11 +97213,11 @@ uöt32
 ãxt
 );
 
-86 
+85 
 	`k¥ötf
 (" [0x%08XÅo 0x%08X]\n",
 
-87 (
+86 (
 uöt32
 )&
 ãxt
@@ -97219,11 +97225,11 @@ uöt32
 ëext
  - 1);
 
-88 
+87 
 	`k¥ötf
 ("%10d bytes of data.\n",
 
-89 (
+88 (
 uöt32
 )&
 ebss
@@ -97231,11 +97237,11 @@ ebss
 d©a
 );
 
-90 
+89 
 	`k¥ötf
 (" [0x%08XÅo 0x%08X]\n\n",
 
-91 (
+90 (
 uöt32
 )&
 d©a
@@ -97243,15 +97249,15 @@ d©a
 ebss
  - 1);
 
-95 
+94 
 	`íabÀ
 ();
 
-99 
+98 
 	`√t_öô
 ();
 
-103 
+102 
 	`ªsume
 (
 	`¸óã
@@ -97263,23 +97269,23 @@ INITSTK
 INITPRIO
 ,
 
-104 "Sèπu∞¥o˚ss", 0, 
+103 "Sèπu∞¥o˚ss", 0, 
 NULL
 ));
 
-109 
+108 
 TRUE
 ) {
 
-113 
+112 
 asm
  volatile ("hlt");
 
-116 
+115 
 	}
 }
 
-126 
+125 
 loˇl
  
 ¥o˚ss
@@ -97287,23 +97293,23 @@ loˇl
 	$°¨tup
 ()
 
-128 
+127 
 uöt32
  
 ùaddr
 ;
 
-129 
+128 
 °r
 [128];
 
-134 
+133 
 ùaddr
  = 
 	`gëloˇlù
 ();
 
-135 i‡((
+134 i‡((
 öt32
 )
 ùaddr
@@ -97311,11 +97317,11 @@ uöt32
 SYSERR
 ) {
 
-136 
+135 
 	`k¥ötf
 ("Cannot obtainán IPáddress\n");
 
-139 
+138 
 ùaddr
  = 
 NëD©a
@@ -97323,35 +97329,35 @@ NëD©a
 ùuˇ°
 ;
 
-140 
+139 
 	`•rötf
 (
 °r
 , "%d.%d.%d.%d",
 
-141 (
+140 (
 ùaddr
 >>24)&0xff, (ipaddr>>16)&0xff,
 
-142 (
+141 (
 ùaddr
 >>8)&0xff, ipaddr&0xff);
 
-144 
+143 
 	`k¥ötf
 ("Obèöed IPáddªs† %† (0x%08x)\n", 
 °r
 ,
 
-145 
+144 
 ùaddr
 );
 
-150 #i‡
+149 #i‡
 XTEST
 
 
-151 
+150 
 	`ªsume
 (
 	`¸óã
@@ -97363,15 +97369,15 @@ INITSTK
 INITPRIO
 ,
 
-152 "MaöÖro˚ss", 0, 
+151 "MaöÖro˚ss", 0, 
 NULL
 ));
 
-158 #i‡
+157 #i‡
 XDEBUG
 
 
-168 
+167 
 	`ªsume
 (
 	`¸óã
@@ -97379,89 +97385,89 @@ XDEBUG
 ã°ˇ£_4
 , 
 INITSTK
-, 50, "testcase 3", 0,
+, 50, "testcase 4", 0,
 
-169 
+168 
 NULL
 ));
 
-175  
+174  
 OK
 ;
 
-176 
+175 
 	}
 }
 
-185 
+184 
 	$sysöô
 ()
 
-187 
+186 
 öt32
  
 i
 ;
 
-188 
+187 
 ¥o˚¡
  *
 ¥±r
 ;
 
-189 
+188 
 £¡ry
  *
 £m±r
 ;
 
-190 
+189 
 fûì¡
  *
 fûïr
 ;
 
-194 
+193 
 	`∂©öô
 ();
 
-198 
+197 
 	`k¥ötf
 (
 CONSOLE_RESET
 );
 
-199 
+198 
 	`k¥ötf
 ("\n%s\n\n", 
 VERSION
 );
 
-203 
+202 
 	`öôevec
 ();
 
-207 
+206 
 	`memöô
 ();
 
-213 
+212 
 ¥cou¡
  = 1;
 
-217 
+216 
 De„r
 .
 nde„rs
  = 0;
 
-221 
+220 
 i
  = 0; i < 
 NPROC
 ; i++) {
 
-222 
+221 
 ¥±r
  = &
 ¥o˘ab
@@ -97469,7 +97475,7 @@ NPROC
 i
 ];
 
-223 
+222 
 ¥±r
 ->
 ¥°©e
@@ -97477,7 +97483,7 @@ i
 PR_FREE
 ;
 
-224 
+223 
 ¥±r
 ->
 ¥«me
@@ -97485,7 +97491,7 @@ PR_FREE
 NULLCH
 ;
 
-225 
+224 
 ¥±r
 ->
 ¥°kba£
@@ -97493,13 +97499,13 @@ NULLCH
 NULL
 ;
 
-226 
+225 
 ¥±r
 ->
 ¥¥io
  = 0;
 
-231 
+230 
 ¥±r
  = &
 ¥o˘ab
@@ -97507,7 +97513,7 @@ NULL
 NULLPROC
 ];
 
-232 
+231 
 ¥±r
 ->
 ¥°©e
@@ -97515,13 +97521,13 @@ NULLPROC
 PR_CURR
 ;
 
-233 
+232 
 ¥±r
 ->
 ¥¥io
  = 0;
 
-234 
+233 
 	`°∫˝y
 (
 ¥±r
@@ -97529,7 +97535,7 @@ PR_CURR
 ¥«me
 , "prnull", 7);
 
-235 
+234 
 ¥±r
 ->
 ¥°kba£
@@ -97539,7 +97545,7 @@ PR_CURR
 NULLSTK
 );
 
-236 
+235 
 ¥±r
 ->
 ¥°kÀn
@@ -97547,25 +97553,25 @@ NULLSTK
 NULLSTK
 ;
 
-237 
+236 
 ¥±r
 ->
 ¥°k±r
  = 0;
 
-238 
+237 
 cuºpid
  = 
 NULLPROC
 ;
 
-242 
+241 
 i
  = 0; i < 
 NSEM
 ; i++) {
 
-243 
+242 
 £m±r
  = &
 £mèb
@@ -97573,7 +97579,7 @@ NSEM
 i
 ];
 
-244 
+243 
 £m±r
 ->
 s°©e
@@ -97581,13 +97587,13 @@ s°©e
 S_FREE
 ;
 
-245 
+244 
 £m±r
 ->
 scou¡
  = 0;
 
-246 
+245 
 £m±r
 ->
 squeue
@@ -97595,17 +97601,17 @@ squeue
 	`√wqueue
 ();
 
-251 
+250 
 	`buföô
 ();
 
-255 
+254 
 i
  = 0; i < 
 NFILE
 ; i++) {
 
-256 
+255 
 fûïr
  = &
 fûëab
@@ -97613,7 +97619,7 @@ fûëab
 i
 ];
 
-257 
+256 
 fûïr
 ->
 fûe°©e
@@ -97621,7 +97627,7 @@ fûe°©e
 FILE_FREE
 ;
 
-258 
+257 
 fûïr
 ->
 fûï©h
@@ -97629,7 +97635,7 @@ fûï©h
 NULL
 ;
 
-259 
+258 
 fûïr
 ->
 fûec⁄ã¡
@@ -97637,13 +97643,13 @@ fûec⁄ã¡
 NULL
 ;
 
-260 
+259 
 fûïr
 ->
 fûesize
  = 0;
 
-261 
+260 
 fûïr
 ->
 fûe›í
@@ -97651,17 +97657,17 @@ fûe›í
 FILE_UNOPEN
 ;
 
-262 
+261 
 j
 ;
 
-263 
+262 
 j
  = 0; j < 
 NPROC
 ; j ++) {
 
-264 
+263 
 fûïr
 ->
 lﬂd_¥o˚ss
@@ -97671,17 +97677,17 @@ j
 DL_CLOSE
 ;
 
-269 
+268 
 	`sysˇŒöô
 ();
 
-272 
+271 
 i
  = 0; i < 
 NLOAD
 ; i++) {
 
-273 
+272 
 lﬂdèb
 [
 i
@@ -97691,13 +97697,13 @@ i
 LOAD_FREE
 ;
 
-277 
+276 
 i
  = 0; i < 
 NHANDLE
 ; i++) {
 
-278 
+277 
 h™dÀèb
 [
 i
@@ -97707,33 +97713,33 @@ i
 HANDLE_CLOSE
 ;
 
-283 
+282 
 ªadyli°
  = 
 	`√wqueue
 ();
 
-287 
+286 
 	`˛köô
 ();
 
-294 
+293 
 i
  = 0; i < 
 NDEVS
 ; i++) {
 
-295 
+294 
 	`öô
 (
 i
 );
 
-298 
+297 
 	}
 }
 
-300 
+299 
 öt32
  
 	$°›
@@ -97741,21 +97747,21 @@ i
 s
 )
 
-302 
+301 
 	`k¥ötf
 ("%s\n", 
 s
 );
 
-303 
+302 
 	`k¥ötf
 ("looping...ÖressÑeset\n");
 
-306 
+305 
 	}
 }
 
-308 
+307 
 öt32
  
 	$dñay
@@ -97763,17 +97769,17 @@ s
 n
 )
 
-310 
+309 
 	`DELAY
 (
 n
 );
 
-311  
+310  
 OK
 ;
 
-312 
+311 
 	}
 }
 
@@ -99435,6 +99441,8 @@ sysˇŒ
 	$lﬂd›í
 (* 
 libøry_fûe_∑th
+, 
+id
 )
 
 183 
@@ -99471,49 +99479,85 @@ fûe
 SYSERR
 ;
 
-194 
+193 
 h™dÀ
  = 
 	`image_lﬂd
 (
-libøry_fûe_∑th
+fûe
 , 
 fûe_size
 );
 
-195 i‡(
+194 i‡(
 h™dÀ
  =
 SYSERR
 ) {
 
-196  
+195  
 SYSERR
 ;
 
+198 
+lﬂd_t
+ 
+ld_°©s
+;
+
+199 
+ld_°©s
+.
+°©us
+ = 
+LOAD_FREE
+;
+
 200 
-fûëab
+ld_°©s
+.
+autom©ic_lﬂd_°©e
+ = 
+AUTOMATIC_ON
+;
+
+201 
+ld_°©s
+.
+lﬂd_by
+ = 
+id
+;
+
+204 
+i
+ = 0; i < 
+NLOAD
+; i ++) {
+
+205 i‡(
+lﬂdèb
 [
 i
 ].
-lﬂd_¥o˚ss
+°©us
+ =
+LOAD_FREE
+) {
+
+206 
+lﬂdèb
 [
-cuºpid
+i
 ] = 
-DL_OPEN
+ld_°©s
 ;
 
-202 
-	`XDEBUG_KPRINTF
-("[dl›í] h™dÀ: %d\n", 
-h™dÀ
-);
-
-204  
+211  
 h™dÀ
 ;
 
-205 
+212 
 	}
 }
 
@@ -100495,27 +100539,37 @@ poﬁid
 	~<xöu.h
 >
 
-10 *
+10 
+	glﬂdèb_id
+ = 0;
+
+12 *
 	$ªsﬁve
 (c⁄° * 
 sym
 )
 
-13 
+14 
+	`XDEBUG_KPRINTF
+("[lﬂdî]Ñesﬁvê- sym: %s\n", 
+sym
+);
+
+16 
 i
 ;
 
-14 * 
+17 * 
 fûe
 ;
 
-15 
+18 
 i
  = 0; i < 
 NFILE
 ; i++) {
 
-16 i‡(
+19 i‡(
 fûëab
 [
 i
@@ -100525,43 +100579,35 @@ fûe°©e
 FILE_OCCUPIED
 ) {
 
-17 
-fûe
+20 * 
+h™dÀ
  = 
+	`lﬂd›í
+(
 fûëab
 [
 i
 ].
-fûec⁄ã¡
-;
+fûï©h
+, 
+lﬂdèb_id
+);
 
-18 if(
-fûe
-[0] == 0x7f && file[1] == 0x45 && file[2] == 0x4c ) {
-
-19 
-	`XDEBUG_KPRINTF
-("[loader]Ñesolve - it is ELF\n");
-
-28 *
-h™dÀ
- = 
-NULL
-;
-
-29 i‡(
+21 i‡((
+sysˇŒ
+)
 h™dÀ
  =
-NULL
+SYSERR
 ) {
 
-30 
-h™dÀ
- = 
-	`dl›í
-("libc.so");
+22 
+	`XDEBUG_KPRINTF
+("[loader]Ñesolve -Üoad fail\n");
 
-32  
+26 * 
+ªt_dlsym
+ = 
 	`dlsym
 (
 h™dÀ
@@ -100569,11 +100615,39 @@ h™dÀ
 sym
 );
 
-33 
+27 i‡(
+ªt_dlsym
+ =(*)
+SYSERR
+) {
+
+28 
+	`XDEBUG_KPRINTF
+("[loader]Ñesolve -Çot find sym\n");
+
+32 
+	`XDEBUG_KPRINTF
+("[loader]Ñesolve - find sym\n");
+
+33  
+ªt_dlsym
+;
+
+38 
+	`XDEBUG_KPRINTF
+("[loader]Ñesolve - we canÇotÑesolve symbol\n");
+
+39  
+SYSERR
+;
+
+40 
 	}
 }
 
-35 
+42 
+sysˇŒ
+ 
 	$ªloˇã
 (
 Elf32_Shdr
@@ -100591,7 +100665,7 @@ syms
 d°
 )
 
-37 
+44 
 Elf32_Rñ
 * 
 ªl
@@ -100603,11 +100677,11 @@ shdr
 sh_off£t
 );
 
-38 
+45 
 j
 ;
 
-39 
+47 
 j
  = 0; j < 
 shdr
@@ -100617,7 +100691,7 @@ sh_size
 Elf32_Rñ
 ); j += 1) {
 
-40 c⁄° * 
+48 c⁄° * 
 sym
  = 
 °rögs
@@ -100635,7 +100709,13 @@ r_öfo
 °_«me
 ;
 
-41 
+50 
+Elf32_W‹d
+ 
+ªt_ªsﬁve
+;
+
+51 
 	`ELF32_R_TYPE
 (
 ªl
@@ -100645,15 +100725,37 @@ j
 r_öfo
 )) {
 
-42 
+52 
 R_386_JMP_SLOT
 :
 
-43 
+53 
 R_386_GLOB_DAT
 :
 
-44 *(
+54 
+ªt_ªsﬁve
+ = (
+Elf32_W‹d
+)
+	`ªsﬁve
+(
+sym
+);
+
+55 i‡((
+sysˇŒ
+)
+ªt_ªsﬁve
+ =
+SYSERR
+) {
+
+56  
+SYSERR
+;
+
+58 *(
 Elf32_W‹d
 *)(
 d°
@@ -100663,17 +100765,15 @@ d°
 j
 ].
 r_off£t
-Ë(Elf32_W‹d)
-	`ªsﬁve
-(
-sym
-);
+Ë
+ªt_ªsﬁve
+;
 
-48 
+62 
 	}
 }
 
-51 
+65 
 	$is_image_vÆid
 (
 Elf32_Ehdr
@@ -100681,25 +100781,25 @@ Elf32_Ehdr
 hdr
 )
 
-53 * 
+67 * 
 h
  = (*)
 hdr
 ;
 
-54 if–
+68 if–
 h
 [0] == 0x7f && h[1] == 0x45 && h[2] == 0x4c ) {
 
-57 
+71 
 	`XDEBUG_KPRINTF
 ("[loader] ELF file is invalid\n");
 
-59 
+73 
 	}
 }
 
-61 * 
+75 * 
 	$föd_sym
 (c⁄° * 
 «me
@@ -100715,7 +100815,7 @@ shdr
 d°
 )
 
-63 
+77 
 Elf32_Sym
 * 
 syms
@@ -100727,11 +100827,11 @@ shdr
 sh_off£t
 );
 
-64 
+78 
 i
 ;
 
-65 
+79 
 i
  = 0; i < 
 shdr
@@ -100741,7 +100841,7 @@ sh_size
 Elf32_Sym
 ); i ++) {
 
-66 i‡(
+80 i‡(
 	`°rcmp
 (
 «me
@@ -100755,7 +100855,7 @@ i
 °_«me
 ) == 0) {
 
-67  
+81  
 d°
  + 
 syms
@@ -100765,15 +100865,15 @@ i
 °_vÆue
 ;
 
-70  
+84  
 NULL
 ;
 
-71 
+85 
 	}
 }
 
-73 *
+87 *
 	$image_lﬂd
  (*
 ñf_°¨t
@@ -100785,7 +100885,7 @@ lﬂd_t
 ld_°©s
 )
 
-76 
+90 
 Elf32_Ehdr
  *
 hdr
@@ -100793,7 +100893,7 @@ hdr
 NULL
 ;
 
-77 
+91 
 Elf32_Phdr
  *
 phdr
@@ -100801,7 +100901,7 @@ phdr
 NULL
 ;
 
-78 
+92 
 Elf32_Shdr
  *
 shdr
@@ -100809,7 +100909,7 @@ shdr
 NULL
 ;
 
-79 
+93 
 Elf32_Sym
  *
 syms
@@ -100817,41 +100917,41 @@ syms
 NULL
 ;
 
-80 *
+94 *
 °rögs
  = 
 NULL
 ;
 
-81 *
+95 *
 °¨t
  = 
 NULL
 ;
 
-82 *
+96 *
 èddr
  = 
 NULL
 ;
 
-83 *
+97 *
 íåy
  = 
 NULL
 ;
 
-84 
+98 
 i
  = 0;
 
-85 *
+99 *
 exec
  = 
 NULL
 ;
 
-87 
+101 
 hdr
  = (
 Elf32_Ehdr
@@ -100859,47 +100959,45 @@ Elf32_Ehdr
 ñf_°¨t
 ;
 
-88 i‡(
+102 i‡(
 	`is_image_vÆid
 (
 hdr
 ) != 0) {
 
-89 
+103 
 	`XDEBUG_KPRINTF
 ("[loader] ELF file is valid\n");
 
-92 
+106 
 	`XDEBUG_KPRINTF
 ("[loader] ELF file is invalid\n");
 
-96 
-bpid32
- 
-ñfbuÂoﬁ
- = 
-	`mkbuÂoﬁ
-(
-size
-, 1);
+107  
+SYSERR
+;
 
-97 
+113 
 exec
  = 
-	`gëbuf
+	`gëmem
 (
-ñfbuÂoﬁ
+size
 );
 
-99 if(!
+115 if(!
 exec
 ) {
 
-100 
+116 
 	`XDEBUG_KPRINTF
 ("image_load::Érrorállocating memory\n");
 
-105 
+117  
+SYSERR
+;
+
+121 
 	`mem£t
 (
 exec
@@ -100907,7 +101005,7 @@ exec
 size
 );
 
-113 
+129 
 phdr
  = (
 Elf32_Phdr
@@ -100919,7 +101017,7 @@ hdr
 e_phoff
 );
 
-114 
+130 
 i
  = 0; i < 
 hdr
@@ -100927,7 +101025,7 @@ hdr
 e_phnum
 ; ++i) {
 
-115 i‡(
+131 i‡(
 phdr
 [
 i
@@ -100937,7 +101035,7 @@ p_ty≥
 PT_LOAD
 ) {
 
-118 i‡(
+134 i‡(
 phdr
 [
 i
@@ -100947,17 +101045,21 @@ p_fûesz
 p_memsz
 ) {
 
-119 
+135 
 	`XDEBUG_KPRINTF
 ("[loader] image_load::Ö_filesz >Ö_memsz\n");
 
-120 
-	`‰ìbuf
+136 
+	`‰ìmem
 (
 exec
 );
 
-123 if(!
+137  
+SYSERR
+;
+
+139 if(!
 phdr
 [
 i
@@ -100965,7 +101067,7 @@ i
 p_fûesz
 ) {
 
-129 
+145 
 °¨t
  = 
 ñf_°¨t
@@ -100977,7 +101079,7 @@ i
 p_off£t
 ;
 
-130 
+146 
 èddr
  = 
 phdr
@@ -100989,7 +101091,7 @@ p_vaddr
 exec
 ;
 
-131 
+147 
 	`XDEBUG_KPRINTF
 ("[lﬂdî] movê%x -> %x (%d byãs, off£à%xË\n", 
 °¨t
@@ -101005,7 +101107,7 @@ p_fûesz
 p_off£t
 );
 
-132 
+148 
 	`mem˝y
 (
 èddr
@@ -101019,7 +101121,7 @@ i
 p_fûesz
 );
 
-151 
+167 
 shdr
  = (
 Elf32_Shdr
@@ -101031,7 +101133,7 @@ hdr
 e_shoff
 );
 
-152 
+168 
 Elf32_Shdr
 * 
 sh_°πab
@@ -101043,7 +101145,7 @@ hdr
 e_sh°∫dx
 ];
 
-153 * 
+169 * 
 sh_°πab_p
  = 
 ñf_°¨t
@@ -101053,7 +101155,7 @@ sh_°πab
 sh_off£t
 ;
 
-156 
+172 
 i
  = 0; i < 
 hdr
@@ -101061,7 +101163,7 @@ hdr
 e_shnum
 ; ++i) {
 
-163 i‡(
+173 i‡(
 shdr
 [
 i
@@ -101071,7 +101173,7 @@ sh_ty≥
 SHT_SYMTAB
 ) {
 
-164 
+174 
 syms
  = (
 Elf32_Sym
@@ -101085,7 +101187,7 @@ i
 sh_off£t
 );
 
-165 
+175 
 °rögs
  = 
 ñf_°¨t
@@ -101099,7 +101201,7 @@ sh_lök
 sh_off£t
 ;
 
-166 
+176 
 	`XDEBUG_KPRINTF
 ("[lﬂdî] SYMTAB (syms: %x, såögs: %x)\n", 
 syms
@@ -101113,7 +101215,7 @@ i
 sh_«me
 );
 
-167 
+177 
 íåy
  = 
 	`föd_sym
@@ -101129,7 +101231,7 @@ i
 exec
 );
 
-168 
+178 
 ld_°©s
 ->
 _°¨t_addr
@@ -101137,7 +101239,7 @@ _°¨t_addr
 íåy
 ;
 
-170 i‡(
+180 i‡(
 shdr
 [
 i
@@ -101147,7 +101249,7 @@ sh_ty≥
 SHT_PROGBITS
 ) {
 
-171 i‡(
+181 i‡(
 	`°rcmp
 (".d©a", 
 sh_°πab_p
@@ -101159,7 +101261,7 @@ i
 sh_«me
 ) == 0) {
 
-172 
+182 
 ld_°©s
 ->
 ld_d©a_addr
@@ -101173,7 +101275,7 @@ sh_addr
 exec
 ;
 
-173 
+183 
 ld_°©s
 ->
 ld_d©a_size
@@ -101185,7 +101287,7 @@ i
 sh_size
 ;
 
-175 i‡(
+185 i‡(
 	`°rcmp
 (".ãxt", 
 sh_°πab_p
@@ -101197,7 +101299,7 @@ i
 sh_«me
 ) == 0) {
 
-176 
+186 
 ld_°©s
 ->
 ld_ãxt_addr
@@ -101211,7 +101313,7 @@ sh_addr
 exec
 ;
 
-177 
+187 
 ld_°©s
 ->
 ld_ãxt_size
@@ -101223,7 +101325,7 @@ i
 sh_size
 ;
 
-180 i‡(
+190 i‡(
 shdr
 [
 i
@@ -101233,7 +101335,7 @@ sh_ty≥
 SHT_NOBITS
 ) {
 
-181 i‡(!
+191 i‡(!
 shdr
 [
 i
@@ -101241,7 +101343,7 @@ i
 sh_size
 ) {
 
-184 
+194 
 ld_°©s
 ->
 ld_bss_addr
@@ -101255,7 +101357,7 @@ sh_addr
 exec
 ;
 
-185 
+195 
 ld_°©s
 ->
 ld_bss_size
@@ -101267,7 +101369,53 @@ i
 sh_size
 ;
 
-190 
+200 
+i
+=0; i < 
+hdr
+->
+e_shnum
+; ++i) {
+
+201 i‡(
+shdr
+[
+i
+].
+sh_ty≥
+ =
+SHT_DYNSYM
+) {
+
+202 
+syms
+ = (
+Elf32_Sym
+*)(
+ñf_°¨t
+ + 
+shdr
+[
+i
+].
+sh_off£t
+);
+
+203 
+°rögs
+ = 
+ñf_°¨t
+ + 
+shdr
+[shdr[
+i
+].
+sh_lök
+].
+sh_off£t
+;
+
+210 
 i
  = 0; i < 
 hdr
@@ -101275,7 +101423,7 @@ hdr
 e_shnum
 ; ++i) {
 
-191 i‡(
+211 i‡(
 shdr
 [
 i
@@ -101285,7 +101433,7 @@ sh_ty≥
 SHT_REL
 ) {
 
-192 
+212 i‡(
 	`ªloˇã
 (
 shdr
@@ -101299,27 +101447,33 @@ syms
 ñf_°¨t
 , 
 exec
-);
+Ë=
+SYSERR
+) {
 
-196 
+213  
+SYSERR
+;
+
+218 
 	`XDEBUG_KPRINTF
 ("[lﬂdî]É¡ry: %x\n", 
 íåy
 );
 
-198 
+220 
 ld_°©s
 ->
 exec
  =Éxec;
 
-199 
+221 
 ld_°©s
 ->
 size
  = size;
 
-200 
+222 
 ld_°©s
 ->
 °©us
@@ -101327,13 +101481,13 @@ ld_°©s
 LOAD_OCCUPIED
 ;
 
-203 
+225 
 i
  = 0; i < 
 NLOAD
 ; i ++) {
 
-204 i‡(
+226 i‡(
 lﬂdèb
 [
 i
@@ -101343,7 +101497,7 @@ i
 LOAD_FREE
 ) {
 
-205 
+227 
 lﬂdèb
 [
 i
@@ -101351,21 +101505,27 @@ i
 ld_°©s
 ;
 
-210 
+231 
+lﬂdèb_id
+ = 
+i
+;
+
+233 
 	`XDEBUG_KPRINTF
 ("[lﬂdî] cuºpid: %d\n", 
 cuºpid
 );
 
-212  
+235  
 íåy
 ;
 
-213 
+236 
 	}
 }
 
-215 
+238 
 sysˇŒ
  
 	$lﬂd
@@ -101377,23 +101537,23 @@ lﬂd_t
 ld_°©s
 )
 
-217 
+240 
 ötmask
  
 mask
 ;
 
-218 
+241 
 mask
  = 
 	`dißbÀ
 ();
 
-220 
+243 
 fûe_sz
  = 0;
 
-221 * 
+244 * 
 fûe
  = 
 	`fûe›í
@@ -101403,27 +101563,27 @@ fûe
 fûe_sz
 );
 
-222 i‡(
+245 i‡(
 fûe
  =(*)
 SYSERR
 ) {
 
-223 
+246 
 	`XDEBUG_KPRINTF
 ("[load] file openÉrror\n");
 
-224 
+247 
 	`ª°‹e
 (
 mask
 );
 
-225  
+248  
 SYSERR
 ;
 
-228 i‡(
+251 i‡(
 	`image_lﬂd
 (
 fûe
@@ -101431,39 +101591,41 @@ fûe
 fûe_sz
 , 
 ld_°©s
-) == 0) {
+Ë=(*)
+SYSERR
+) {
 
-229 
+252 
 	`XDEBUG_KPRINTF
 ("[loader]ÜoadÉrror\n");
 
-230 
+253 
 	`ª°‹e
 (
 mask
 );
 
-231  
+254  
 SYSERR
 ;
 
-234 
+257 
 	`fûe˛o£
 (
 ¥ogøm_fûe_∑th
 );
 
-235 
+258 
 	`ª°‹e
 (
 mask
 );
 
-236  
+259  
 OK
 ;
 
-237 
+260 
 	}
 }
 
@@ -106919,75 +107081,81 @@ sysˇŒ
 dñay
 
 
-15 i‡–(
+15 
+	`XDEBUG_KPRINTF
+("[¶ìp] dñay: %d\n", 
+dñay
+);
+
+17 i‡–(
 dñay
  < 0Ë|| (dñay > 
 MAXSECONDS
 ) ) {
 
-16  
+18  
 SYSERR
 ;
 
-18 
+20 
 	`¶ìpms
 (1000*
 dñay
 );
 
-19  
+21  
 OK
 ;
 
-20 
+22 
 	}
 }
 
-26 
+28 
 sysˇŒ
  
 	$¶ìpms
 (
 
-27 
+29 
 öt32
  
 dñay
 
 
-30 
+32 
 ötmask
  
 mask
 ;
 
-32 i‡(
+34 i‡(
 dñay
  < 0) {
 
-33  
+35  
 SYSERR
 ;
 
-36 i‡(
+38 i‡(
 dñay
  == 0) {
 
-37 
+39 
 	`yõld
 ();
 
-38  
+40  
 OK
 ;
 
-43 
+45 
 mask
  = 
 	`dißbÀ
 ();
 
-44 i‡(
+46 i‡(
 	`ö£πd
 (
 cuºpid
@@ -106999,17 +107167,17 @@ dñay
 SYSERR
 ) {
 
-45 
+47 
 	`ª°‹e
 (
 mask
 );
 
-46  
+48  
 SYSERR
 ;
 
-49 
+51 
 ¥o˘ab
 [
 cuºpid
@@ -107019,21 +107187,21 @@ cuºpid
 PR_SLEEP
 ;
 
-50 
+52 
 	`ªsched
 ();
 
-51 
+53 
 	`ª°‹e
 (
 mask
 );
 
-52  
+54  
 OK
 ;
 
-53 
+55 
 	}
 }
 
@@ -107550,36 +107718,6 @@ sysˇŒ
 ("[sysˇŒh™dÀr] *ßved•: %d\n", *(
 ßved•
 +12));
-
-17 
-	`XDEBUG_KPRINTF
-("[sysˇŒh™dÀr] *ßved•: %d\n", *(
-ßved•
-+13));
-
-18 
-	`XDEBUG_KPRINTF
-("[sysˇŒh™dÀr] *ßved•: %d\n", *(
-ßved•
-+14));
-
-19 
-	`XDEBUG_KPRINTF
-("[sysˇŒh™dÀr] *ßved•: %d\n", *(
-ßved•
-+15));
-
-20 
-	`XDEBUG_KPRINTF
-("[sysˇŒh™dÀr] *ßved•: %d\n", *(
-ßved•
-+16));
-
-21 
-	`XDEBUG_KPRINTF
-("[sysˇŒh™dÀr] *ßved•: %d\n", *(
-ßved•
-+17));
 
 34 i‡(*(
 ßved•
@@ -108272,12 +108410,26 @@ OK
 ;
 
 8 * 
+hñlo_ñf
+ = 
+≠phñlo_c⁄ã¡s
+;
+
+9 
+	`fûîegi°î
+("/ñf/hñlo.so", 
+hñlo_ñf
+, 
+≠phñlo_c⁄ã¡s_size
+);
+
+12 * 
 libmy_ñf
  = 
 libmy_c⁄ã¡s
 ;
 
-9 
+13 
 	`fûîegi°î
 ("/so/libmy.so", 
 libmy_ñf
@@ -108285,21 +108437,21 @@ libmy_ñf
 libmy_c⁄ã¡s_size
 );
 
-14 * 
+18 * 
 h™dÀ
 ;
 
-15 
+19 
 h™dÀ
  = 
 	`dl›í
 ("/so/libmy.so");
 
-18 * 
+22 * 
 symbﬁ_addr
 ;
 
-19 
+23 
 symbﬁ_addr
  = 
 	`dlsym
@@ -108307,29 +108459,141 @@ symbﬁ_addr
 h™dÀ
 , "mylib");
 
-20 
+24 
 	`XDEBUG_KPRINTF
 ("[dlsym] mylibáddr: %x\n", 
 symbﬁ_addr
 );
 
-26 
+29 
+	`¶ìp
+(10);
+
+30 
+	`XDEBUG_KPRINTF
+("[testcase_4] secondÑun\n");
+
+33 * 
+hñlo_dyn
+ = 
+≠phñlo_dyn_lﬂdög_c⁄ã¡s
+;
+
+34 
+	`fûîegi°î
+("/so/hñlo_dyn.so", 
+hñlo_dyn
+, 
+≠phñlo_dyn_lﬂdög_c⁄ã¡s_size
+);
+
+36 
+lﬂd_t
+ 
+ld_°©s
+;
+
+37 
+°©us
+ = 
+	`lﬂd
+("/so/hñlo_dyn.so", &
+ld_°©s
+);
+
+38 
+	`ªsume
+(
+	`¸óã
+(
+ld_°©s
+.
+_°¨t_addr
+, 
+INITSTK
+, 
+INITPRIO
+, "ã°ˇ£_4_dyn", 0, 
+NULL
+));
+
+40 
+	`¶ìp
+(10);
+
+42 
+	`XDEBUG_KPRINTF
+("[testcase_4] ungister one\n");
+
+43 
+	`fûeuƒegi°î
+("/elf/hello.so");
+
+44 
+	`ªsume
+(
+	`¸óã
+(
+ld_°©s
+.
+_°¨t_addr
+, 
+INITSTK
+, 
+INITPRIO
+, "ã°ˇ£_4_dyn", 0, 
+NULL
+));
+
+46 
+	`¶ìp
+(10);
+
+48 
+	`XDEBUG_KPRINTF
+("[testcase_4] ungisterÅwo\n");
+
+49 
+	`fûeuƒegi°î
+("/so/libmy.so");
+
+50 
+	`ªsume
+(
+	`¸óã
+(
+ld_°©s
+.
+_°¨t_addr
+, 
+INITSTK
+, 
+INITPRIO
+, "ã°ˇ£_4_dyn", 0, 
+NULL
+));
+
+52 
+	`¶ìp
+(10);
+
+55 
 	`dl˛o£
 (
 h™dÀ
 );
 
-29 
+58 
 	}
 }
 
-32 
+61 
 ¥o˚ss
  
 	$ã°ˇ£_4
 () {
 
-33 
+62 
 	`ªsume
 (
 	`¸óã
@@ -108339,11 +108603,11 @@ t4_¥oc1
 NULL
 ));
 
-35  
+64  
 OK
 ;
 
-36 
+65 
 	}
 }
 
@@ -108375,13 +108639,17 @@ mask
 i
 ;
 
-17 
+16 
+j
+;
+
+18 
 i
  = 0; i < 
 NLOAD
 ; i ++) {
 
-18 i‡(
+19 i‡(
 lﬂdèb
 [
 i
@@ -108391,7 +108659,7 @@ i
 LOAD_OCCUPIED
 ) {
 
-19 i‡(
+20 i‡(
 lﬂdèb
 [
 i
@@ -108399,7 +108667,17 @@ i
 ld_ãxt_addr
  ==Üd_text_addr) {
 
-20 
+21 i‡(
+lﬂdèb
+[
+i
+].
+autom©ic_lﬂd_°©e
+ =
+AUTOMATIC_ON
+) {
+
+22 
 lﬂdèb
 [
 i
@@ -108408,20 +108686,6 @@ i
  = 
 LOAD_FREE
 ;
-
-21 
-	`‰ìbuf
-(
-lﬂdèb
-[
-i
-].
-exec
-);
-
-22 
-	`XDEBUG_KPRINTF
-("[unloader] Gochaánd Free!\n");
 
 23 
 	`ª°‹e
@@ -108433,21 +108697,111 @@ mask
 OK
 ;
 
-29 
-	`XDEBUG_KPRINTF
-("[unload]Çot find\n");
+26 
+lﬂdèb
+[
+i
+].
+°©us
+ = 
+LOAD_FREE
+;
 
-30 
+27 
+	`‰ìmem
+(
+lﬂdèb
+[
+i
+].
+exec
+);
+
+28 
+	`XDEBUG_KPRINTF
+("[unloader] Gochaánd Free!\n");
+
+31 
+j
+ = 0; j < 
+NLOAD
+; j ++) {
+
+32 i‡(
+lﬂdèb
+[
+j
+].
+autom©ic_lﬂd_°©e
+ =
+AUTOMATIC_ON
+
+
+33 && 
+lﬂdèb
+[
+j
+].
+lﬂd_by
+ =
+i
+
+
+34 && 
+lﬂdèb
+[
+j
+].
+°©us
+ =
+LOAD_FREE
+) {
+
+36 
+	`‰ìmem
+(
+lﬂdèb
+[
+j
+].
+exec
+);
+
+37 
+lﬂdèb
+[
+j
+].
+autom©ic_lﬂd_°©e
+ = 
+AUTOMATIC_OFF
+;
+
+41 
 	`ª°‹e
 (
 mask
 );
 
-31  
+42  
+OK
+;
+
+47 
+	`XDEBUG_KPRINTF
+("[unload]Çot find\n");
+
+48 
+	`ª°‹e
+(
+mask
+);
+
+49  
 SYSERR
 ;
 
-32 
+50 
 	}
 }
 

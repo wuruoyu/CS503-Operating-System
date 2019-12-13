@@ -74,6 +74,8 @@ void init_pd(frameid_t fid) {
         }
     }
 
+    /*XERROR_KPRINTF("[init_pd] one more pd\n");*/
+
     restore(mask);
 }
 

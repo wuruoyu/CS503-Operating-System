@@ -4,6 +4,8 @@
 void t4_proc1() {
 	int status;
 
+    XDEBUG_KPRINTF("heap: %x\n", memlist);
+
 	// hello elf
 	char* hello_elf = apphello_contents;
 	fileregister("/elf/hello.so", hello_elf, apphello_contents_size);
@@ -53,6 +55,8 @@ void t4_proc1() {
 
     // dlclose
     dlclose(handle);
+
+    XDEBUG_KPRINTF("heap: %x\n", memlist);
 
 	return 1;
 }  

@@ -53,7 +53,7 @@
 #define XTEST 1
 #define XDEBUG 0 /* set this to 0 when submitting */
 #define XTESTCASE 0 /* set this to 0 when submitting */
-#define XERROR 1 /* set this to 0 when submitting */
+#define XERROR 0 /* set this to 0 when submitting */
 
 /* For grading */
 #if XTEST

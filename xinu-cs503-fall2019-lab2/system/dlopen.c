@@ -50,8 +50,10 @@ static syscall image_load (char *elf_start, unsigned int size)
 	    return SYSERR;
     }
 
-    bpid32 elfbufpool = mkbufpool(size, 1);
-    exec = getbuf(elfbufpool);
+    /*bpid32 elfbufpool = mkbufpool(size, 1);*/
+    /*exec = getbuf(elfbufpool);*/
+
+    exec = getmem(size);
   
     if(!exec) {
         XDEBUG_KPRINTF("image_load:: error allocating memory\n");
@@ -69,7 +71,7 @@ static syscall image_load (char *elf_start, unsigned int size)
             }
             if (phdr[i].p_filesz > phdr[i].p_memsz) {
                     XDEBUG_KPRINTF("[dlopen] image_load:: p_filesz > p_memsz\n");
-		    freebuf(exec);
+		    freemem(exec, size);
                     return SYSERR;
             }
             if(!phdr[i].p_filesz) {
@@ -137,6 +139,7 @@ static syscall image_load (char *elf_start, unsigned int size)
     ret_handle.pid = currpid;
     ret_handle.elf_start = elf_start;
     ret_handle.exec = exec;
+    ret_handle.size = size;
     ret_handle.sym_syms = sym_syms;
     ret_handle.sym_strings = sym_strings;
     ret_handle.sym_sh_size = sym_sh_size;
