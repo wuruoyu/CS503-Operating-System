@@ -24,7 +24,7 @@ int unload(void* ld_text_addr) {
                     return OK;
                 }
 				loadtab[i].status = LOAD_FREE;
-				freemem(loadtab[i].exec, loadtab[i].size);
+				freebuf(loadtab[i].exec);
 				XDEBUG_KPRINTF("[unloader] Gocha and Free!\n");
     
                 // check automatic loading
@@ -33,7 +33,7 @@ int unload(void* ld_text_addr) {
                             && loadtab[j].load_by == i 
                             && loadtab[j].status == LOAD_FREE) {
 
-                        freemem(loadtab[j].exec, loadtab[j].size);
+                        freebuf(loadtab[j].exec);
                         loadtab[j].automatic_load_state = AUTOMATIC_OFF;
                     }
                 }

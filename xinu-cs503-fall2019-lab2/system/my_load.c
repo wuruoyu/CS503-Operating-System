@@ -107,10 +107,8 @@ static void *image_load (char *elf_start, unsigned int size, struct load_t* ld_s
 	    return SYSERR;
     }
 
-    /*bpid32 elfbufpool = mkbufpool(size, 1);*/
-    /*exec = getbuf(elfbufpool);*/
-
-    exec = getmem(size);
+    bpid32 elfbufpool = mkbufpool(size, 1);
+    exec = getbuf(elfbufpool);
   
     if(!exec) {
         XDEBUG_KPRINTF("image_load:: error allocating memory\n");
@@ -133,7 +131,7 @@ static void *image_load (char *elf_start, unsigned int size, struct load_t* ld_s
             }
             if (phdr[i].p_filesz > phdr[i].p_memsz) {
                     XDEBUG_KPRINTF("[loader] image_load:: p_filesz > p_memsz\n");
-		    freemem(exec, size);
+		    freebuf(exec);
                     return SYSERR;
             }
             if(!phdr[i].p_filesz) {

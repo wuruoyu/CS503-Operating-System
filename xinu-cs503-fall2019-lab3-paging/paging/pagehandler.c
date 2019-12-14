@@ -75,21 +75,15 @@ frameid_t evict_frame() {
 
     // current process's page
     if (currpid == pid) {
-        /*evict_tmp = (proctab[pid].prpdptr);*/
-        /*asm("pushl %eax");*/
-        /*asm("invlpg evict_tmp");*/
-        /*asm("popl %eax");*/
-
-        /*evict_tmp = (vpage << 12);*/
-        /*asm("pushl %eax");*/
-        /*asm("invlpg evict_tmp");*/
-        /*asm("popl %eax");*/
-
+        evict_tmp = (proctab[pid].prpdptr);
         asm("pushl %eax");
-        asm("movl  %cr3,%eax");
-        asm("movl  %eax,%cr3");
+        asm("invlpg evict_tmp");
         asm("popl %eax");
 
+        evict_tmp = (vpage << 12);
+        asm("pushl %eax");
+        asm("invlpg evict_tmp");
+        asm("popl %eax");
         XDEBUG_KPRINTF("[evict_frame] evict_frame is from current process\n");
     }
 
@@ -153,8 +147,6 @@ frameid_t evict_frame() {
 
 void pagehandler(void) {
     intmask mask;
-
-    resched_cntl(DEFER_START);
 
     mask = disable();
 
@@ -237,6 +229,7 @@ void pagehandler(void) {
 
     // we are not paging either pd or pt, means if pt exists, it always pres
 
+    // stupid check
     if (pdptr_ent->pd_base == 0) {
         XERROR_KPRINTF("[pagehandler] should not equal to 0\n");
         restore(mask);
@@ -279,7 +272,7 @@ void pagehandler(void) {
     } 
     // page exist but not pres
     else if (!ptptr_ent->pt_pres) {
-        XDEBUG_KPRINTF("[pagehandler] page not exist not pres\n");
+        XDEBUG_KPRINTF("[pagehandler] page not exist\n");
 
         // it should be in the bstab
         for (i = 0; i < MAX_BS_ENTRIES; i ++) {
@@ -318,7 +311,7 @@ void pagehandler(void) {
             }
             /*XERROR_KPRINTF("[pagehandler] after evict_frame pg_fid: %d\n", pg_fid);*/
         }
-        /*XERROR_KPRINTF("[pagehandler] find available page frame: %d\n", pg_fid);*/
+        XERROR_KPRINTF("[pagehandler] find available page frame: %d\n", pg_fid);
         pg_addr = frameid_addr(pg_fid);
 
         // read from bs
@@ -344,7 +337,5 @@ void pagehandler(void) {
     /*XTEST_KPRINTF("[pagehandler] currpid: %d\n", currpid);*/
 
     restore(mask);
-
-    resched_cntl(DEFER_STOP);
     return;
 }
