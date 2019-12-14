@@ -14,6 +14,7 @@ extern syscall loadopen(char*, int);
 struct dl_handle_t {
     int     status;
     pid32   pid;
+    int     size;
     char*   elf_start;
     char*   exec;
     char*   sym_syms;

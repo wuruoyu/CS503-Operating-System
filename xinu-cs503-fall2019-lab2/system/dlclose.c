@@ -37,7 +37,7 @@ syscall dlclose(void* handle)
     // TODO: filetab not close
     
     // free the buffer
-	freebuf(handletab[handle_n].exec);
+	freemem(handletab[handle_n].exec, handletab[handle_n].size);
 
     XDEBUG_KPRINTF("[dlclose] suceed");
 	restore(mask);

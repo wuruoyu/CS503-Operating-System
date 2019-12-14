@@ -1,0 +1,92 @@
+diff --git a/xinu-cs503-fall2019-lab2/include/ld.h b/xinu-cs503-fall2019-lab2/include/ld.h
+index d7431b7..93b7a21 100644
+--- a/xinu-cs503-fall2019-lab2/include/ld.h
++++ b/xinu-cs503-fall2019-lab2/include/ld.h
+@@ -14,6 +14,7 @@ extern syscall loadopen(char*, int);
+ struct dl_handle_t {
+     int     status;
+     pid32   pid;
++    int     size;
+     char*   elf_start;
+     char*   exec;
+     char*   sym_syms;
+diff --git a/xinu-cs503-fall2019-lab2/system/dlclose.c b/xinu-cs503-fall2019-lab2/system/dlclose.c
+index 98f5d22..98465cb 100644
+--- a/xinu-cs503-fall2019-lab2/system/dlclose.c
++++ b/xinu-cs503-fall2019-lab2/system/dlclose.c
+@@ -37,7 +37,7 @@ syscall dlclose(void* handle)
+     // TODO: filetab not close
+     
+     // free the buffer
+-	freebuf(handletab[handle_n].exec);
++	freemem(handletab[handle_n].exec, handletab[handle_n].size);
+ 
+     XDEBUG_KPRINTF("[dlclose] suceed");
+ 	restore(mask);
+diff --git a/xinu-cs503-fall2019-lab2/system/dlopen.c b/xinu-cs503-fall2019-lab2/system/dlopen.c
+index 6bd1865..58cab19 100644
+--- a/xinu-cs503-fall2019-lab2/system/dlopen.c
++++ b/xinu-cs503-fall2019-lab2/system/dlopen.c
+@@ -50,8 +50,8 @@ static syscall image_load (char *elf_start, unsigned int size)
+ 	    return SYSERR;
+     }
+ 
+-    bpid32 elfbufpool = mkbufpool(size, 1);
+-    exec = getbuf(elfbufpool);
++    /*bpid32 elfbufpool = mkbufpool(size, 1);*/
++    exec = getmem(size);
+   
+     if(!exec) {
+         XDEBUG_KPRINTF("image_load:: error allocating memory\n");
+@@ -69,7 +69,7 @@ static syscall image_load (char *elf_start, unsigned int size)
+             }
+             if (phdr[i].p_filesz > phdr[i].p_memsz) {
+                     XDEBUG_KPRINTF("[dlopen] image_load:: p_filesz > p_memsz\n");
+-		    freebuf(exec);
++		    freemem(exec, size);
+                     return SYSERR;
+             }
+             if(!phdr[i].p_filesz) {
+@@ -137,6 +137,7 @@ static syscall image_load (char *elf_start, unsigned int size)
+     ret_handle.pid = currpid;
+     ret_handle.elf_start = elf_start;
+     ret_handle.exec = exec;
++    ret_handle.size = size;
+     ret_handle.sym_syms = sym_syms;
+     ret_handle.sym_strings = sym_strings;
+     ret_handle.sym_sh_size = sym_sh_size;
+diff --git a/xinu-cs503-fall2019-lab2/system/my_load.c b/xinu-cs503-fall2019-lab2/system/my_load.c
+index a361903..66162a7 100644
+--- a/xinu-cs503-fall2019-lab2/system/my_load.c
++++ b/xinu-cs503-fall2019-lab2/system/my_load.c
+@@ -131,7 +131,7 @@ static void *image_load (char *elf_start, unsigned int size, struct load_t* ld_s
+             }
+             if (phdr[i].p_filesz > phdr[i].p_memsz) {
+                     XDEBUG_KPRINTF("[loader] image_load:: p_filesz > p_memsz\n");
+-		    freebuf(exec);
++		    freemem(exec, size);
+                     return SYSERR;
+             }
+             if(!phdr[i].p_filesz) {
+diff --git a/xinu-cs503-fall2019-lab2/system/unload.c b/xinu-cs503-fall2019-lab2/system/unload.c
+index 2cb64ff..3bf6669 100644
+--- a/xinu-cs503-fall2019-lab2/system/unload.c
++++ b/xinu-cs503-fall2019-lab2/system/unload.c
+@@ -24,7 +24,7 @@ int unload(void* ld_text_addr) {
+                     return OK;
+                 }
+ 				loadtab[i].status = LOAD_FREE;
+-				freebuf(loadtab[i].exec);
++				freemem(loadtab[i].exec, loadtab[i].size);
+ 				XDEBUG_KPRINTF("[unloader] Gocha and Free!\n");
+     
+                 // check automatic loading
+@@ -33,7 +33,7 @@ int unload(void* ld_text_addr) {
+                             && loadtab[j].load_by == i 
+                             && loadtab[j].status == LOAD_FREE) {
+ 
+-                        freebuf(loadtab[j].exec);
++                        freemem(loadtab[j].exec, loadtab[j].size);
+                         loadtab[j].automatic_load_state = AUTOMATIC_OFF;
+                     }
+                 }
